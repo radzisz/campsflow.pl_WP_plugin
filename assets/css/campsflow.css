@@ -1,0 +1,259 @@
+/* Campsflow Listing — CSS Custom Properties (override in Elementor or theme) */
+:root {
+    --cf-columns:      3;
+    --cf-gap:          1.5rem;
+    --cf-card-bg:      #ffffff;
+    --cf-card-radius:  10px;
+    --cf-card-shadow:  0 2px 8px rgba(0,0,0,.08);
+    --cf-accent:       #2563eb;
+    --cf-accent-hover: #1d4ed8;
+    --cf-text:         #111827;
+    --cf-muted:        #6b7280;
+    --cf-border:       #e5e7eb;
+}
+
+/* ── Layout ────────────────────────────────────────────────────── */
+
+.cf-listing {
+    font-family: inherit;
+    color: var(--cf-text);
+}
+
+.cf-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cf-columns), 1fr);
+    gap: var(--cf-gap);
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 900px) {
+    .cf-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .cf-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Filters ───────────────────────────────────────────────────── */
+
+.cf-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+
+.cf-filter {
+    padding: .4rem .75rem;
+    border: 1px solid var(--cf-border);
+    border-radius: 6px;
+    background: #fff;
+    font-size: .9rem;
+    cursor: pointer;
+}
+
+/* ── Card ──────────────────────────────────────────────────────── */
+
+.cf-card {
+    background: var(--cf-card-bg);
+    border-radius: var(--cf-card-radius);
+    box-shadow: var(--cf-card-shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.cf-card__image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
+
+.cf-card__body {
+    padding: 1rem 1.25rem 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.cf-card__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.cf-card__location {
+    font-size: .85rem;
+    color: var(--cf-muted);
+    margin: 0;
+}
+
+/* ── Sessions list ─────────────────────────────────────────────── */
+
+.cf-sessions {
+    list-style: none;
+    margin: .5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.cf-session {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+    padding: .6rem 0;
+    border-top: 1px solid var(--cf-border);
+    font-size: .875rem;
+}
+
+.cf-session__dates {
+    flex: 1;
+    min-width: 120px;
+    font-weight: 500;
+}
+
+.cf-session__price {
+    color: var(--cf-muted);
+    white-space: nowrap;
+}
+
+/* ── Flat sessions view ────────────────────────────────────────── */
+
+.cf-sessions-flat {
+    margin-top: 1.5rem;
+}
+
+.cf-sessions-flat__event {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 1.5rem 0 .5rem;
+    padding-bottom: .5rem;
+    border-bottom: 2px solid var(--cf-accent);
+}
+
+/* ── Badge ─────────────────────────────────────────────────────── */
+
+.cf-badge {
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .2rem .5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.cf-badge--few_left    { background: #fef3c7; color: #92400e; }
+.cf-badge--almost_full { background: #fee2e2; color: #991b1b; }
+.cf-badge--full        { background: #f3f4f6; color: #6b7280; }
+
+/* ── Button ────────────────────────────────────────────────────── */
+
+.cf-btn {
+    display: inline-block;
+    padding: .35rem .85rem;
+    background: var(--cf-accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: .8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background .15s;
+    margin-left: auto;
+}
+
+.cf-btn:hover { background: var(--cf-accent-hover); color: #fff; }
+
+.cf-btn--disabled {
+    background: var(--cf-border);
+    color: var(--cf-muted);
+    border-radius: 6px;
+    font-size: .8rem;
+    font-weight: 600;
+    padding: .35rem .85rem;
+    white-space: nowrap;
+    margin-left: auto;
+}
+
+/* ── Empty state ───────────────────────────────────────────────── */
+
+.cf-empty {
+    color: var(--cf-muted);
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+/* ── Page layout ───────────────────────────────────────────────── */
+
+.cf-page { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+
+.cf-page__header { margin-bottom: 1.5rem; }
+.cf-page__title  { font-size: 2rem; font-weight: 700; margin: 0; }
+
+/* ── Single event layout ───────────────────────────────────────── */
+
+.cf-event-hero__image {
+    width: 100%; max-height: 420px;
+    object-fit: cover; border-radius: var(--cf-card-radius);
+    margin-bottom: 2rem;
+}
+
+.cf-event-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 2.5rem;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .cf-event-layout { grid-template-columns: 1fr; }
+    .cf-event-sidebar { order: -1; }
+}
+
+.cf-event-body__title    { font-size: 1.8rem; font-weight: 700; margin: 0 0 .5rem; }
+.cf-event-body__location { color: var(--cf-muted); font-size: .95rem; margin: 0 0 1rem; display: flex; align-items: center; gap: .3rem; }
+.cf-event-body__tags     { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.5rem; }
+.cf-event-body__description { line-height: 1.7; }
+
+.cf-tag {
+    font-size: .75rem; font-weight: 600;
+    padding: .25rem .6rem; border-radius: 4px;
+    background: #e0e7ff; color: #3730a3;
+}
+.cf-tag--age { background: #dcfce7; color: #166534; }
+
+/* ── Sessions sidebar box ──────────────────────────────────────── */
+
+.cf-sessions-box {
+    background: var(--cf-card-bg);
+    border: 1px solid var(--cf-border);
+    border-radius: var(--cf-card-radius);
+    padding: 1.25rem;
+    position: sticky;
+    top: 1.5rem;
+}
+
+.cf-sessions-box__title {
+    font-size: 1.1rem; font-weight: 700;
+    margin: 0 0 1rem; padding-bottom: .75rem;
+    border-bottom: 2px solid var(--cf-accent);
+}
+
+.cf-sessions-box__list { list-style: none; margin: 0; padding: 0; }
+
+.cf-sessions-box__item {
+    padding: .85rem 0;
+    border-bottom: 1px solid var(--cf-border);
+    display: flex; flex-direction: column; gap: .4rem;
+}
+.cf-sessions-box__item:last-child { border-bottom: none; }
+.cf-sessions-box__item--full { opacity: .6; }
+
+.cf-sessions-box__dates { font-weight: 600; font-size: .95rem; }
+.cf-sessions-box__meta  { display: flex; align-items: center; gap: .5rem; }
+.cf-sessions-box__price { color: var(--cf-muted); font-size: .9rem; }
+
+.cf-sessions-box .cf-btn { align-self: flex-start; margin-left: 0; }

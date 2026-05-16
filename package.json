@@ -1,0 +1,29 @@
+{
+    "name": "campsflow-wp",
+    "private": true,
+    "scripts": {
+        "env:start": "wp-env start && npm run env:setup",
+        "env:setup": "node scripts/setup-apache.js",
+        "env:stop": "wp-env stop",
+        "env:clean": "wp-env clean all",
+        "env:logs": "wp-env logs",
+        "env:flush": "node -e \"const {execSync}=require('child_process');const env={...process.env,MSYS_NO_PATHCONV:'1'};const wp=execSync('docker ps --filter publish=8890 --format {{.Names}}',{env}).toString().trim().replace('wordpress','cli');execSync('docker exec '+wp+' wp option update permalink_structure /%postname%/ --allow-root',{stdio:'inherit',env});execSync('docker exec '+wp+' wp rewrite flush --allow-root',{stdio:'inherit',env});\"",
+
+        "composer:install": "docker run --rm -v \"%cd%:/app\" -w /app composer:2 install",
+        "composer:update": "docker run --rm -v \"%cd%:/app\" -w /app composer:2 update",
+
+        "php": "docker run --rm -v \"%cd%:/app\" -w /app php:8.2-cli",
+
+        "test": "npm run test:unit && npm run test:integration",
+        "test:unit": "npm run php -- vendor/bin/phpunit --testsuite unit",
+        "test:integration": "npm run php -- vendor/bin/phpunit --testsuite integration",
+        "test:coverage": "npm run php -- vendor/bin/phpunit --coverage-html coverage",
+
+        "analyse": "npm run php -- vendor/bin/phpstan analyse --memory-limit=512M",
+        "lint": "npm run php -- vendor/bin/phpcs",
+        "lint:fix": "npm run php -- vendor/bin/phpcbf"
+    },
+    "devDependencies": {
+        "@wordpress/env": "^10.0"
+    }
+}

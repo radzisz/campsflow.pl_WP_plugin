@@ -1,0 +1,105 @@
+[
+  {
+    "id": "event-001-uuid",
+    "name": "Obóz Górski Tatry 2026",
+    "description": "Tygodniowy obóz w sercu Tatr dla dzieci i młodzieży. Program obejmuje wędrówki górskie, ogniska i warsztaty survivalowe.",
+    "minAge": 10,
+    "maxAge": 16,
+    "photos": ["https://example.com/storage/v1/object/public/tenant-tenant-001/obozy/tatry.webp"],
+    "tags": ["góry", "przygoda", "letni"],
+    "location": {
+      "name": "Schronisko PTTK Murowaniec",
+      "destination": "Tatry Wysokie",
+      "city": "Zakopane"
+    },
+    "turnusy": [
+      {
+        "id": "session-001-uuid",
+        "dateFrom": "2026-07-01",
+        "dateTo": "2026-07-14",
+        "price": 189000,
+        "status": "published",
+        "registrationOpenAt": "2026-01-15T00:00:00Z",
+        "registrationCloseAt": "2026-06-15T00:00:00Z",
+        "totalSeats": 40,
+        "availableSeats": 3
+      },
+      {
+        "id": "session-002-uuid",
+        "dateFrom": "2026-07-16",
+        "dateTo": "2026-07-29",
+        "price": 189000,
+        "status": "published",
+        "registrationOpenAt": "2026-01-15T00:00:00Z",
+        "registrationCloseAt": "2026-06-30T00:00:00Z",
+        "totalSeats": 40,
+        "availableSeats": 18
+      },
+      {
+        "id": "session-003-uuid",
+        "dateFrom": "2026-08-01",
+        "dateTo": "2026-08-14",
+        "price": 199000,
+        "status": "published",
+        "registrationOpenAt": "2026-01-15T00:00:00Z",
+        "registrationCloseAt": "2026-07-15T00:00:00Z",
+        "totalSeats": 40,
+        "availableSeats": 0
+      }
+    ]
+  },
+  {
+    "id": "event-002-uuid",
+    "name": "Obóz nad Morzem Bałtyckim 2026",
+    "description": "Dwutygodniowy obóz na Wybrzeżu Gdańskim. Plaża, sporty wodne i świetna zabawa.",
+    "minAge": 8,
+    "maxAge": 14,
+    "photos": ["https://example.com/storage/v1/object/public/tenant-tenant-001/obozy/morze.webp"],
+    "tags": ["morze", "sport", "letni"],
+    "location": {
+      "name": "Ośrodek Wypoczynkowy Fala",
+      "destination": "Wybrzeże Gdańskie",
+      "city": "Łeba"
+    },
+    "turnusy": [
+      {
+        "id": "session-004-uuid",
+        "dateFrom": "2026-07-05",
+        "dateTo": "2026-07-18",
+        "price": 229000,
+        "status": "published",
+        "registrationOpenAt": "2026-02-01T00:00:00Z",
+        "registrationCloseAt": "2026-06-20T00:00:00Z",
+        "totalSeats": 30,
+        "availableSeats": 22
+      }
+    ]
+  },
+  {
+    "id": "event-003-uuid",
+    "name": "Zimowisko Beskidy 2026/27",
+    "description": "Zimowy obóz narciarski w Beskidach. Nauka i doskonalenie techniki narciarskiej na stokach Szczyrku.",
+    "minAge": 9,
+    "maxAge": 15,
+    "photos": [],
+    "tags": ["góry", "zima", "narty"],
+    "location": {
+      "name": "Hotel Klimczok",
+      "destination": "Beskid Śląski",
+      "city": "Szczyrk"
+    },
+    "turnusy": [
+      {
+        "id": "session-005-uuid",
+        "dateFrom": "2027-01-10",
+        "dateTo": "2027-01-23",
+        "price": 259000,
+        "status": "published",
+        "registrationOpenAt": "2026-09-01T00:00:00Z",
+        "registrationCloseAt": "2026-12-15T00:00:00Z",
+        "totalSeats": 25,
+        "availableSeats": 7
+      }
+    ]
+  }
+]

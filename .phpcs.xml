@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<ruleset name="Campsflow WP Plugin">
+    <description>WordPress Coding Standards for Campsflow WP Plugin</description>
+
+    <file>src</file>
+    <file>tests</file>
+    <file>campsflow.php</file>
+
+    <arg name="extensions" value="php"/>
+    <arg name="colors"/>
+    <arg value="sp"/>
+
+    <!-- Target PHP version -->
+    <config name="testVersion" value="8.1-"/>
+
+    <!-- WordPress standards -->
+    <rule ref="WordPress-Core"/>
+    <rule ref="WordPress-Extra"/>
+    <rule ref="WordPress-Docs"/>
+
+    <!-- Allow PSR-4 namespaces (not WP snake_case class names) -->
+    <rule ref="WordPress.Files.FileName">
+        <properties>
+            <property name="strict_class_file_names" value="false"/>
+        </properties>
+    </rule>
+
+    <!-- Tests don't need doc blocks on every method -->
+    <rule ref="Squiz.Commenting.FunctionComment">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+</ruleset>

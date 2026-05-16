@@ -1,0 +1,25 @@
+{
+    "core": null,
+    "phpVersion": "8.2",
+    "plugins": ["."],
+    "themes": [],
+    "port": 8890,
+    "env": {
+        "development": {
+            "config": {
+                "WP_DEBUG": true,
+                "WP_DEBUG_LOG": true,
+                "WP_DEBUG_DISPLAY": false,
+                "SCRIPT_DEBUG": true,
+                "PERMALINK_STRUCTURE": "/%postname%/"
+            }
+        },
+        "tests": {
+            "port": 8891,
+            "config": {
+                "WP_DEBUG": true,
+                "PERMALINK_STRUCTURE": "/%postname%/"
+            }
+        }
+    }
+}

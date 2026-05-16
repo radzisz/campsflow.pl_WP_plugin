@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, openssl, zip
+          coverage: none
+      - run: composer install --no-interaction --prefer-dist
+      - run: composer test:unit
+      - run: composer analyse
+
+  release:
+    name: Build & Release
+    runs-on: ubuntu-latest
+    needs: test
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, openssl, zip
+          coverage: none
+
+      - name: Install production dependencies
+        run: composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
+
+      - name: Build ZIP
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+          PLUGIN_SLUG="campsflow"
+          ZIP_NAME="${PLUGIN_SLUG}-${VERSION}.zip"
+
+          # Collect files (respects .distignore)
+          rsync -av --exclude-from=.distignore . /tmp/${PLUGIN_SLUG}/
+
+          # Zip with plugin slug as root folder (WP convention)
+          cd /tmp
+          zip -r "${ZIP_NAME}" "${PLUGIN_SLUG}/"
+          echo "ZIP_PATH=/tmp/${ZIP_NAME}" >> $GITHUB_ENV
+          echo "ZIP_NAME=${ZIP_NAME}" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Campsflow WP Plugin ${{ github.ref_name }}"
+          body: |
+            ## Instalacja
+
+            1. Pobierz plik `${{ env.ZIP_NAME }}` poniżej
+            2. WP Admin → Pluginy → Dodaj nowy → Wyślij plugin → wybierz ZIP
+            3. Aktywuj plugin
+
+            ## Aktualizacja
+
+            Plugin sprawdza aktualizacje automatycznie przez WP Update Checker.
+            Aktualizacja pojawi się w WP Admin → Pluginy jak każda inna.
+          files: ${{ env.ZIP_PATH }}
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}

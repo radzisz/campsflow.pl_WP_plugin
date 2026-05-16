@@ -1,0 +1,9 @@
+parameters:
+    level: 8
+    paths:
+        - src
+        - campsflow.php
+    bootstrapFiles:
+        - vendor/szepeviktor/phpstan-wordpress/helpers.php
+    phpVersion: 80200
+    checkMissingIterableValueType: false

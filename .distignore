@@ -1,0 +1,24 @@
+# Pliki wykluczone z ZIP dystrybucyjnego
+
+# Dev
+tests/
+.wp-env.json
+phpunit.xml
+phpstan.neon
+.phpcs.xml
+coverage/
+
+# Zależności dev (vendor budowany z --no-dev)
+# vendor/ jest WŁĄCZONY do ZIP
+
+# Config
+package.json
+package-lock.json
+node_modules/
+composer.json
+composer.lock
+
+# CI
+.github/
+.gitignore
+.distignore
