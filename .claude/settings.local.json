@@ -11,7 +11,11 @@
       "Bash(NODE_OPTIONS=\"--use-system-ca\" npm run env:stop)",
       "Bash(NODE_OPTIONS=\"--use-system-ca\" npx wp-env run cli wp option get siteurl)",
       "Bash(NODE_OPTIONS=\"--use-system-ca\" npx wp-env run cli wp option get home)",
-      "Bash(curl -si http://localhost:8890/)"
+      "Bash(curl -si http://localhost:8890/)",
+      "PowerShell(Get-ChildItem -Path \"d:\\\\git\\\\campsflow.pl\\\\apps\\\\web-admin\\\\src\" -Recurse -Directory | Where-Object { $_.Name -match '^\\\\[.+\\\\]$' } | Select-Object -ExpandProperty FullName | Sort-Object)",
+      "Bash(find d:/git/campsflow.pl/apps/web-admin/src/app/api/tenants/[id] d:/git/campsflow.pl/apps/web-admin/src/app/api/tenants/[tenantId] -type f)",
+      "Bash(Remove-Item *)",
+      "Bash(grep -r \"api/tenants/\\\\$\" d:/git/campsflow.pl/apps/web-admin/src --include=\"*.ts\" --include=\"*.tsx\" -l)"
     ]
   }
 }

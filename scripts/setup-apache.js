@@ -2,13 +2,17 @@
 /**
  * Post-start setup for wp-env:
  * 1. Enables AllowOverride All in Apache VHost
- * 2. Sets permalink structure
- * 3. Generates .htaccess
+ * 2. Sets permalink structure + flushes rewrite rules
+ * 3. Seeds CampsFlow plugin options for local dev (oaza-test tenant)
  */
 
 const { execSync } = require('child_process');
 
 const env = { ...process.env, MSYS_NO_PATHCONV: '1' };
+
+// Dev seed values — must match supabase/seed/01_tenants.sql
+const DEV_TENANT_SLUG = 'oaza-test';
+const DEV_API_KEY     = 'wp-sync-oaza-test-dev-key';
 
 function run(cmd, opts = {}) {
     try {
@@ -47,4 +51,11 @@ console.log('✓ Permalink structure set');
 run(`docker exec ${cliContainer} wp rewrite flush --hard --allow-root`);
 console.log('✓ Rewrite rules flushed');
 
+// 4. CampsFlow plugin options — dev seed
+run(`docker exec ${cliContainer} wp option update campsflow_tenant_slug "${DEV_TENANT_SLUG}" --allow-root`);
+run(`docker exec ${cliContainer} wp option update campsflow_api_key "${DEV_API_KEY}" --allow-root`);
+console.log(`✓ CampsFlow options set (tenant: ${DEV_TENANT_SLUG})`);
+
 console.log('\nDev environment ready → http://localhost:8890');
+console.log(`  Tenant: ${DEV_TENANT_SLUG}`);
+console.log(`  API:    http://host.docker.internal:3501/api/public/${DEV_TENANT_SLUG}/events`);
