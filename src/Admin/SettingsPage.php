@@ -4,12 +4,14 @@ declare(strict_types=1);
 namespace Campsflow\Admin;
 
 use Campsflow\PostType\EventPostType;
+use Campsflow\Sync\SyncLog;
 use Campsflow\Sync\SyncScheduler;
 
 final class SettingsPage
 {
     private const TAB_SYNC     = 'sync';
     private const TAB_SETTINGS = 'settings';
+    private const TAB_HISTORY  = 'history';
 
     public function register(): void
     {
@@ -63,7 +65,7 @@ final class SettingsPage
             return;
         }
 
-        $activeTab = in_array($_GET['tab'] ?? '', [self::TAB_SYNC, self::TAB_SETTINGS], true)
+        $activeTab = in_array($_GET['tab'] ?? '', [self::TAB_SYNC, self::TAB_SETTINGS, self::TAB_HISTORY], true)
             ? $_GET['tab']
             : self::TAB_SYNC;
 
@@ -75,6 +77,8 @@ final class SettingsPage
 
         if ($activeTab === self::TAB_SYNC) {
             $this->renderSyncTab();
+        } elseif ($activeTab === self::TAB_HISTORY) {
+            $this->renderHistoryTab();
         } else {
             $this->renderSettingsTab();
         }
@@ -89,6 +93,7 @@ final class SettingsPage
         $tabs = [
             self::TAB_SYNC     => __('Synchronizacja', 'campsflow'),
             self::TAB_SETTINGS => __('Ustawienia', 'campsflow'),
+            self::TAB_HISTORY  => __('Historia', 'campsflow'),
         ];
 
         echo '<nav class="nav-tab-wrapper cf-tabs">';
@@ -226,6 +231,86 @@ final class SettingsPage
         echo '</form>';
     }
 
+    private function renderHistoryTab(): void
+    {
+        $history = SyncLog::getAll();
+        $agg     = SyncLog::getAggregateStats();
+
+        // Aggregate stats cards
+        echo '<div class="cf-stat-grid">';
+        $this->statCard(__('Imprezy dodane', 'campsflow'), $agg->totalEventsAdded, 'added');
+        $this->statCard(__('Imprezy zaktualizowane', 'campsflow'), $agg->totalEventsUpdated, 'updated');
+        $this->statCard(__('Imprezy nieaktywne', 'campsflow'), $agg->totalEventsInactivated, 'inactivated');
+        $this->statCard(__('Turnusy dodane', 'campsflow'), $agg->totalSessionsAdded, 'added');
+        $this->statCard(__('Turnusy zaktualizowane', 'campsflow'), $agg->totalSessionsUpdated, 'updated');
+        $this->statCard(__('Turnusy nieaktywne', 'campsflow'), $agg->totalSessionsInactivated, 'inactivated');
+        echo '</div>';
+
+        if (empty($history)) {
+            echo '<p class="cf-history__empty">' . esc_html__('Brak historii synchronizacji. Uruchom pierwszą synchronizację.', 'campsflow') . '</p>';
+            return;
+        }
+
+        // History table
+        echo '<table class="widefat cf-history-table">';
+        echo '<thead><tr>';
+        echo '<th>' . esc_html__('Data', 'campsflow') . '</th>';
+        echo '<th>' . esc_html__('Status', 'campsflow') . '</th>';
+        echo '<th>' . esc_html__('Czas', 'campsflow') . '</th>';
+        echo '<th>' . esc_html__('Imprezy +/↻/×', 'campsflow') . '</th>';
+        echo '<th>' . esc_html__('Turnusy +/↻/×', 'campsflow') . '</th>';
+        echo '</tr></thead>';
+        echo '<tbody>';
+
+        foreach ($history as $entry) {
+            if (! is_array($entry)) {
+                continue;
+            }
+
+            $status   = (string) ($entry['status'] ?? 'ok');
+            $stats    = $entry['stats'] ?? [];
+            $ev       = $stats['events'] ?? [];
+            $se       = $stats['sessions'] ?? [];
+            $duration = isset($entry['duration_ms']) ? round((int) $entry['duration_ms'] / 1000, 1) . ' s' : '—';
+            $error    = (string) ($entry['error'] ?? '');
+
+            echo '<tr class="cf-history-row cf-history-row--' . esc_attr($status) . '">';
+            echo '<td><strong>' . esc_html((string) ($entry['synced_at'] ?? '')) . '</strong></td>';
+            echo '<td>';
+            if ($status === 'ok') {
+                echo '<span class="cf-badge-status cf-badge-status--ok">✓ OK</span>';
+            } else {
+                echo '<span class="cf-badge-status cf-badge-status--error">✗ Błąd</span>';
+                if ($error) {
+                    echo '<br><small style="color:#991b1b">' . esc_html($error) . '</small>';
+                }
+            }
+            echo '</td>';
+            echo '<td>' . esc_html($duration) . '</td>';
+            echo '<td class="cf-history-stats">';
+            echo '<span class="cf-stat--added">+' . (int) ($ev['added'] ?? 0) . '</span> ';
+            echo '<span class="cf-stat--updated">↻' . (int) ($ev['updated'] ?? 0) . '</span> ';
+            echo '<span class="cf-stat--inactivated">×' . (int) ($ev['inactivated'] ?? 0) . '</span>';
+            echo '</td>';
+            echo '<td class="cf-history-stats">';
+            echo '<span class="cf-stat--added">+' . (int) ($se['added'] ?? 0) . '</span> ';
+            echo '<span class="cf-stat--updated">↻' . (int) ($se['updated'] ?? 0) . '</span> ';
+            echo '<span class="cf-stat--inactivated">×' . (int) ($se['inactivated'] ?? 0) . '</span>';
+            echo '</td>';
+            echo '</tr>';
+        }
+
+        echo '</tbody></table>';
+    }
+
+    private function statCard(string $label, int $value, string $type): void
+    {
+        echo '<div class="cf-stat-card cf-stat-card--' . esc_attr($type) . '">';
+        echo '<div class="cf-stat-card__value">' . esc_html((string) $value) . '</div>';
+        echo '<div class="cf-stat-card__label">' . esc_html($label) . '</div>';
+        echo '</div>';
+    }
+
     private function renderStyles(): void
     {
         echo '<style>
@@ -253,6 +338,31 @@ final class SettingsPage
         .cf-form__desc--set { color: #16a34a; }
         .cf-divider { margin: 28px 0; border-color: #e5e7eb; }
         .cf-form__submit { margin-top: 8px !important; }
+
+        /* Stat grid */
+        .cf-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0 28px; max-width: 700px; }
+        .cf-stat-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 16px; text-align: center; }
+        .cf-stat-card--added       { border-top: 3px solid #16a34a; }
+        .cf-stat-card--updated     { border-top: 3px solid #2563eb; }
+        .cf-stat-card--inactivated { border-top: 3px solid #9ca3af; }
+        .cf-stat-card__value { font-size: 2rem; font-weight: 700; line-height: 1; }
+        .cf-stat-card--added .cf-stat-card__value       { color: #16a34a; }
+        .cf-stat-card--updated .cf-stat-card__value     { color: #2563eb; }
+        .cf-stat-card--inactivated .cf-stat-card__value { color: #9ca3af; }
+        .cf-stat-card__label { font-size: 11px; color: #6b7280; margin-top: 4px; }
+
+        /* History table */
+        .cf-history-table { margin-top: 8px; }
+        .cf-history-table th { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #6b7280; }
+        .cf-history-row--error td { background: #fff5f5; }
+        .cf-history__empty { color: #9ca3af; margin-top: 24px; }
+        .cf-badge-status { font-size: 12px; font-weight: 700; padding: 2px 7px; border-radius: 4px; }
+        .cf-badge-status--ok    { background: #dcfce7; color: #16a34a; }
+        .cf-badge-status--error { background: #fee2e2; color: #991b1b; }
+        .cf-history-stats { font-family: monospace; font-size: 13px; letter-spacing: .03em; }
+        .cf-stat--added       { color: #16a34a; font-weight: 600; }
+        .cf-stat--updated     { color: #2563eb; font-weight: 600; }
+        .cf-stat--inactivated { color: #9ca3af; font-weight: 600; }
         </style>';
     }
 
