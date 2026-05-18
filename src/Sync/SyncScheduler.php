@@ -9,20 +9,21 @@ final class SyncScheduler
 
     /** @var array<string, string> */
     public const INTERVALS = [
-        'manual'              => 'Tylko ręcznie',
-        'campsflow_15min'     => 'Co 15 minut',
-        'campsflow_30min'     => 'Co 30 minut',
-        'hourly'              => 'Co godzinę',
-        'campsflow_2hours'    => 'Co 2 godziny',
-        'campsflow_6hours'    => 'Co 6 godzin',
-        'twicedaily'          => 'Co 12 godzin',
-        'daily'               => 'Co 24 godziny',
+        'manual'           => 'Tylko ręcznie',
+        'campsflow_15min'  => 'Co 15 minut',
+        'campsflow_30min'  => 'Co 30 minut',
+        'hourly'           => 'Co godzinę',
+        'campsflow_2hours' => 'Co 2 godziny',
+        'campsflow_6hours' => 'Co 6 godzin',
+        'twicedaily'       => 'Co 12 godzin',
+        'daily'            => 'Co 24 godziny',
     ];
 
     public function register(): void
     {
         add_filter('cron_schedules', [$this, 'addCustomIntervals']);
         add_action(self::HOOK, [$this, 'runSync']);
+        add_action('admin_init', [self::class, 'ensureScheduled']);
     }
 
     /**
@@ -40,9 +41,32 @@ final class SyncScheduler
 
     public function runSync(): void
     {
-        // TODO: replace with real Fetcher when public API is ready
-        // SyncRunner::fromApi()->run();
+        $startMs = (int) round(microtime(true) * 1000);
+        $error   = null;
+
+        try {
+            $stats = (new SyncRunner())->run();
+        } catch (\Throwable $e) {
+            $stats = new SyncStats();
+            $error = $e->getMessage();
+        }
+
+        $durationMs = (int) round(microtime(true) * 1000) - $startMs;
+
         update_option('campsflow_last_sync', current_time('Y-m-d H:i:s'));
+        SyncLog::record($stats, $durationMs, $error);
+    }
+
+    public static function ensureScheduled(): void
+    {
+        $interval = (string) get_option('campsflow_sync_interval', 'hourly');
+        if ($interval === 'manual') {
+            return;
+        }
+
+        if (! wp_next_scheduled(self::HOOK)) {
+            self::reschedule();
+        }
     }
 
     public static function activate(): void
