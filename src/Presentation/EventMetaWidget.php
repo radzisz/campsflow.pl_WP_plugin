@@ -106,19 +106,46 @@ final class EventMetaWidget extends Widget_Base
             return;
         }
 
-        $location = json_decode((string) get_post_meta($postId, 'cf_location', true), true);
-        $city     = is_array($location) ? ($location['city'] ?? '') : '';
-        $dest     = is_array($location) ? ($location['destination'] ?? '') : '';
-        $locName  = is_array($location) ? ($location['name'] ?? '') : '';
+        $loc     = json_decode((string) get_post_meta($postId, 'cf_localization', true), true);
+        $addr    = is_array($loc) && is_array($loc['address'] ?? null) ? $loc['address'] : [];
+        $city    = (string) ($addr['city'] ?? '');
+        $street  = (string) ($addr['address'] ?? '');
+        $dest    = is_array($loc) ? (string) ($loc['destination'] ?? '') : '';
+        $locName = is_array($loc) ? (string) ($loc['name'] ?? '') : '';
+        $gps     = is_array($loc) && is_array($loc['gps'] ?? null) ? $loc['gps'] : null;
+        $phone   = is_array($loc) ? (string) ($loc['phone'] ?? '') : '';
+        $email   = is_array($loc) ? (string) ($loc['email'] ?? '') : '';
+        $webpage = is_array($loc) ? (string) ($loc['webpage'] ?? '') : '';
 
         echo '<div class="cf-event-body">';
 
         if ($settings['show_location'] === 'yes' && ($city || $dest || $locName)) {
-            $parts = array_filter([$dest, $locName, $city]);
-            echo '<p class="cf-event-body__location">';
+            echo '<div class="cf-event-body__location">';
             echo '<span class="dashicons dashicons-location"></span>';
-            echo esc_html(implode(' · ', $parts));
-            echo '</p>';
+            $titleParts = array_filter([$dest, $locName]);
+            if ($titleParts) {
+                echo '<strong>' . esc_html(implode(' — ', $titleParts)) . '</strong>';
+            }
+            $addrParts = array_filter([$street, $city]);
+            if ($addrParts) {
+                echo '<span>' . esc_html(implode(', ', $addrParts)) . '</span>';
+            }
+            if ($gps && isset($gps['lat'], $gps['lng'])) {
+                $mapsUrl = 'https://www.google.com/maps?q=' . $gps['lat'] . ',' . $gps['lng'];
+                echo '<a href="' . esc_url($mapsUrl) . '" target="_blank" rel="noopener">'
+                    . esc_html__('Pokaż na mapie', 'campsflow') . '</a>';
+            }
+            if ($phone) {
+                echo '<a href="tel:' . esc_attr($phone) . '">' . esc_html($phone) . '</a>';
+            }
+            if ($email) {
+                echo '<a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a>';
+            }
+            if ($webpage) {
+                echo '<a href="' . esc_url($webpage) . '" target="_blank" rel="noopener">'
+                    . esc_html($webpage) . '</a>';
+            }
+            echo '</div>';
         }
 
         if ($settings['show_tags'] === 'yes') {

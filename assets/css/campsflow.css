@@ -257,3 +257,55 @@
 .cf-sessions-box__price { color: var(--cf-muted); font-size: .9rem; }
 
 .cf-sessions-box .cf-btn { align-self: flex-start; margin-left: 0; }
+
+/* ── Session name ──────────────────────────────────────────────── */
+.cf-session__name { font-weight: 700; font-size: .8rem; color: var(--cf-accent); display: block; margin-bottom: 2px; }
+
+/* ── Tabs ──────────────────────────────────────────────────────── */
+.cf-tabs-container { margin: 1.5rem 0; }
+.cf-tabs-nav { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 2px solid var(--cf-border); margin-bottom: 1.25rem; }
+.cf-tab-btn { background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; padding: .5rem 1rem; cursor: pointer; font-size: .9rem; font-weight: 600; color: var(--cf-muted); transition: color .15s, border-color .15s; }
+.cf-tab-btn:hover { color: var(--cf-accent); }
+.cf-tab-btn.active { color: var(--cf-accent); border-bottom-color: var(--cf-accent); }
+.cf-tab-panel { display: none; line-height: 1.7; }
+.cf-tab-panel.active { display: block; }
+.cf-tab-panel ul, .cf-tab-panel ol { padding-left: 1.25rem; }
+.cf-tab-panel li { margin-bottom: .4rem; }
+
+/* ── Sections ──────────────────────────────────────────────────── */
+.cf-section { margin: 2rem 0; }
+.cf-section__title { font-size: 1.1rem; font-weight: 700; margin: 0 0 .75rem; padding-bottom: .5rem; border-bottom: 2px solid var(--cf-accent); }
+
+/* ── General terms ─────────────────────────────────────────────── */
+.cf-terms-list { margin: 0; }
+.cf-terms-item { margin-bottom: .75rem; }
+.cf-terms-item dt { font-weight: 600; font-size: .85rem; color: var(--cf-muted); text-transform: uppercase; letter-spacing: .04em; }
+.cf-terms-item dd { margin: 2px 0 0 0; font-size: .9rem; }
+
+/* ── Documents ─────────────────────────────────────────────────── */
+.cf-docs-list { list-style: none; padding: 0; margin: 0; }
+.cf-docs-list li { margin-bottom: .5rem; }
+.cf-doc-link { display: inline-flex; align-items: center; gap: 6px; color: var(--cf-accent); text-decoration: none; font-size: .9rem; }
+.cf-doc-link:hover { text-decoration: underline; }
+
+/* ── Contact box ───────────────────────────────────────────────── */
+.cf-contact-box { background: #f8fafc; border-radius: var(--cf-card-radius); padding: 1rem 1.25rem; }
+.cf-contact-box__name { font-weight: 700; margin: 0 0 .5rem; }
+.cf-contact-box__links { display: flex; flex-direction: column; gap: .4rem; }
+.cf-contact-link { display: inline-flex; align-items: center; gap: 6px; color: var(--cf-accent); text-decoration: none; font-size: .9rem; }
+.cf-contact-link:hover { text-decoration: underline; }
+
+/* ── GPS link ──────────────────────────────────────────────────── */
+.cf-gps-link { margin-left: .4rem; color: var(--cf-accent); }
+
+/* ── Location box (sidebar) ────────────────────────────────────── */
+.cf-location-box { background: var(--cf-card-bg); border: 1px solid var(--cf-border); border-radius: var(--cf-card-radius); padding: 1rem 1.25rem; margin-top: 1rem; }
+.cf-location-box__title { font-size: .9rem; font-weight: 700; margin: 0 0 .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--cf-muted); }
+.cf-location-box address { font-style: normal; font-size: .9rem; margin-bottom: .5rem; line-height: 1.5; }
+.cf-location-box__link { display: flex; align-items: center; gap: 6px; color: var(--cf-accent); text-decoration: none; font-size: .85rem; margin-bottom: .3rem; }
+.cf-location-box__link:hover { text-decoration: underline; }
+
+/* ── Session transport ─────────────────────────────────────────── */
+.cf-sessions-box__turnus-name { font-weight: 700; font-size: .8rem; color: var(--cf-accent); margin-bottom: 2px; }
+.cf-sessions-box__days { font-size: .8rem; color: var(--cf-muted); }
+.cf-sessions-box__transport { font-size: .8rem; color: var(--cf-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

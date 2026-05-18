@@ -18,27 +18,47 @@ final class Transformer
      */
     public function transformTurnus(array $apiTurnus): TransformedTurnus
     {
-        assert(isset($apiTurnus['id'], $apiTurnus['availableSeats'], $apiTurnus['totalSeats']));
+        assert(isset($apiTurnus['id'], $apiTurnus['seatsAvailable'], $apiTurnus['seatsAll']));
+
+        $transport = isset($apiTurnus['transport']) && is_array($apiTurnus['transport'])
+            ? (string) wp_json_encode($apiTurnus['transport'])
+            : wp_json_encode(['type' => 'own', 'description' => '']);
+
+        $meetingStart = isset($apiTurnus['meetingPoints_start']) && is_array($apiTurnus['meetingPoints_start'])
+            ? (string) wp_json_encode($apiTurnus['meetingPoints_start'])
+            : '[]';
+
+        $meetingReturn = isset($apiTurnus['meetingPoints_return']) && is_array($apiTurnus['meetingPoints_return'])
+            ? (string) wp_json_encode($apiTurnus['meetingPoints_return'])
+            : '[]';
 
         return new TransformedTurnus(
-            turnusId:            (string) $apiTurnus['id'],
-            dateFrom:            (string) ($apiTurnus['dateFrom'] ?? ''),
-            dateTo:              (string) ($apiTurnus['dateTo'] ?? ''),
-            priceGrosze:         (int)    ($apiTurnus['price'] ?? 0),
-            availabilityBucket:  $this->computeBucket(
-                (int) $apiTurnus['totalSeats'],
-                (int) $apiTurnus['availableSeats'],
+            turnusId:             (string) $apiTurnus['id'],
+            name:                 (string) ($apiTurnus['name'] ?? ''),
+            dateFrom:             (string) ($apiTurnus['dateFrom'] ?? ''),
+            dateTo:               (string) ($apiTurnus['dateTo'] ?? ''),
+            numberOfDays:         (int)    ($apiTurnus['numberOfDays'] ?? 0),
+            priceGrosze:          (int)    ($apiTurnus['priceFrom'] ?? 0),
+            transport:            $transport,
+            meetingPointsStart:   $meetingStart,
+            meetingPointsReturn:  $meetingReturn,
+            seatsAvailable:       (int) $apiTurnus['seatsAvailable'],
+            seatsAll:             (int) $apiTurnus['seatsAll'],
+            reservationUrl:       (string) ($apiTurnus['reservationUrl'] ?? ''),
+            availabilityBucket:   $this->computeBucket(
+                (int) $apiTurnus['seatsAll'],
+                (int) $apiTurnus['seatsAvailable'],
             ),
         );
     }
 
-    private function computeBucket(int $totalSeats, int $availableSeats): AvailabilityBucket
+    private function computeBucket(int $seatsAll, int $seatsAvailable): AvailabilityBucket
     {
-        if ($totalSeats <= 0 || $availableSeats <= 0) {
+        if ($seatsAll <= 0 || $seatsAvailable <= 0) {
             return AvailabilityBucket::Full;
         }
 
-        $ratio = $availableSeats / $totalSeats;
+        $ratio = $seatsAvailable / $seatsAll;
 
         if ($ratio <= $this->almostFullThreshold) {
             return AvailabilityBucket::AlmostFull;

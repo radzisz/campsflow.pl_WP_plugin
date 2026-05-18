@@ -112,9 +112,11 @@ final class ListingShortcode
 
     private function renderEventCard(int $eventId): void
     {
-        $location = json_decode((string) get_post_meta($eventId, 'cf_location', true), true);
-        $city     = is_array($location) ? ($location['city'] ?? '') : '';
-        $dest     = is_array($location) ? ($location['destination'] ?? '') : '';
+        $locRaw  = (string) get_post_meta($eventId, 'cf_localization', true);
+        $loc     = $locRaw ? (json_decode($locRaw, true) ?? []) : [];
+        $city    = is_array($loc['address'] ?? null) ? ($loc['address']['city'] ?? '') : '';
+        $dest    = (string) ($loc['destination'] ?? '');
+        $leadImg = (string) get_post_meta($eventId, 'cf_lead_image_url', true);
 
         $sessions = new WP_Query([
             'post_type'      => SessionPostType::SLUG,
@@ -126,11 +128,10 @@ final class ListingShortcode
             'order'          => 'ASC',
         ]);
 
-        $thumbnail = get_the_post_thumbnail_url($eventId, 'medium');
         echo '<article class="cf-card">';
 
-        if ($thumbnail) {
-            echo '<img class="cf-card__image" src="' . esc_url($thumbnail) . '" alt="' . esc_attr(get_the_title()) . '" loading="lazy">';
+        if ($leadImg) {
+            echo '<img class="cf-card__image" src="' . esc_url($leadImg) . '" alt="' . esc_attr(get_the_title()) . '" loading="lazy">';
         }
 
         echo '<div class="cf-card__body">';
@@ -197,22 +198,21 @@ final class ListingShortcode
 
     private function renderSessionRow(int $sessionId): void
     {
-        $dateFrom  = (string) get_post_meta($sessionId, 'cf_date_from', true);
-        $dateTo    = (string) get_post_meta($sessionId, 'cf_date_to', true);
-        $price     = (int) get_post_meta($sessionId, 'cf_price', true);
-        $bucket    = AvailabilityBucket::tryFrom(
+        $dateFrom    = (string) get_post_meta($sessionId, 'cf_date_from', true);
+        $dateTo      = (string) get_post_meta($sessionId, 'cf_date_to', true);
+        $price       = (int) get_post_meta($sessionId, 'cf_price_from', true);
+        $turnusName  = (string) get_post_meta($sessionId, 'cf_turnus_name', true);
+        $bucket      = AvailabilityBucket::tryFrom(
             (string) get_post_meta($sessionId, 'cf_availability', true)
         ) ?? AvailabilityBucket::Available;
 
-        $regPage   = get_option('campsflow_registration_page', '/rejestracja/');
-        $sessionUuid = (string) get_post_meta($sessionId, 'cf_session_id', true);
-        $registerUrl = esc_url(
-            $bucket === AvailabilityBucket::Full
-                ? '#'
-                : add_query_arg('session', $sessionUuid, $regPage)
-        );
+        $reservUrl = (string) get_post_meta($sessionId, 'cf_reservation_url', true);
+        $isFull    = $bucket === AvailabilityBucket::Full;
 
         echo '<li class="cf-session">';
+        if ($turnusName) {
+            echo '<span class="cf-session__name">' . esc_html($turnusName) . '</span>';
+        }
         echo '<span class="cf-session__dates">' . esc_html($this->formatDateRange($dateFrom, $dateTo)) . '</span>';
         echo '<span class="cf-session__price">' . esc_html($this->formatPrice($price)) . '</span>';
 
@@ -221,10 +221,10 @@ final class ListingShortcode
                 . esc_html($bucket->label()) . '</span>';
         }
 
-        if ($bucket === AvailabilityBucket::Full) {
+        if ($isFull) {
             echo '<span class="cf-btn cf-btn--disabled">' . esc_html__('Brak miejsc', 'campsflow') . '</span>';
-        } else {
-            echo '<a class="cf-btn" href="' . $registerUrl . '">' . esc_html__('Zapisz się', 'campsflow') . '</a>';
+        } elseif ($reservUrl) {
+            echo '<a class="cf-btn" href="' . esc_url($reservUrl) . '" target="_blank" rel="noopener">' . esc_html__('Zapisz się', 'campsflow') . '</a>';
         }
 
         echo '</li>';

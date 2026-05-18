@@ -119,7 +119,6 @@ final class EventSessionsWidget extends Widget_Base
     {
         $settings    = $this->get_settings_for_display();
         $postId      = (int) get_the_ID();
-        $regPage     = get_option('campsflow_registration_page', '/rejestracja/');
         $buttonLabel = sanitize_text_field($settings['button_label'] ?? __('Zapisz się', 'campsflow'));
         $title       = sanitize_text_field($settings['title'] ?? __('Dostępne terminy', 'campsflow'));
 
@@ -156,24 +155,45 @@ final class EventSessionsWidget extends Widget_Base
 
         while ($sessions->have_posts()) {
             $sessions->the_post();
-            $sId         = (int) get_the_ID();
-            $dateFrom    = (string) get_post_meta($sId, 'cf_date_from', true);
-            $dateTo      = (string) get_post_meta($sId, 'cf_date_to', true);
-            $price       = (int)   get_post_meta($sId, 'cf_price', true);
-            $bucket      = AvailabilityBucket::tryFrom(
+            $sId        = (int) get_the_ID();
+            $dateFrom   = (string) get_post_meta($sId, 'cf_date_from', true);
+            $dateTo     = (string) get_post_meta($sId, 'cf_date_to', true);
+            $price      = (int)    get_post_meta($sId, 'cf_price_from', true);
+            $days       = (int)    get_post_meta($sId, 'cf_number_of_days', true);
+            $turnusName = (string) get_post_meta($sId, 'cf_turnus_name', true);
+            $reservUrl  = (string) get_post_meta($sId, 'cf_reservation_url', true);
+            $transport  = json_decode((string) get_post_meta($sId, 'cf_transport', true), true);
+            $bucket     = AvailabilityBucket::tryFrom(
                 (string) get_post_meta($sId, 'cf_availability', true)
             ) ?? AvailabilityBucket::Available;
-            $sessionUuid = (string) get_post_meta($sId, 'cf_session_id', true);
-            $isFull      = $bucket === AvailabilityBucket::Full;
+            $isFull     = $bucket === AvailabilityBucket::Full;
 
             $f = $dateFrom ? date_create($dateFrom) : null;
             $t = $dateTo   ? date_create($dateTo)   : null;
-            $dateLabel  = $f ? ($f->format('j M') . ($t ? '–' . $t->format('j M Y') : '')) : '';
-            $priceLabel = $price ? number_format($price / 100, 0, ',', ' ') . ' zł' : '';
-            $registerUrl = $isFull ? '#' : esc_url(add_query_arg('session', $sessionUuid, $regPage));
+            $dateLabel    = $f ? ($f->format('j M') . ($t ? '–' . $t->format('j M Y') : '')) : '';
+            $priceLabel   = $price ? 'od ' . number_format($price / 100, 0, ',', ' ') . ' zł' : '';
+            $transportDesc = is_array($transport) ? (string) ($transport['description'] ?? '') : '';
+            $transportType = is_array($transport) ? (string) ($transport['type'] ?? 'own') : 'own';
 
             echo '<li class="cf-sessions-box__item' . ($isFull ? ' cf-sessions-box__item--full' : '') . '">';
-            echo '<div class="cf-sessions-box__dates">' . esc_html($dateLabel) . '</div>';
+
+            if ($turnusName) {
+                echo '<div class="cf-sessions-box__name">' . esc_html($turnusName) . '</div>';
+            }
+
+            echo '<div class="cf-sessions-box__dates">' . esc_html($dateLabel);
+            if ($days > 0) {
+                echo ' <span class="cf-sessions-box__days">(' . esc_html((string) $days) . ' ' . esc_html__('dni', 'campsflow') . ')</span>';
+            }
+            echo '</div>';
+
+            if ($transportType !== 'own' && $transportDesc) {
+                echo '<div class="cf-sessions-box__transport">'
+                    . '<span class="dashicons dashicons-car"></span> '
+                    . esc_html($transportDesc)
+                    . '</div>';
+            }
+
             echo '<div class="cf-sessions-box__meta">';
             if ($priceLabel) {
                 echo '<span class="cf-sessions-box__price">' . esc_html($priceLabel) . '</span>';
@@ -185,8 +205,9 @@ final class EventSessionsWidget extends Widget_Base
 
             if ($isFull) {
                 echo '<span class="cf-btn cf-btn--disabled">' . esc_html__('Brak miejsc', 'campsflow') . '</span>';
-            } else {
-                echo '<a class="cf-btn" href="' . $registerUrl . '">' . esc_html($buttonLabel) . '</a>';
+            } elseif ($reservUrl) {
+                echo '<a class="cf-btn" href="' . esc_url($reservUrl) . '" target="_blank" rel="noopener">'
+                    . esc_html($buttonLabel) . '</a>';
             }
 
             echo '</li>';

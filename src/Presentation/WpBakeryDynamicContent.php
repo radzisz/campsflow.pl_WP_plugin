@@ -31,6 +31,11 @@ final class WpBakeryDynamicContent
             'group'    => 'CampsFlow',
             'post_type' => EventPostType::SLUG,
         ];
+        $fields['cf_location_address'] = [
+            'label'    => __('CampsFlow: Adres ulicy', 'campsflow'),
+            'group'    => 'CampsFlow',
+            'post_type' => EventPostType::SLUG,
+        ];
         $fields['cf_location_destination'] = [
             'label'    => __('CampsFlow: Destinacja (region)', 'campsflow'),
             'group'    => 'CampsFlow',
@@ -38,6 +43,16 @@ final class WpBakeryDynamicContent
         ];
         $fields['cf_location_name'] = [
             'label'    => __('CampsFlow: Nazwa obiektu', 'campsflow'),
+            'group'    => 'CampsFlow',
+            'post_type' => EventPostType::SLUG,
+        ];
+        $fields['cf_contact_email'] = [
+            'label'    => __('CampsFlow: Email kontaktowy', 'campsflow'),
+            'group'    => 'CampsFlow',
+            'post_type' => EventPostType::SLUG,
+        ];
+        $fields['cf_contact_phone'] = [
+            'label'    => __('CampsFlow: Telefon kontaktowy', 'campsflow'),
             'group'    => 'CampsFlow',
             'post_type' => EventPostType::SLUG,
         ];
@@ -79,12 +94,16 @@ final class WpBakeryDynamicContent
             return $value;
         }
 
-        $location = json_decode((string) get_post_meta($postId, 'cf_location', true), true);
+        $loc  = json_decode((string) get_post_meta($postId, 'cf_localization', true), true);
+        $addr = is_array($loc) && is_array($loc['address'] ?? null) ? $loc['address'] : [];
 
         return match ($field) {
-            'cf_location_city'        => is_array($location) ? ($location['city'] ?? '') : '',
-            'cf_location_destination' => is_array($location) ? ($location['destination'] ?? '') : '',
-            'cf_location_name'        => is_array($location) ? ($location['name'] ?? '') : '',
+            'cf_location_city'        => (string) ($addr['city'] ?? ''),
+            'cf_location_address'     => (string) ($addr['address'] ?? ''),
+            'cf_location_destination' => is_array($loc) ? (string) ($loc['destination'] ?? '') : '',
+            'cf_location_name'        => is_array($loc) ? (string) ($loc['name'] ?? '') : '',
+            'cf_contact_email'        => is_array($loc) ? (string) ($loc['email'] ?? '') : '',
+            'cf_contact_phone'        => is_array($loc) ? (string) ($loc['phone'] ?? '') : '',
             'cf_price_min'            => $this->resolveMinPrice($postId),
             'cf_date_first'           => $this->resolveFirstDate($postId),
             'cf_availability_label'   => $this->resolveAvailabilityLabel($postId),
@@ -105,7 +124,7 @@ final class WpBakeryDynamicContent
         ]);
 
         $prices = array_filter(array_map(
-            static fn(int $id) => (int) get_post_meta($id, 'cf_price', true),
+            static fn(int $id) => (int) get_post_meta($id, 'cf_price_from', true),
             $sessions
         ));
 

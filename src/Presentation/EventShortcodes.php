@@ -40,20 +40,47 @@ final class EventShortcodes
             return '';
         }
 
-        $location = json_decode((string) get_post_meta($postId, 'cf_location', true), true);
-        $city     = is_array($location) ? ($location['city'] ?? '') : '';
-        $dest     = is_array($location) ? ($location['destination'] ?? '') : '';
-        $locName  = is_array($location) ? ($location['name'] ?? '') : '';
+        $loc     = json_decode((string) get_post_meta($postId, 'cf_localization', true), true);
+        $addr    = is_array($loc) && is_array($loc['address'] ?? null) ? $loc['address'] : [];
+        $city    = (string) ($addr['city'] ?? '');
+        $street  = (string) ($addr['address'] ?? '');
+        $dest    = is_array($loc) ? (string) ($loc['destination'] ?? '') : '';
+        $locName = is_array($loc) ? (string) ($loc['name'] ?? '') : '';
+        $gps     = is_array($loc) && is_array($loc['gps'] ?? null) ? $loc['gps'] : null;
+        $phone   = is_array($loc) ? (string) ($loc['phone'] ?? '') : '';
+        $email   = is_array($loc) ? (string) ($loc['email'] ?? '') : '';
+        $webpage = is_array($loc) ? (string) ($loc['webpage'] ?? '') : '';
 
         ob_start();
         echo '<div class="cf-event-body">';
 
         if (in_array('location', $show, true) && ($city || $dest || $locName)) {
-            $parts = array_filter([$dest, $locName, $city]);
-            echo '<p class="cf-event-body__location">';
+            echo '<div class="cf-event-body__location">';
             echo '<span class="dashicons dashicons-location"></span>';
-            echo esc_html(implode(' · ', $parts));
-            echo '</p>';
+            $titleParts = array_filter([$dest, $locName]);
+            if ($titleParts) {
+                echo '<strong>' . esc_html(implode(' — ', $titleParts)) . '</strong>';
+            }
+            $addrParts = array_filter([$street, $city]);
+            if ($addrParts) {
+                echo '<span>' . esc_html(implode(', ', $addrParts)) . '</span>';
+            }
+            if ($gps && isset($gps['lat'], $gps['lng'])) {
+                $mapsUrl = 'https://www.google.com/maps?q=' . $gps['lat'] . ',' . $gps['lng'];
+                echo '<a href="' . esc_url($mapsUrl) . '" target="_blank" rel="noopener">'
+                    . esc_html__('Pokaż na mapie', 'campsflow') . '</a>';
+            }
+            if ($phone) {
+                echo '<a href="tel:' . esc_attr($phone) . '">' . esc_html($phone) . '</a>';
+            }
+            if ($email) {
+                echo '<a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a>';
+            }
+            if ($webpage) {
+                echo '<a href="' . esc_url($webpage) . '" target="_blank" rel="noopener">'
+                    . esc_html($webpage) . '</a>';
+            }
+            echo '</div>';
         }
 
         if (in_array('tags', $show, true)) {
@@ -105,7 +132,6 @@ final class EventShortcodes
         );
 
         $postId      = (int) get_the_ID();
-        $regPage     = get_option('campsflow_registration_page', '/rejestracja/');
         $buttonLabel = sanitize_text_field($atts['button_label']);
         $title       = sanitize_text_field($atts['title']);
 
@@ -140,24 +166,45 @@ final class EventShortcodes
 
         while ($sessions->have_posts()) {
             $sessions->the_post();
-            $sId         = (int) get_the_ID();
-            $dateFrom    = (string) get_post_meta($sId, 'cf_date_from', true);
-            $dateTo      = (string) get_post_meta($sId, 'cf_date_to', true);
-            $price       = (int)   get_post_meta($sId, 'cf_price', true);
-            $bucket      = AvailabilityBucket::tryFrom(
+            $sId        = (int) get_the_ID();
+            $dateFrom   = (string) get_post_meta($sId, 'cf_date_from', true);
+            $dateTo     = (string) get_post_meta($sId, 'cf_date_to', true);
+            $price      = (int)    get_post_meta($sId, 'cf_price_from', true);
+            $days       = (int)    get_post_meta($sId, 'cf_number_of_days', true);
+            $turnusName = (string) get_post_meta($sId, 'cf_turnus_name', true);
+            $reservUrl  = (string) get_post_meta($sId, 'cf_reservation_url', true);
+            $transport  = json_decode((string) get_post_meta($sId, 'cf_transport', true), true);
+            $bucket     = AvailabilityBucket::tryFrom(
                 (string) get_post_meta($sId, 'cf_availability', true)
             ) ?? AvailabilityBucket::Available;
-            $sessionUuid = (string) get_post_meta($sId, 'cf_session_id', true);
-            $isFull      = $bucket === AvailabilityBucket::Full;
+            $isFull     = $bucket === AvailabilityBucket::Full;
 
             $f = $dateFrom ? date_create($dateFrom) : null;
             $t = $dateTo   ? date_create($dateTo)   : null;
-            $dateLabel  = $f ? ($f->format('j M') . ($t ? '–' . $t->format('j M Y') : '')) : '';
-            $priceLabel = $price ? number_format($price / 100, 0, ',', ' ') . ' zł' : '';
-            $registerUrl = $isFull ? '#' : esc_url(add_query_arg('session', $sessionUuid, $regPage));
+            $dateLabel     = $f ? ($f->format('j M') . ($t ? '–' . $t->format('j M Y') : '')) : '';
+            $priceLabel    = $price ? 'od ' . number_format($price / 100, 0, ',', ' ') . ' zł' : '';
+            $transportDesc = is_array($transport) ? (string) ($transport['description'] ?? '') : '';
+            $transportType = is_array($transport) ? (string) ($transport['type'] ?? 'own') : 'own';
 
             echo '<li class="cf-sessions-box__item' . ($isFull ? ' cf-sessions-box__item--full' : '') . '">';
-            echo '<div class="cf-sessions-box__dates">' . esc_html($dateLabel) . '</div>';
+
+            if ($turnusName) {
+                echo '<div class="cf-sessions-box__name">' . esc_html($turnusName) . '</div>';
+            }
+
+            echo '<div class="cf-sessions-box__dates">' . esc_html($dateLabel);
+            if ($days > 0) {
+                echo ' <span class="cf-sessions-box__days">(' . esc_html((string) $days) . ' ' . esc_html__('dni', 'campsflow') . ')</span>';
+            }
+            echo '</div>';
+
+            if ($transportType !== 'own' && $transportDesc) {
+                echo '<div class="cf-sessions-box__transport">'
+                    . '<span class="dashicons dashicons-car"></span> '
+                    . esc_html($transportDesc)
+                    . '</div>';
+            }
+
             echo '<div class="cf-sessions-box__meta">';
             if ($priceLabel) {
                 echo '<span class="cf-sessions-box__price">' . esc_html($priceLabel) . '</span>';
@@ -170,8 +217,9 @@ final class EventShortcodes
 
             if ($isFull) {
                 echo '<span class="cf-btn cf-btn--disabled">' . esc_html__('Brak miejsc', 'campsflow') . '</span>';
-            } else {
-                echo '<a class="cf-btn" href="' . $registerUrl . '">' . esc_html($buttonLabel) . '</a>';
+            } elseif ($reservUrl) {
+                echo '<a class="cf-btn" href="' . esc_url($reservUrl) . '" target="_blank" rel="noopener">'
+                    . esc_html($buttonLabel) . '</a>';
             }
 
             echo '</li>';
