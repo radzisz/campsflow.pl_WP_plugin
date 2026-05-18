@@ -192,6 +192,13 @@ final class SettingsPage
         wp_nonce_field('cf_sync_now');
         echo '<input type="hidden" name="action" value="cf_sync_now">';
         echo '</form>';
+        echo '<script>
+        document.querySelector(".cf-sync-now-btn").addEventListener("click", function() {
+            this.classList.add("is-syncing");
+            this.disabled = true;
+            this.querySelector(".dashicons").style.display = "inline-block";
+        });
+        </script>';
 
         $this->renderUrlInfo();
     }
@@ -387,6 +394,9 @@ define(\'CAMPSFLOW_ADMIN_URL\', \'http://localhost:3001\');</pre>';
         .cf-form__interval-row { display: flex; align-items: center; gap: 10px; }
         .cf-sync-now-btn { display: inline-flex !important; align-items: center; gap: 5px; }
         .cf-sync-now-btn .dashicons { font-size: 16px; width: 16px; height: 16px; margin-top: 0; }
+        .cf-sync-now-btn.is-syncing { opacity: .7; cursor: default; }
+        .cf-sync-now-btn.is-syncing .dashicons { animation: cf-spin 1s linear infinite; }
+        @keyframes cf-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         /* URL table */
         .cf-url-table { border-collapse: collapse; margin-bottom: 12px; }
