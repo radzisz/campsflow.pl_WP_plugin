@@ -8,6 +8,9 @@ use Campsflow\Sync\SyncScheduler;
 
 final class SettingsPage
 {
+    private const TAB_SYNC     = 'sync';
+    private const TAB_SETTINGS = 'settings';
+
     public function register(): void
     {
         add_action('admin_menu', [$this, 'addMenuPage']);
@@ -19,7 +22,7 @@ final class SettingsPage
     {
         add_submenu_page(
             'edit.php?post_type=' . EventPostType::SLUG,
-            __('Campsflow — Ustawienia', 'campsflow'),
+            __('CampsFlow — Ustawienia', 'campsflow'),
             __('Ustawienia', 'campsflow'),
             'manage_options',
             'cf-settings',
@@ -29,18 +32,19 @@ final class SettingsPage
 
     public function registerSettings(): void
     {
-        $options = [
-            'campsflow_tenant_slug'    => '',
-            'campsflow_api_url'        => 'https://campsflow.pl',
-            'campsflow_admin_url'      => 'https://admin.campsflow.pl',
-            'campsflow_sync_interval'  => 'hourly',
-            'campsflow_few_left_pct'   => '30',
-            'campsflow_almost_full_pct'=> '10',
-            'campsflow_reg_page'          => '/rejestracja/',
-            'campsflow_listing_page_slug' => 'obozy',
+        $defaults = [
+            'campsflow_tenant_slug'     => '',
+            'campsflow_api_key'         => '',
+            'campsflow_sync_interval'   => 'hourly',
+            'campsflow_few_left_pct'    => '30',
+            'campsflow_almost_full_pct' => '10',
         ];
 
-        foreach ($options as $key => $default) {
+        foreach ($defaults as $key => $default) {
+            register_setting('campsflow_sync', $key, [
+                'sanitize_callback' => 'sanitize_text_field',
+                'default'           => $default,
+            ]);
             register_setting('campsflow_settings', $key, [
                 'sanitize_callback' => 'sanitize_text_field',
                 'default'           => $default,
@@ -59,155 +63,185 @@ final class SettingsPage
             return;
         }
 
-        $nextRun = wp_next_scheduled('campsflow_sync');
-        $lastRun = get_option('campsflow_last_sync', null);
+        $activeTab = in_array($_GET['tab'] ?? '', [self::TAB_SYNC, self::TAB_SETTINGS], true)
+            ? $_GET['tab']
+            : self::TAB_SYNC;
 
         echo '<div class="wrap">';
-        echo '<h1>' . esc_html__('Campsflow — Ustawienia', 'campsflow') . '</h1>';
+        echo '<h1>' . esc_html__('CampsFlow', 'campsflow') . '</h1>';
 
-        // Sync status bar
-        echo '<div class="cf-sync-status">';
-        if ($nextRun) {
-            $diff = $nextRun - time();
-            echo '<span class="cf-sync-status__ok dashicons dashicons-yes-alt"></span> ';
-            echo esc_html__('Synchronizacja aktywna.', 'campsflow') . ' ';
-            echo esc_html__('Następna za:', 'campsflow') . ' <strong>' . esc_html($this->humanDiff($diff)) . '</strong>';
+        $this->renderTabs($activeTab);
+        $this->renderStatusBar();
+
+        if ($activeTab === self::TAB_SYNC) {
+            $this->renderSyncTab();
         } else {
-            echo '<span class="dashicons dashicons-warning" style="color:#f59e0b"></span> ';
-            echo esc_html__('Synchronizacja nie jest zaplanowana.', 'campsflow');
-        }
-
-        if ($lastRun) {
-            echo ' &nbsp;·&nbsp; ' . esc_html__('Ostatnia synchronizacja:', 'campsflow') . ' <strong>' . esc_html($lastRun) . '</strong>';
-        }
-
-        $synced = isset($_GET['cf_synced']) ? (int) $_GET['cf_synced'] : null;
-        if ($synced !== null) {
-            echo ' &nbsp;·&nbsp; <strong style="color:#16a34a">✓ ' . sprintf(
-                esc_html__('Zsynchronizowano %d turnusów', 'campsflow'),
-                $synced
-            ) . '</strong>';
+            $this->renderSettingsTab();
         }
 
         echo '</div>';
+        $this->renderStyles();
+    }
 
-        echo '<form method="post" action="options.php">';
-        settings_fields('campsflow_settings');
+    private function renderTabs(string $activeTab): void
+    {
+        $base = admin_url('edit.php?post_type=' . EventPostType::SLUG . '&page=cf-settings');
+        $tabs = [
+            self::TAB_SYNC     => __('Synchronizacja', 'campsflow'),
+            self::TAB_SETTINGS => __('Ustawienia', 'campsflow'),
+        ];
 
-        echo '<table class="form-table" role="presentation"><tbody>';
+        echo '<nav class="nav-tab-wrapper cf-tabs">';
+        foreach ($tabs as $slug => $label) {
+            $active = $activeTab === $slug ? ' nav-tab-active' : '';
+            $url    = esc_url(add_query_arg('tab', $slug, $base));
+            echo '<a href="' . $url . '" class="nav-tab' . $active . '">' . esc_html($label) . '</a>';
+        }
+        echo '</nav>';
+    }
 
-        $this->row(
-            __('Tenant slug', 'campsflow'),
-            'campsflow_tenant_slug',
-            'text',
-            __('Slug tenanta z Campsflow (np. <code>moj-oboz</code>)', 'campsflow'),
-        );
+    private function renderStatusBar(): void
+    {
+        $nextRun = wp_next_scheduled(SyncScheduler::HOOK);
+        $lastRun = get_option('campsflow_last_sync', null);
+        $synced  = isset($_GET['cf_synced']) ? (int) $_GET['cf_synced'] : null;
 
-        $this->row(
-            __('API URL', 'campsflow'),
-            'campsflow_api_url',
-            'url',
-            __('Bazowy URL Campsflow API (domyślnie: https://campsflow.pl)', 'campsflow'),
-        );
+        echo '<div class="cf-status-bar">';
 
-        $this->row(
-            __('Link do panelu Campsflow', 'campsflow'),
-            'campsflow_admin_url',
-            'url',
-            __('URL panelu administracyjnego — pojawi się w banerze na listach CPT', 'campsflow'),
-        );
+        if ($nextRun) {
+            $diff = max(0, $nextRun - time());
+            echo '<span class="cf-status-bar__dot cf-status-bar__dot--ok"></span>';
+            echo esc_html__('Synchronizacja aktywna', 'campsflow') . ' · ';
+            echo esc_html__('Następna za:', 'campsflow') . ' <strong>' . esc_html($this->humanDiff($diff)) . '</strong>';
+        } else {
+            echo '<span class="cf-status-bar__dot cf-status-bar__dot--warn"></span>';
+            echo esc_html__('Brak zaplanowanej synchronizacji', 'campsflow');
+        }
 
-        $this->rowSelect(
-            __('Częstotliwość synchronizacji', 'campsflow'),
-            'campsflow_sync_interval',
-            SyncScheduler::INTERVALS,
-            __('Jak często plugin pobiera dane z Campsflow API', 'campsflow'),
-        );
+        if ($lastRun) {
+            echo ' &nbsp;·&nbsp; ' . esc_html__('Ostatnia:', 'campsflow') . ' <strong>' . esc_html($lastRun) . '</strong>';
+        }
 
-        $this->row(
-            __('"Mało miejsc" poniżej (%)', 'campsflow'),
-            'campsflow_few_left_pct',
-            'number',
-            __('Próg procentu wolnych miejsc dla etykiety "Mało miejsc"', 'campsflow'),
-        );
+        if ($synced !== null) {
+            echo ' &nbsp;·&nbsp; <strong class="cf-status-bar__ok">✓ ';
+            echo esc_html(sprintf(__('Zsynchronizowano %d turnusów', 'campsflow'), $synced));
+            echo '</strong>';
+        }
 
-        $this->row(
-            __('"Na wyczerpaniu" poniżej (%)', 'campsflow'),
-            'campsflow_almost_full_pct',
-            'number',
-            __('Próg procentu wolnych miejsc dla etykiety "Na wyczerpaniu"', 'campsflow'),
-        );
+        echo '</div>';
+    }
 
-        $this->row(
-            __('Strona rejestracji', 'campsflow'),
-            'campsflow_reg_page',
-            'text',
-            __('Ścieżka lub URL strony z shortcodem [campsflow_registration_form]', 'campsflow'),
-        );
+    private function renderSyncTab(): void
+    {
+        $tenantSlug = (string) get_option('campsflow_tenant_slug', '');
+        $apiKey     = (string) get_option('campsflow_api_key', '');
+        $interval   = (string) get_option('campsflow_sync_interval', 'hourly');
 
-        $this->row(
-            __('Slug strony z listą obozów', 'campsflow'),
-            'campsflow_listing_page_slug',
-            'text',
-            __('Slug strony WP z listą obozów (np. <code>obozy</code>) — używany przez link "Edytuj listę" w menu', 'campsflow'),
-        );
+        echo '<form method="post" action="options.php" class="cf-form">';
+        settings_fields('campsflow_sync');
 
-        echo '</tbody></table>';
-        submit_button(__('Zapisz ustawienia', 'campsflow'));
+        echo '<div class="cf-form__group">';
+        echo '<label class="cf-form__label" for="campsflow_tenant_slug">' . esc_html__('Tenant slug', 'campsflow') . '</label>';
+        echo '<input class="cf-form__input" type="text" id="campsflow_tenant_slug" name="campsflow_tenant_slug" value="' . esc_attr($tenantSlug) . '" placeholder="np. moj-oboz">';
+        echo '<p class="cf-form__desc">' . esc_html__('Identyfikator organizatora w systemie Campsflow.', 'campsflow') . '</p>';
+        echo '</div>';
+
+        echo '<div class="cf-form__group">';
+        echo '<label class="cf-form__label" for="campsflow_api_key">' . esc_html__('API Key', 'campsflow') . '</label>';
+        echo '<input class="cf-form__input cf-form__input--key" type="password" id="campsflow_api_key" name="campsflow_api_key" value="' . esc_attr($apiKey) . '" autocomplete="new-password">';
+        if ($apiKey) {
+            echo '<p class="cf-form__desc cf-form__desc--set">✓ ' . esc_html__('Klucz jest ustawiony. Wpisz nowy żeby zmienić.', 'campsflow') . '</p>';
+        } else {
+            echo '<p class="cf-form__desc">' . esc_html__('Klucz API z panelu Campsflow (Ustawienia → Integracje).', 'campsflow') . '</p>';
+        }
+        echo '</div>';
+
+        echo '<div class="cf-form__group">';
+        echo '<label class="cf-form__label" for="campsflow_sync_interval">' . esc_html__('Częstotliwość synchronizacji', 'campsflow') . '</label>';
+        echo '<select class="cf-form__select" id="campsflow_sync_interval" name="campsflow_sync_interval">';
+        foreach (SyncScheduler::INTERVALS as $value => $label) {
+            $selected = selected($interval, $value, false);
+            echo '<option value="' . esc_attr($value) . '"' . $selected . '>' . esc_html($label) . '</option>';
+        }
+        echo '</select>';
+        echo '</div>';
+
+        submit_button(__('Zapisz', 'campsflow'), 'primary cf-form__submit');
         echo '</form>';
 
-        echo '<hr>';
-        echo '<h2>' . esc_html__('Synchronizacja', 'campsflow') . '</h2>';
-        echo '<p>' . esc_html__('Uruchom synchronizację ręcznie — pobiera dane z Campsflow API i aktualizuje imprezy oraz turnusy.', 'campsflow') . '</p>';
+        echo '<hr class="cf-divider">';
+        echo '<h3>' . esc_html__('Ręczna synchronizacja', 'campsflow') . '</h3>';
+        echo '<p class="cf-form__desc">' . esc_html__('Pobiera aktualne dane z Campsflow i aktualizuje imprezy oraz turnusy.', 'campsflow') . '</p>';
         echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
         wp_nonce_field('cf_sync_now');
         echo '<input type="hidden" name="action" value="cf_sync_now">';
         submit_button(__('Synchronizuj teraz', 'campsflow'), 'secondary');
         echo '</form>';
+    }
 
-        echo '<style>
-        .cf-sync-status {
-            background: #f0f6fc; border-left: 4px solid #2563eb;
-            padding: 10px 14px; margin: 10px 0 20px;
-            border-radius: 0 4px 4px 0; font-size: 13px;
-        }
-        .cf-sync-status__ok { color: #16a34a; }
-        </style>';
+    private function renderSettingsTab(): void
+    {
+        $fewLeft    = (string) get_option('campsflow_few_left_pct', '30');
+        $almostFull = (string) get_option('campsflow_almost_full_pct', '10');
 
+        echo '<form method="post" action="options.php" class="cf-form">';
+        settings_fields('campsflow_settings');
+
+        echo '<h3>' . esc_html__('Poziomy dostępności miejsc', 'campsflow') . '</h3>';
+        echo '<p class="cf-form__desc">' . esc_html__('Określ przy jakim procencie wolnych miejsc pojawia się etykieta ostrzegawcza.', 'campsflow') . '</p>';
+
+        echo '<div class="cf-form__group">';
+        echo '<label class="cf-form__label" for="campsflow_few_left_pct">';
+        echo '<span class="cf-badge cf-badge--few_left">' . esc_html__('Mało miejsc', 'campsflow') . '</span>';
+        echo ' &nbsp;' . esc_html__('poniżej', 'campsflow') . '</label>';
+        echo '<div class="cf-form__inline">';
+        echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_few_left_pct" name="campsflow_few_left_pct" value="' . esc_attr($fewLeft) . '" min="1" max="99"> %';
         echo '</div>';
+        echo '<p class="cf-form__desc">' . esc_html__('Domyślnie: 30% — pokazuj gdy zostało mniej niż 30% miejsc.', 'campsflow') . '</p>';
+        echo '</div>';
+
+        echo '<div class="cf-form__group">';
+        echo '<label class="cf-form__label" for="campsflow_almost_full_pct">';
+        echo '<span class="cf-badge cf-badge--almost_full">' . esc_html__('Na wyczerpaniu', 'campsflow') . '</span>';
+        echo ' &nbsp;' . esc_html__('poniżej', 'campsflow') . '</label>';
+        echo '<div class="cf-form__inline">';
+        echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_almost_full_pct" name="campsflow_almost_full_pct" value="' . esc_attr($almostFull) . '" min="1" max="99"> %';
+        echo '</div>';
+        echo '<p class="cf-form__desc">' . esc_html__('Domyślnie: 10% — pokazuj gdy zostało mniej niż 10% miejsc.', 'campsflow') . '</p>';
+        echo '</div>';
+
+        submit_button(__('Zapisz', 'campsflow'), 'primary cf-form__submit');
+        echo '</form>';
     }
 
-    private function row(string $label, string $option, string $type, string $desc): void
+    private function renderStyles(): void
     {
-        $value = esc_attr((string) get_option($option, ''));
-        $extra = $type === 'number' ? 'min="0" max="100" style="width:80px"' : 'style="width:400px"';
-
-        echo '<tr>';
-        echo '<th scope="row"><label for="' . esc_attr($option) . '">' . esc_html($label) . '</label></th>';
-        echo '<td>';
-        echo '<input type="' . esc_attr($type) . '" id="' . esc_attr($option) . '" name="' . esc_attr($option) . '" value="' . $value . '" ' . $extra . '>';
-        echo '<p class="description">' . wp_kses($desc, ['code' => []]) . '</p>';
-        echo '</td></tr>';
-    }
-
-    /**
-     * @param array<string, string> $options
-     */
-    private function rowSelect(string $label, string $option, array $options, string $desc): void
-    {
-        $current = (string) get_option($option, 'hourly');
-
-        echo '<tr>';
-        echo '<th scope="row"><label for="' . esc_attr($option) . '">' . esc_html($label) . '</label></th>';
-        echo '<td>';
-        echo '<select id="' . esc_attr($option) . '" name="' . esc_attr($option) . '">';
-        foreach ($options as $value => $optLabel) {
-            $selected = selected($current, $value, false);
-            echo '<option value="' . esc_attr($value) . '"' . $selected . '>' . esc_html($optLabel) . '</option>';
+        echo '<style>
+        .cf-tabs { margin-bottom: 0; }
+        .cf-status-bar {
+            background: #f0f6fc; border-left: 4px solid #2563eb;
+            padding: 10px 16px; margin: 0 0 24px; font-size: 13px;
+            display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
         }
-        echo '</select>';
-        echo '<p class="description">' . esc_html($desc) . '</p>';
-        echo '</td></tr>';
+        .cf-status-bar__dot {
+            width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0;
+        }
+        .cf-status-bar__dot--ok   { background: #16a34a; }
+        .cf-status-bar__dot--warn { background: #f59e0b; }
+        .cf-status-bar__ok { color: #16a34a; }
+        .cf-form { max-width: 520px; margin-top: 20px; }
+        .cf-form__group { margin-bottom: 20px; }
+        .cf-form__label { display: flex; align-items: center; gap: 8px; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
+        .cf-form__input { width: 100%; max-width: 400px; padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+        .cf-form__input--key { font-family: monospace; letter-spacing: .05em; }
+        .cf-form__input--pct { width: 80px; }
+        .cf-form__select { padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; min-width: 220px; }
+        .cf-form__inline { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .cf-form__desc { color: #6b7280; font-size: 12px; margin: 4px 0 0; }
+        .cf-form__desc--set { color: #16a34a; }
+        .cf-divider { margin: 28px 0; border-color: #e5e7eb; }
+        .cf-form__submit { margin-top: 8px !important; }
+        </style>';
     }
 
     private function humanDiff(int $seconds): string

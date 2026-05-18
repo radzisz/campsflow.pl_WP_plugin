@@ -126,12 +126,14 @@ final class ElementorLinks
 
     private function getListingPageId(): int
     {
-        $slug = trim((string) get_option('campsflow_listing_page_slug', 'obozy'));
-        if (! $slug) {
+        // Try to find a page using the CPT archive slug
+        $archiveSlug = get_post_type_archive_link('cf_event');
+        if (! $archiveSlug) {
             return 0;
         }
 
-        $page = get_page_by_path($slug, OBJECT, 'page');
+        // Fall back to looking for a page named 'obozy'
+        $page = get_page_by_path('obozy', OBJECT, 'page');
         return $page ? (int) $page->ID : 0;
     }
 
