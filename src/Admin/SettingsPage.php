@@ -115,10 +115,14 @@ final class SettingsPage
         echo '<div class="cf-status-bar">';
 
         if ($nextRun) {
-            $diff = max(0, $nextRun - time());
+            $diff = $nextRun - time();
             echo '<span class="cf-status-bar__dot cf-status-bar__dot--ok"></span>';
             echo esc_html__('Synchronizacja aktywna', 'campsflow') . ' · ';
-            echo esc_html__('Następna za:', 'campsflow') . ' <strong>' . esc_html($this->humanDiff($diff)) . '</strong>';
+            if ($diff > 0) {
+                echo esc_html__('Następna za:', 'campsflow') . ' <strong>' . esc_html($this->humanDiff($diff)) . '</strong>';
+            } else {
+                echo '<strong>' . esc_html__('Oczekuje na uruchomienie (odwiedź stronę publiczną)', 'campsflow') . '</strong>';
+            }
         } else {
             echo '<span class="cf-status-bar__dot cf-status-bar__dot--warn"></span>';
             echo esc_html__('Brak zaplanowanej synchronizacji', 'campsflow');
@@ -164,7 +168,7 @@ final class SettingsPage
 
         echo '<div class="cf-form__group">';
         echo '<label class="cf-form__label" for="campsflow_sync_interval">' . esc_html__('Częstotliwość synchronizacji', 'campsflow') . '</label>';
-        echo '<div class="cf-form__inline">';
+        echo '<div class="cf-form__interval-row">';
         echo '<select class="cf-form__select" id="campsflow_sync_interval" name="campsflow_sync_interval">';
         foreach (SyncScheduler::INTERVALS as $value => $label) {
             $selected = selected($interval, $value, false);
@@ -172,31 +176,24 @@ final class SettingsPage
         }
         echo '</select>';
 
-        // Sync-now button inline — separate form so it doesn't interfere with settings save
+        // Button is OUTSIDE the settings form via the HTML `form` attribute (HTML5 standard).
+        // The hidden sync-now form is rendered below (id="cf-sync-now-form").
+        echo '<button type="submit" form="cf-sync-now-form" class="button button-secondary cf-sync-now-btn">';
+        echo '<span class="dashicons dashicons-update"></span> ';
+        echo esc_html__('Synchronizuj teraz', 'campsflow');
+        echo '</button>';
+
         echo '</div></div>';
         submit_button(__('Zapisz', 'campsflow'), 'primary cf-form__submit');
         echo '</form>';
 
-        $this->renderUrlInfo();
-
-        // Rendered visually next to the select via CSS absolute/flex trick
-        echo '<form id="cf-sync-now-form" method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
+        // Hidden sync-now form — associated to the button above via id="cf-sync-now-form"
+        echo '<form id="cf-sync-now-form" method="post" action="' . esc_url(admin_url('admin-post.php')) . '" style="display:none">';
         wp_nonce_field('cf_sync_now');
         echo '<input type="hidden" name="action" value="cf_sync_now">';
         echo '</form>';
-        echo '<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var select = document.getElementById("campsflow_sync_interval");
-            if (!select) return;
-            var btn = document.createElement("button");
-            btn.type = "submit";
-            btn.form = "cf-sync-now-form";
-            btn.className = "button button-secondary";
-            btn.innerHTML = \'<span class="dashicons dashicons-update" style="margin-top:3px;font-size:16px"></span> \' + ' . wp_json_encode(__('Synchronizuj teraz', 'campsflow')) . ';
-            btn.style.cssText = "display:inline-flex;align-items:center;gap:4px;margin-left:8px;vertical-align:middle";
-            select.parentNode.insertBefore(btn, select.nextSibling);
-        });
-        </script>';
+
+        $this->renderUrlInfo();
     }
 
     private function renderSettingsTab(): void
@@ -387,6 +384,9 @@ define(\'CAMPSFLOW_ADMIN_URL\', \'http://localhost:3001\');</pre>';
         .cf-form__desc--set { color: #16a34a; }
         .cf-divider { margin: 28px 0; border-color: #e5e7eb; }
         .cf-form__submit { margin-top: 8px !important; }
+        .cf-form__interval-row { display: flex; align-items: center; gap: 10px; }
+        .cf-sync-now-btn { display: inline-flex !important; align-items: center; gap: 5px; }
+        .cf-sync-now-btn .dashicons { font-size: 16px; width: 16px; height: 16px; margin-top: 0; }
 
         /* URL table */
         .cf-url-table { border-collapse: collapse; margin-bottom: 12px; }
