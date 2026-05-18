@@ -158,25 +158,37 @@ final class SettingsPage
 
         echo '<div class="cf-form__group">';
         echo '<label class="cf-form__label" for="campsflow_sync_interval">' . esc_html__('Częstotliwość synchronizacji', 'campsflow') . '</label>';
+        echo '<div class="cf-form__inline">';
         echo '<select class="cf-form__select" id="campsflow_sync_interval" name="campsflow_sync_interval">';
         foreach (SyncScheduler::INTERVALS as $value => $label) {
             $selected = selected($interval, $value, false);
             echo '<option value="' . esc_attr($value) . '"' . $selected . '>' . esc_html($label) . '</option>';
         }
         echo '</select>';
-        echo '</div>';
 
+        // Sync-now button inline — separate form so it doesn't interfere with settings save
+        echo '</div></div>';
         submit_button(__('Zapisz', 'campsflow'), 'primary cf-form__submit');
         echo '</form>';
 
-        echo '<hr class="cf-divider">';
-        echo '<h3>' . esc_html__('Ręczna synchronizacja', 'campsflow') . '</h3>';
-        echo '<p class="cf-form__desc">' . esc_html__('Pobiera aktualne dane z Campsflow i aktualizuje imprezy oraz turnusy.', 'campsflow') . '</p>';
-        echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
+        // Rendered visually next to the select via CSS absolute/flex trick
+        echo '<form id="cf-sync-now-form" method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
         wp_nonce_field('cf_sync_now');
         echo '<input type="hidden" name="action" value="cf_sync_now">';
-        submit_button(__('Synchronizuj teraz', 'campsflow'), 'secondary');
         echo '</form>';
+        echo '<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var select = document.getElementById("campsflow_sync_interval");
+            if (!select) return;
+            var btn = document.createElement("button");
+            btn.type = "submit";
+            btn.form = "cf-sync-now-form";
+            btn.className = "button button-secondary";
+            btn.innerHTML = \'<span class="dashicons dashicons-update" style="margin-top:3px;font-size:16px"></span> \' + ' . wp_json_encode(__('Synchronizuj teraz', 'campsflow')) . ';
+            btn.style.cssText = "display:inline-flex;align-items:center;gap:4px;margin-left:8px;vertical-align:middle";
+            select.parentNode.insertBefore(btn, select.nextSibling);
+        });
+        </script>';
     }
 
     private function renderSettingsTab(): void
