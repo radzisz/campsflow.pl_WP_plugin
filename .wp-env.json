@@ -11,7 +11,8 @@
                 "WP_DEBUG_LOG": true,
                 "WP_DEBUG_DISPLAY": false,
                 "SCRIPT_DEBUG": true,
-                "PERMALINK_STRUCTURE": "/%postname%/"
+                "PERMALINK_STRUCTURE": "/%postname%/",
+                "CAMPSFLOW_API_URL": "http://host.docker.internal:3501"
             }
         },
         "tests": {

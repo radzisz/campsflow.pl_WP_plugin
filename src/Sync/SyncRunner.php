@@ -19,12 +19,18 @@ final class SyncRunner
 {
     public function run(): SyncStats
     {
-        // TODO: replace with fetchFromApi() when Campsflow public API is ready:
-        // $events = $this->fetchFromApi(
-        //     Config::eventsEndpoint(get_option('campsflow_tenant_slug')),
-        //     get_option('campsflow_api_key'),
-        // );
-        $events = $this->loadFixture();
+        $tenantSlug = (string) get_option('campsflow_tenant_slug', '');
+        $apiKey     = (string) get_option('campsflow_api_key', '');
+
+        if ($tenantSlug && $apiKey) {
+            $events = $this->fetchFromApi(
+                Config::eventsEndpoint($tenantSlug),
+                $apiKey,
+            );
+        } else {
+            // Fallback to fixture when not configured (dev / first-run)
+            $events = $this->loadFixture();
+        }
 
         $transformer    = new Transformer();
         $stats          = new SyncStats();
