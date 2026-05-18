@@ -193,10 +193,12 @@ final class SettingsPage
         echo '<input type="hidden" name="action" value="cf_sync_now">';
         echo '</form>';
         echo '<script>
-        document.querySelector(".cf-sync-now-btn").addEventListener("click", function() {
-            this.classList.add("is-syncing");
-            this.disabled = true;
-            this.querySelector(".dashicons").style.display = "inline-block";
+        document.querySelector(".cf-sync-now-btn").addEventListener("click", function(e) {
+            e.preventDefault();
+            var btn = this;
+            btn.classList.add("is-syncing");
+            btn.disabled = true;
+            document.getElementById("cf-sync-now-form").submit();
         });
         </script>';
 
