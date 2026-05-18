@@ -64,6 +64,7 @@ add_action('plugins_loaded', static function (): void {
     (new Presentation\WpBakeryIntegration())->register();
     (new Presentation\WpBakeryDynamicContent())->register();
     (new Admin\SyncNotice())->register();
+    (new Admin\AdminColumns())->register();
     (new Admin\SettingsPage())->register();
     (new Admin\ElementorLinks())->register();
     (new Admin\FixtureImporter())->register();

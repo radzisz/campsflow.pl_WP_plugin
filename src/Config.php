@@ -35,6 +35,19 @@ final class Config
         return rtrim(self::apiUrl(), '/') . '/api/v1/public/' . rawurlencode($tenantSlug) . '/events';
     }
 
+    public static function adminEventUrl(string $tenantSlug, string $cfEventId): string
+    {
+        $base = rtrim(self::adminUrl(), '/');
+        return $base . '/' . rawurlencode($tenantSlug) . '/catalog/events/' . rawurlencode($cfEventId);
+    }
+
+    public static function adminSessionUrl(string $tenantSlug, string $cfEventId, string $cfSessionId): string
+    {
+        $base = rtrim(self::adminUrl(), '/');
+        return $base . '/' . rawurlencode($tenantSlug) . '/catalog/events/' . rawurlencode($cfEventId)
+            . '/sessions/' . rawurlencode($cfSessionId);
+    }
+
     /** Returns true if the value is overridden (constant or env var). */
     public static function isOverridden(string $constant): bool
     {
