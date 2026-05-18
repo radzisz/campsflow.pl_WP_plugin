@@ -6,7 +6,7 @@ namespace Campsflow\Sync;
 final class Transformer
 {
     public function __construct(
-        private readonly float $fewLeftThreshold   = 0.30,
+        private readonly float $fewLeftThreshold   = 0.25,
         private readonly float $almostFullThreshold = 0.10,
     ) {
         assert($this->almostFullThreshold < $this->fewLeftThreshold);

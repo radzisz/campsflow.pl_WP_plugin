@@ -39,7 +39,7 @@ final class SettingsPage
             'campsflow_tenant_slug'     => '',
             'campsflow_api_key'         => '',
             'campsflow_sync_interval'   => 'hourly',
-            'campsflow_few_left_pct'    => '30',
+            'campsflow_few_left_pct'    => '25',
             'campsflow_almost_full_pct' => '10',
         ];
 
@@ -221,7 +221,7 @@ final class SettingsPage
         echo '<div class="cf-form__inline">';
         echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_few_left_pct" name="campsflow_few_left_pct" value="' . esc_attr($fewLeft) . '" min="1" max="99"> %';
         echo '</div>';
-        echo '<p class="cf-form__desc">' . esc_html__('Domyślnie: 30% — pokazuj gdy zostało mniej niż 30% miejsc.', 'campsflow') . '</p>';
+        echo '<p class="cf-form__desc">' . esc_html__('Domyślnie: 25% — pokazuj gdy zostało mniej niż 25% miejsc.', 'campsflow') . '</p>';
         echo '</div>';
 
         echo '<div class="cf-form__group">';
