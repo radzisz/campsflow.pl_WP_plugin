@@ -36,7 +36,8 @@ final class SettingsPage
             'campsflow_sync_interval'  => 'hourly',
             'campsflow_few_left_pct'   => '30',
             'campsflow_almost_full_pct'=> '10',
-            'campsflow_reg_page'       => '/rejestracja/',
+            'campsflow_reg_page'          => '/rejestracja/',
+            'campsflow_listing_page_slug' => 'obozy',
         ];
 
         foreach ($options as $key => $default) {
@@ -142,6 +143,13 @@ final class SettingsPage
             'campsflow_reg_page',
             'text',
             __('Ścieżka lub URL strony z shortcodem [campsflow_registration_form]', 'campsflow'),
+        );
+
+        $this->row(
+            __('Slug strony z listą obozów', 'campsflow'),
+            'campsflow_listing_page_slug',
+            'text',
+            __('Slug strony WP z listą obozów (np. <code>obozy</code>) — używany przez link "Edytuj listę" w menu', 'campsflow'),
         );
 
         echo '</tbody></table>';

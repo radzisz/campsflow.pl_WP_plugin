@@ -58,9 +58,13 @@ add_action('plugins_loaded', static function (): void {
     (new Taxonomy\CampTagTaxonomy())->register();
     (new Taxonomy\AgeGroupTaxonomy())->register();
     (new Presentation\ListingShortcode())->register();
+    (new Presentation\EventShortcodes())->register();
     (new Presentation\TemplateLoader())->register();
+    (new Presentation\ElementorIntegration())->register();
+    (new Presentation\WpBakeryIntegration())->register();
     (new Admin\SyncNotice())->register();
     (new Admin\SettingsPage())->register();
+    (new Admin\ElementorLinks())->register();
     (new Admin\FixtureImporter())->register();
 });
 
