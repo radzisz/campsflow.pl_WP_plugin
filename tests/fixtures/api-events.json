@@ -1,80 +1,83 @@
 [
   {
     "id": "event-001-uuid",
-    "name": "Obóz Górski Tatry 2026",
+    "name": "Fabryka Adrenaliny — Bieszczady 2026",
+    "minAge": 10,
+    "maxAge": 16,
     "tags": [
-      { "name": "góry", "isPublic": true },
+      { "name": "active", "isPublic": true },
       { "name": "przygoda", "isPublic": true },
-      { "name": "letni", "isPublic": true },
-      { "name": "wewnętrzny-promo", "isPublic": false }
+      { "name": "obóz letni", "isPublic": true },
+      { "name": "hit-sezonu", "isPublic": false }
     ],
     "localization": {
-      "destination": "Tatry Wysokie",
-      "name": "Schronisko PTTK Murowaniec",
+      "destination": "Bieszczady",
+      "name": "Ośrodek Sportów Wodnych Myczkowce",
       "address": {
-        "address": "Hala Gąsienicowa 1",
-        "city": "Zakopane",
-        "code": "34-500",
+        "address": "ul. Jeziorna 3",
+        "city": "Myczkowce",
+        "code": "38-543",
         "country": "PL"
       },
-      "gps": { "lat": 49.2312, "lng": 19.9797 },
-      "webpage": "https://murowaniec.pl",
-      "email": "schronisko@murowaniec.pl",
-      "phone": "+48 18 207 00 00",
-      "description": "Schronisko górskie PTTK na Hali Gąsienicowej, na wysokości 1520 m n.p.m. Wyposażone w 80 miejsc noclegowych.",
+      "gps": { "lat": 49.3849, "lng": 22.1633 },
+      "webpage": "https://myczkowce.pl",
+      "email": "kontakt@myczkowce.pl",
+      "phone": "+48 13 469 10 00",
+      "description": "Ośrodek sportów wodnych i aktywnego wypoczynku nad Jeziorem Myczkowieckim w sercu Bieszczad. Własna plaża, kajaki, rowery wodne, ścianka wspinaczkowa i tor rowerowy.",
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800"
+      "https://images.unsplash.com/photo-1530866495561-507c9faab2ed?w=800"
     ],
-    "leadImageUrl": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
+    "leadImageUrl": "https://images.unsplash.com/photo-1530866495561-507c9faab2ed?w=800",
     "leadVideoUrl": null,
+    "videoUrls": [],
     "description": {
-      "general": "<p>Tygodniowy obóz w sercu Tatr dla dzieci i młodzieży w wieku 10–16 lat. Program obejmuje codzienne wędrówki górskie po szlakach Tatr Wysokich, ogniska, warsztaty survivalowe i zajęcia z pierwszej pomocy.</p><p>Obóz prowadzony przez doświadczonych instruktorów z uprawnieniami górskimi. Małe grupy (max 15 osób) gwarantują indywidualne podejście do każdego uczestnika.</p>",
-      "program": "<ul><li><strong>Dzień 1 (środa):</strong> Przyjazd, zakwaterowanie, zapoznanie z regulaminem, spacer orientacyjny po Dolinie Gąsienicowej</li><li><strong>Dzień 2 (czw):</strong> Wejście na Świnicę (2301 m) szlakiem żółtym</li><li><strong>Dzień 3 (pt):</strong> Wędrówka wokół Czarnego Stawu, warsztaty survivalowe</li><li><strong>Dzień 4 (sob):</strong> Dzień wolny w Zakopanem — Krupówki, Gubałówka</li><li><strong>Dzień 5 (nd):</strong> Wejście na Kasprowy Wierch kolejką i zejście pieszo</li><li><strong>Dzień 6 (pon):</strong> Dolina Pięciu Stawów, kurs pierwszej pomocy</li><li><strong>Dzień 7 (wt):</strong> Ognisko pożegnalne, wyjazd do domu</li></ul>",
-      "priceInclude": "<ul><li>Zakwaterowanie w schronisku (pokoje 4–6 osobowe)</li><li>Pełne wyżywienie (śniadanie, obiad, kolacja)</li><li>Opieka 2 instruktorów przez cały czas</li><li>Ubezpieczenie NNW i OC</li><li>Bilet kolejką na Kasprowy Wierch</li><li>Materiały i sprzęt do zajęć dodatkowych</li></ul>"
+      "general": "<p>9-dniowy obóz przygodowy w sercu Bieszczad dla dzieci i młodzieży w wieku 10–16 lat. Kajaki na Jeziorze Myczkowieckim, wspinaczka, terenowy survival i codzienne wyzwania na łonie natury.</p><p>Kadra doświadczonych instruktorów, mała grupa (max 18 osób), zakwaterowanie w ośrodku z widokiem na jezioro. Bieszczady to jedno z najpiękniejszych i najmniej zurbanizowanych miejsc w Polsce — idealne do wylogowania się i prawdziwej przygody.</p>",
+      "program": "<ul><li><strong>Dzień 1:</strong> Przyjazd, zakwaterowanie, zapoznanie z terenem, wieczorne ognisko na brzegu jeziora</li><li><strong>Dzień 2:</strong> Kurs kajakarstwa, spływ odcinkiem rzeki San</li><li><strong>Dzień 3:</strong> Wspinaczka na ściance, zajęcia z orientacji w terenie i mapy</li><li><strong>Dzień 4:</strong> Wycieczka rowerowa po Bieszczadach — trasa 30 km, lunch na trasie</li><li><strong>Dzień 5:</strong> Survival — budowanie schronienia, rozpalanie ognia, filtracja wody</li><li><strong>Dzień 6:</strong> Dzień na jeziorze — wyścigi kajakowe, rowery wodne, pływanie</li><li><strong>Dzień 7:</strong> Wycieczka na Połoninę Wetlińską (szlak żółty, 1228 m n.p.m.)</li><li><strong>Dzień 8:</strong> Paintball + nocna gra terenowa, ognisko pożegnalne</li><li><strong>Dzień 9:</strong> Śniadanie, pakowanie, wyjazd do domu</li></ul>",
+      "priceInclude": "<ul><li>Zakwaterowanie w ośrodku (pokoje 4-osobowe z łazienką)</li><li>Pełne wyżywienie (śniadanie, obiad, kolacja + podwieczorek)</li><li>Ubezpieczenie NNW i OC</li><li>Sprzęt kajakarski i wiosła</li><li>Wejście na ściankę wspinaczkową z instruktorem</li><li>Kask i uprząż do wspinaczki</li><li>Paintball (100 kulek na osobę)</li><li>Transport lokalny na wycieczki rowerowe</li></ul>"
     },
     "documents": [
-      { "name": "Regulamin uczestnika", "url": "https://example.com/docs/regulamin-tatry.pdf" },
+      { "name": "Regulamin uczestnika", "url": "https://example.com/docs/regulamin-bieszczady.pdf" },
       { "name": "Karta zdrowia", "url": "https://example.com/docs/karta-zdrowia.pdf" },
       { "name": "Zgoda rodziców", "url": "https://example.com/docs/zgoda-rodzicow.pdf" }
     ],
     "generalTerms": {
-      "insurance": "Ubezpieczenie NNW do 50 000 zł i OC do 500 000 zł wliczone w cenę obozu. Polisa obejmuje cały okres pobytu od dnia przyjazdu do dnia wyjazdu.",
-      "drugOrdering": "Leki na receptę wydawane przez pielęgniarkę obozową wyłącznie po przedstawieniu zaświadczenia od lekarza. Leki OTC uczestnik może posiadać samodzielnie po poinformowaniu kadry.",
-      "specialDiet": "Diety specjalne (wegetariańska, bezglutenowa, bezlaktozowa) są zapewniane po wcześniejszym zgłoszeniu w formularzu zapisu najpóźniej 7 dni przed wyjazdem.",
-      "deadlinesAndDocumentsInfo": "Kartę zdrowia należy przesłać elektronicznie do 14 dni przed wyjazdem. Zgodę rodziców i regulamin podpisany przez opiekuna prawnego uczestnik dostarcza w dniu wyjazdu."
+      "insurance": "Ubezpieczenie NNW do 50 000 zł i OC do 500 000 zł. Polisa obejmuje cały czas pobytu, zajęcia wodne i wspinaczkowe.",
+      "drugOrdering": "Leki na receptę wydawane przez pielęgniarkę obozową wyłącznie po przedstawieniu zaświadczenia lekarskiego. Leki OTC uczestnik może posiadać samodzielnie po poinformowaniu kadry.",
+      "specialDiet": "Diety specjalne (wegetariańska, bezglutenowa, bezlaktozowa) zapewniane po zgłoszeniu w formularzu zapisu do 7 dni przed wyjazdem.",
+      "deadlinesAndDocumentsInfo": "Kartę zdrowia przesłać elektronicznie do 14 dni przed wyjazdem. Zgodę rodziców i podpisany regulamin dostarczyć w dniu wyjazdu."
     },
     "instructions": {
-      "howToPrepare": "<p>Obóz odbywa się w górach, gdzie warunki pogodowe mogą się szybko zmieniać. Zalecamy przygotowanie kondycyjne: codzienne spacery 5–10 km przez miesiąc przed wyjazdem.</p><p>Każdy uczestnik powinien odbyć wizytę u lekarza i uzyskać zaświadczenie o braku przeciwwskazań do aktywności fizycznej w górach.</p>",
-      "whatToTake": "<ul><li>Buty trekkingowe z kostką (obowiązkowo — bez nich nie dopuszczamy do udziału w wędrówkach)</li><li>Kurtka przeciwdeszczowa</li><li>Polar lub sweter</li><li>Czapka i rękawiczki (nawet latem)</li><li>Krem z filtrem SPF 50+</li><li>Okulary przeciwsłoneczne</li><li>Plecak turystyczny 25–30 l</li><li>Bidon lub termos 0,75 l</li><li>Strój kąpielowy (na basen w Zakopanem)</li></ul>"
+      "howToPrepare": "<p>Obóz wymaga dobrej kondycji fizycznej — uczestnicy spędzają wiele godzin aktywnie w terenie górskim. Zalecamy codzienne spacery lub jazdę na rowerze przez miesiąc przed wyjazdem.</p><p>Uczestnicy zajęć kajakowych muszą umieć pływać na poziomie podstawowym. Na ściance wspinaczkowej obowiązuje pełne wyposażenie zapewniane przez ośrodek — kask i uprząż.</p>",
+      "whatToTake": "<ul><li>Buty trekkingowe z kostką (obowiązkowo)</li><li>Sandały lub klapki na plażę i teren ośrodka</li><li>Strój kąpielowy (2 szt.)</li><li>Ręcznik plażowy</li><li>Kurtka przeciwdeszczowa</li><li>Polar lub gruba bluza</li><li>Krem z filtrem SPF 30+</li><li>Środek na komary i kleszcze (Bieszczady!)</li><li>Latarka czołowa z zapasowymi bateriami</li><li>Plecak turystyczny 20–25 l</li><li>Bidon lub termos 0,75 l</li></ul>"
     },
     "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?event=event-001-uuid",
     "contact": {
-      "firstname": "Anna",
-      "lastname": "Górska",
-      "email": "anna.gorska@oaza-test.pl",
-      "phone": "+48 600 123 456"
+      "firstname": "Katarzyna",
+      "lastname": "Bieszczańska",
+      "email": "katarzyna.bieszczanska@oaza-test.pl",
+      "phone": "+48 601 111 222"
     },
     "turnusy": [
       {
         "id": "session-001-uuid",
         "name": "Turnus I",
-        "dateFrom": "2026-07-01",
-        "dateTo": "2026-07-07",
-        "numberOfDays": 7,
-        "priceFrom": 189000,
+        "dateFrom": "2026-06-27",
+        "dateTo": "2026-07-05",
+        "numberOfDays": 9,
+        "priceFrom": 309000,
         "transport": {
           "type": "bus",
-          "description": "Autokar klimatyzowany spod Krakowa (dworzec główny, ul. Bosacka)"
+          "description": "Autokar klimatyzowany z Krakowa (dworzec Kraków Główny, peron nr 8)"
         },
         "meetingPoints_start": [
           {
             "name": "Kraków Główny",
             "address": "ul. Bosacka 18, Kraków",
             "gps": { "lat": 50.0681, "lng": 19.9452 },
-            "description": "Zbiórka przy wejściu głównym do dworca. Autokar odjeżdża punktualnie.",
-            "date": "2026-07-01",
+            "description": "Zbiórka przy wejściu głównym do dworca od strony peronów. Autokar odjeżdża punktualnie — prosimy być 15 min wcześniej.",
+            "date": "2026-06-27",
             "hour": "07:00"
           }
         ],
@@ -82,33 +85,33 @@
           {
             "address": "ul. Bosacka 18, Kraków",
             "gps": { "lat": 50.0681, "lng": 19.9452 },
-            "description": "Powrót na miejsce zbiórki. Szacowany przyjazd.",
-            "date": "2026-07-07",
-            "hour": "19:00"
+            "description": "Powrót pod dworzec Kraków Główny. Szacowany przyjazd.",
+            "date": "2026-07-05",
+            "hour": "19:30"
           }
         ],
-        "seatsAvailable": 3,
-        "seatsAll": 40,
+        "seatsAvailable": 5,
+        "seatsAll": 18,
         "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=session-001-uuid"
       },
       {
         "id": "session-002-uuid",
         "name": "Turnus II",
-        "dateFrom": "2026-07-15",
-        "dateTo": "2026-07-21",
-        "numberOfDays": 7,
-        "priceFrom": 189000,
+        "dateFrom": "2026-07-06",
+        "dateTo": "2026-07-14",
+        "numberOfDays": 9,
+        "priceFrom": 309000,
         "transport": {
           "type": "bus",
-          "description": "Autokar klimatyzowany spod Krakowa (dworzec główny, ul. Bosacka)"
+          "description": "Autokar klimatyzowany z Krakowa (dworzec Kraków Główny, peron nr 8)"
         },
         "meetingPoints_start": [
           {
             "name": "Kraków Główny",
             "address": "ul. Bosacka 18, Kraków",
             "gps": { "lat": 50.0681, "lng": 19.9452 },
-            "description": "Zbiórka przy wejściu głównym do dworca.",
-            "date": "2026-07-15",
+            "description": "Zbiórka przy wejściu głównym do dworca od strony peronów.",
+            "date": "2026-07-06",
             "hour": "07:00"
           }
         ],
@@ -116,225 +119,224 @@
           {
             "address": "ul. Bosacka 18, Kraków",
             "gps": { "lat": 50.0681, "lng": 19.9452 },
-            "description": "Powrót na miejsce zbiórki.",
-            "date": "2026-07-21",
-            "hour": "19:00"
+            "description": "Powrót pod dworzec Kraków Główny.",
+            "date": "2026-07-14",
+            "hour": "19:30"
           }
         ],
-        "seatsAvailable": 18,
-        "seatsAll": 40,
+        "seatsAvailable": 14,
+        "seatsAll": 18,
         "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=session-002-uuid"
-      },
-      {
-        "id": "session-003-uuid",
-        "name": "Turnus III",
-        "dateFrom": "2026-08-05",
-        "dateTo": "2026-08-11",
-        "numberOfDays": 7,
-        "priceFrom": 199000,
-        "transport": {
-          "type": "own",
-          "description": "Dojazd własny do schroniska"
-        },
-        "meetingPoints_start": [
-          {
-            "name": "Schronisko Murowaniec",
-            "address": "Hala Gąsienicowa 1, Zakopane",
-            "gps": { "lat": 49.2312, "lng": 19.9797 },
-            "description": "Bezpośredni przyjazd do schroniska.",
-            "date": "2026-08-05",
-            "hour": "14:00"
-          }
-        ],
-        "meetingPoints_return": [],
-        "seatsAvailable": 0,
-        "seatsAll": 40,
-        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=session-003-uuid"
       }
     ]
   },
   {
     "id": "event-002-uuid",
-    "name": "Obóz nad Morzem Bałtyckim 2026",
+    "name": "Surf Camp — Dźwirzyno 2026",
+    "minAge": 13,
+    "maxAge": 17,
     "tags": [
+      { "name": "active", "isPublic": true },
+      { "name": "windsurfing", "isPublic": true },
       { "name": "morze", "isPublic": true },
-      { "name": "sport", "isPublic": true },
-      { "name": "letni", "isPublic": true }
+      { "name": "obóz letni", "isPublic": true }
     ],
     "localization": {
-      "destination": "Wybrzeże Gdańskie",
-      "name": "Ośrodek Wypoczynkowy Fala",
+      "destination": "Wybrzeże Zachodniopomorskie",
+      "name": "Ośrodek Wodny Dźwirzyno",
       "address": {
-        "address": "ul. Nadmorska 12",
-        "city": "Łeba",
-        "code": "84-360",
+        "address": "ul. Słoneczna 22",
+        "city": "Dźwirzyno",
+        "code": "78-131",
         "country": "PL"
       },
-      "gps": { "lat": 54.7614, "lng": 17.5396 },
-      "webpage": "https://ow-fala.pl",
-      "email": "rezerwacje@ow-fala.pl",
-      "phone": "+48 59 866 14 00",
-      "description": "Nowoczesny ośrodek wypoczynkowy 200 m od plaży w Łebie. Własny basen kryty, boisko do siatkówki plażowej i sprzęt do sportów wodnych.",
+      "gps": { "lat": 54.1748, "lng": 15.5656 },
+      "webpage": "https://dzwirzyno-camp.pl",
+      "email": "info@dzwirzyno-camp.pl",
+      "phone": "+48 94 358 20 00",
+      "description": "Ośrodek sportów wodnych bezpośrednio na plaży w Dźwirzynie. Własna szkoła windsurfingu i kitesurfingu, sprzęt dla wszystkich poziomów, certyfikowani instruktorzy PKWW.",
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800"
+      "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800"
     ],
-    "leadImageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
+    "leadImageUrl": "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800",
     "leadVideoUrl": null,
+    "videoUrls": [],
     "description": {
-      "general": "<p>Dwutygodniowy obóz na Wybrzeżu Gdańskim dla dzieci w wieku 8–14 lat. Plaża, sporty wodne, kajaki, windsurfing i mnóstwo zabawy nad morzem.</p><p>Ośrodek dysponuje własnym boiskiem do siatkówki plażowej, wypożyczalnią rowerów i sprzętu wodnego. Każdego dnia animatorzy przygotowują atrakcje i gry terenowe.</p>",
-      "program": "<ul><li><strong>Codziennie:</strong> Kąpiel morska w wyznaczonej strefie, sporty plażowe</li><li><strong>Poniedziałek:</strong> Kurs pierwszej pomocy, wypożyczenie kajaków</li><li><strong>Środa:</strong> Wycieczka do Słowińskiego Parku Narodowego — ruchome wydmy</li><li><strong>Piątek:</strong> Gra terenowa po plaży, ognisko</li><li><strong>Sobota:</strong> Olimpiada sportowa, nagrody</li><li><strong>Niedziela:</strong> Czas wolny, dyskoteka</li></ul>",
-      "priceInclude": "<ul><li>Zakwaterowanie w pokojach 3–4 osobowych z łazienką</li><li>Pełne wyżywienie</li><li>Ubezpieczenie NNW i OC</li><li>Wypożyczenie sprzętu sportowego (kajaki, deski SUP)</li><li>Kurs ratownictwa wodnego</li><li>Wstęp na wszystkie zajęcia animacyjne</li></ul>"
+      "general": "<p>11-dniowy obóz windsurfingowy na Wybrzeżu Zachodniopomorskim dla młodzieży w wieku 13–17 lat. Nauka i doskonalenie techniki windsurfingu pod okiem certyfikowanych instruktorów PKWW.</p><p>Grupy dobierane według poziomu zaawansowania (beginner, intermediate, advanced). Obóz odbywa się bezpośrednio przy plaży — sprzęt, instruktaż i dostęp do wody przez cały czas pobytu wliczone w cenę.</p>",
+      "program": "<ul><li><strong>Dzień 1:</strong> Przyjazd, zakwaterowanie, wstępna ocena umiejętności, teoria</li><li><strong>Dzień 2–3:</strong> Podstawy — balans na desce, prawa drogi, bezpieczeństwo na wodzie</li><li><strong>Dzień 4–5:</strong> Pierwsze samodzielne pływanie, hals i zwrot przez rufę</li><li><strong>Dzień 6:</strong> Dzień wolny — plaża, kajaki, siatkówka plażowa</li><li><strong>Dzień 7–8:</strong> Doskonalenie techniki, regaty wewnętrzne</li><li><strong>Dzień 9:</strong> Zaawansowani: water-start i obsługa harnessem; beginner: utrwalanie podstaw</li><li><strong>Dzień 10:</strong> Zawody surfingowe, wręczenie certyfikatów, ognisko plażowe</li><li><strong>Dzień 11:</strong> Śniadanie, pakowanie, wyjazd</li></ul>",
+      "priceInclude": "<ul><li>Zakwaterowanie w domkach campingowych (4-osobowe z łazienką)</li><li>Pełne wyżywienie (śniadanie, obiad, kolacja)</li><li>Ubezpieczenie NNW i OC (w tym ubezpieczenie sportów wodnych)</li><li>Sprzęt windsurfingowy (deska + żagiel dopasowane do poziomu)</li><li>Pianka neoprenowa i kamizelka asekuracyjna</li><li>Kurs windsurfingu z certyfikowanym instruktorem (5h dziennie)</li><li>Certyfikat ukończenia kursu PKWW</li></ul>"
     },
     "documents": [
-      { "name": "Regulamin uczestnika", "url": "https://example.com/docs/regulamin-morze.pdf" },
-      { "name": "Karta zdrowia", "url": "https://example.com/docs/karta-zdrowia.pdf" }
+      { "name": "Regulamin uczestnika", "url": "https://example.com/docs/regulamin-surf.pdf" },
+      { "name": "Karta zdrowia", "url": "https://example.com/docs/karta-zdrowia.pdf" },
+      { "name": "Zgoda rodziców", "url": "https://example.com/docs/zgoda-rodzicow.pdf" },
+      { "name": "Deklaracja umiejętności pływackich", "url": "https://example.com/docs/deklaracja-plywanie.pdf" }
     ],
     "generalTerms": {
-      "insurance": "Ubezpieczenie NNW do 50 000 zł i OC do 500 000 zł. Dodatkowo ubezpieczenie NNW sportowe (sporty wodne) do 30 000 zł.",
-      "drugOrdering": "Leki na receptę wydawane przez pielęgniarkę po przedstawieniu zaświadczenia lekarskiego.",
+      "insurance": "Ubezpieczenie NNW do 50 000 zł, OC do 500 000 zł oraz dodatkowe ubezpieczenie sportów wodnych do 30 000 zł. Polisa obejmuje wszystkie zajęcia na wodzie i poza nią.",
+      "drugOrdering": "Leki na receptę wydawane przez pielęgniarkę po przedstawieniu zaświadczenia lekarskiego. Leki OTC uczestnik może posiadać po poinformowaniu kadry.",
       "specialDiet": "Diety specjalne dostępne po zgłoszeniu w formularzu zapisu do 7 dni przed wyjazdem.",
-      "deadlinesAndDocumentsInfo": "Kartę zdrowia i zgodę rodziców należy dostarczyć do 14 dni przed datą obozu."
+      "deadlinesAndDocumentsInfo": "Deklarację umiejętności pływackich i kartę zdrowia należy przesłać elektronicznie do 14 dni przed wyjazdem. Umiejętność pływania jest warunkiem uczestnictwa w zajęciach na wodzie."
     },
     "instructions": {
-      "howToPrepare": "<p>Obóz nad morzem wymaga sprawności fizycznej odpowiedniej do sportów wodnych. Zalecamy, aby uczestnik potrafił pływać na poziomie podstawowym. Umiejętność pływania jest wymagana do udziału w zajęciach na wodzie.</p>",
-      "whatToTake": "<ul><li>Kostium kąpielowy (2–3 szt.)</li><li>Ręcznik plażowy</li><li>Krem z filtrem SPF 50+ (dużo!)</li><li>Okulary przeciwsłoneczne z filtrem UV</li><li>Nakrycie głowy</li><li>Sandały plażowe i klapki</li><li>Lekka kurtka na chłodniejsze wieczory</li><li>Buty sportowe na zajęcia na boisku</li></ul>"
+      "howToPrepare": "<p>Uczestnik powinien umieć pływać — jest to warunek uczestnictwa w zajęciach na wodzie. Nie musisz mieć wcześniejszego doświadczenia z windsurfingiem — grupy są dobierane od podstaw.</p><p>Zalecamy trening wzmacniający — szczególnie mięśnie ramion, core i nóg. Windsurfing to intensywny sport — dobra kondycja ogólna przyspiesza naukę.</p>",
+      "whatToTake": "<ul><li>Kostium kąpielowy (3–4 szt.)</li><li>Ręcznik plażowy (2 szt.)</li><li>Krem z filtrem SPF 50+ (wodoodporny)</li><li>Okulary przeciwsłoneczne z filtrem UV i paskiem zabezpieczającym</li><li>Nakrycie głowy</li><li>Lekka kurtka na chłodniejsze wieczory</li><li>Buty do wody (neoprenowe lub stare tenisówki)</li><li>Buty sportowe na zajęcia na lądzie</li><li>Aparat fotograficzny lub wodoodporna obudowa do telefonu</li></ul>"
     },
     "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?event=event-002-uuid",
     "contact": {
       "firstname": "Marek",
-      "lastname": "Nadmorski",
-      "email": "marek.nadmorski@oaza-test.pl",
-      "phone": "+48 600 234 567"
+      "lastname": "Wiatrowski",
+      "email": "marek.wiatrowski@oaza-test.pl",
+      "phone": "+48 602 222 333"
     },
     "turnusy": [
       {
-        "id": "session-004-uuid",
+        "id": "session-003-uuid",
         "name": "Turnus I",
-        "dateFrom": "2026-07-05",
-        "dateTo": "2026-07-18",
-        "numberOfDays": 14,
-        "priceFrom": 229000,
+        "dateFrom": "2026-08-08",
+        "dateTo": "2026-08-18",
+        "numberOfDays": 11,
+        "priceFrom": 359000,
         "transport": {
-          "type": "train",
-          "description": "Pociąg IC Kraków Główny → Łeba z przesiadką w Gdyni"
+          "type": "bus",
+          "description": "Autokar z Krakowa przez Warszawa Centralna do Dźwirzyno"
         },
         "meetingPoints_start": [
           {
-            "name": "Kraków Główny — peron 3",
-            "address": "pl. Dworcowy 1, Kraków",
+            "name": "Kraków Główny",
+            "address": "ul. Bosacka 18, Kraków",
             "gps": { "lat": 50.0681, "lng": 19.9452 },
-            "description": "Zbiórka przy peronie 3 przy tablicy informacyjnej. Bilety zapewnia organizator.",
-            "date": "2026-07-05",
-            "hour": "06:30"
+            "description": "Zbiórka przy wejściu głównym. Autokar jedzie przez Warszawę.",
+            "date": "2026-08-08",
+            "hour": "06:00"
+          },
+          {
+            "name": "Warszawa Centralna",
+            "address": "Al. Jerozolimskie 54, Warszawa",
+            "gps": { "lat": 52.2286, "lng": 21.0031 },
+            "description": "Postój na Warszawa Centralna — wsiadają uczestnicy z Warszawy.",
+            "date": "2026-08-08",
+            "hour": "09:30"
           }
         ],
         "meetingPoints_return": [
           {
-            "address": "pl. Dworcowy 1, Kraków",
+            "address": "Al. Jerozolimskie 54, Warszawa",
+            "gps": { "lat": 52.2286, "lng": 21.0031 },
+            "description": "Wysiadka w Warszawie Centralnej. Szacowany przyjazd.",
+            "date": "2026-08-18",
+            "hour": "17:00"
+          },
+          {
+            "address": "ul. Bosacka 18, Kraków",
             "gps": { "lat": 50.0681, "lng": 19.9452 },
-            "description": "Powrót pociągiem, szacowany przyjazd do Krakowa.",
-            "date": "2026-07-18",
+            "description": "Powrót do Krakowa Głównego. Szacowany przyjazd.",
+            "date": "2026-08-18",
             "hour": "20:30"
           }
         ],
         "seatsAvailable": 22,
         "seatsAll": 30,
-        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=session-004-uuid"
+        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=session-003-uuid"
       }
     ]
   },
   {
     "id": "event-003-uuid",
-    "name": "Zimowisko Beskidy 2026/27",
+    "name": "FutureLab Camp — Bukowina Tatrzańska 2026",
+    "minAge": 10,
+    "maxAge": 15,
     "tags": [
-      { "name": "góry", "isPublic": true },
-      { "name": "zima", "isPublic": true },
-      { "name": "narty", "isPublic": true }
+      { "name": "nowe technologie", "isPublic": true },
+      { "name": "active", "isPublic": true },
+      { "name": "obóz letni", "isPublic": true },
+      { "name": "nowość", "isPublic": false }
     ],
     "localization": {
-      "destination": "Beskid Śląski",
-      "name": "Hotel Klimczok",
+      "destination": "Tatry",
+      "name": "Centrum Wypoczynku Bukowina",
       "address": {
-        "address": "ul. Narciarzy 8",
-        "city": "Szczyrk",
-        "code": "43-370",
+        "address": "ul. Tatrzańska 14",
+        "city": "Bukowina Tatrzańska",
+        "code": "34-530",
         "country": "PL"
       },
-      "gps": { "lat": 49.7194, "lng": 19.0356 },
-      "webpage": "https://hotelklimczok.pl",
-      "email": "recepcja@hotelklimczok.pl",
-      "phone": "+48 33 829 83 00",
-      "description": "Hotel 3*** w centrum Szczyrku, 300 m od wyciągu Szczyrk Mountain Resort. Własna sauna i jacuzzi. Wypożyczalnia sprzętu narciarskiego w hotelu.",
+      "gps": { "lat": 49.3722, "lng": 20.0897 },
+      "webpage": "https://cwbukowina.pl",
+      "email": "recepcja@cwbukowina.pl",
+      "phone": "+48 18 207 71 00",
+      "description": "Nowoczesne centrum wypoczynkowe u podnóża Tatr w Bukowinie Tatrzańskiej. Sala komputerowa, pracownia druku 3D, laboratorium elektroniki, basen kryty, boiska sportowe.",
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://images.unsplash.com/photo-1551524559-8af4e6624178?w=800"
+      "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800"
     ],
-    "leadImageUrl": "https://images.unsplash.com/photo-1551524559-8af4e6624178?w=800",
+    "leadImageUrl": "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800",
     "leadVideoUrl": null,
+    "videoUrls": [],
     "description": {
-      "general": "<p>Zimowy obóz narciarski w Beskidach dla dzieci i młodzieży w wieku 9–15 lat. Nauka i doskonalenie techniki narciarskiej na stokach Szczyrku pod okiem certyfikowanych instruktorów PZN.</p><p>Grupy do 10 osób dobierane według poziomu zaawansowania: beginner, intermediate, advanced. Karnet na stok wliczony w cenę.</p>",
-      "program": "<ul><li><strong>Codziennie rano:</strong> Zajęcia na stoku z instruktorem (3h)</li><li><strong>Codziennie po południu:</strong> Wolne jeżdżenie lub zajęcia z instruktorem (2h)</li><li><strong>Poniedziałek wieczór:</strong> Wieczór filmowy — filmy narciarskie</li><li><strong>Środa wieczór:</strong> Dyskoteka i konkurs tańca</li><li><strong>Piątek:</strong> Zawody narciarskie z nagrodami</li><li><strong>Niedziela:</strong> Sauna i relaks po tygodniu jeżdżenia</li></ul>",
-      "priceInclude": "<ul><li>Zakwaterowanie w pokojach 2–3 osobowych</li><li>Pełne wyżywienie (śniadanie, obiad, kolacja + podwieczorek)</li><li>Karnet 6-dniowy na wyciągi Szczyrk Mountain Resort</li><li>Lekcje z instruktorem PZN 5h dziennie</li><li>Ubezpieczenie NNW i OC narciarskie</li><li>Wypożyczenie nart i butów (na życzenie, za dodatkową opłatą)</li></ul>"
+      "general": "<p>9-dniowy obóz technologiczno-przygodowy u podnóża Tatr dla dzieci i młodzieży w wieku 10–15 lat. Połączenie nauki programowania, druku 3D, elektroniki i robotyki z aktywnym wypoczynkiem w górach.</p><p>Uczestnicy pracują w małych grupach (max 8 osób) nad projektami technologicznymi — od pomysłu przez prototyp do gotowego produktu. Wieczorami sport i ogniska. Na koniec obozu — publiczna prezentacja projektów i certyfikaty.</p>",
+      "program": "<ul><li><strong>Dzień 1:</strong> Przyjazd, zakwaterowanie, kick-off projektów — losowanie grup i wybór tematu</li><li><strong>Dzień 2:</strong> Programowanie w Pythonie — podstawy algorytmiki, pierwsze skrypty</li><li><strong>Dzień 3:</strong> Druk 3D — projektowanie w Tinkercad, wydruk pierwszego modelu</li><li><strong>Dzień 4:</strong> Wycieczka na Gubałówkę kolejką, gra terenowa z GPSem</li><li><strong>Dzień 5:</strong> Elektronika — Arduino, sensory, LED, pierwsze układy</li><li><strong>Dzień 6:</strong> Robotyka — budowanie i programowanie robota LEGO Mindstorms</li><li><strong>Dzień 7:</strong> Hackathon — całodniowe intensywne prace nad projektem grupowym</li><li><strong>Dzień 8:</strong> Finalizacja projektów, prezentacje, wręczenie certyfikatów, ognisko</li><li><strong>Dzień 9:</strong> Śniadanie, pakowanie, wyjazd</li></ul>",
+      "priceInclude": "<ul><li>Zakwaterowanie w centrum (pokoje 3-osobowe z łazienką)</li><li>Pełne wyżywienie (śniadanie, obiad, kolacja)</li><li>Ubezpieczenie NNW i OC</li><li>Dostęp do sali komputerowej przez cały pobyt</li><li>Materiały do druku 3D i elektroniki</li><li>Licencje na oprogramowanie (Tinkercad, Arduino IDE, Python)</li><li>Bilet na kolejkę na Gubałówkę</li><li>Certyfikat ukończenia obozu technologicznego</li></ul>"
     },
     "documents": [
-      { "name": "Regulamin uczestnika", "url": "https://example.com/docs/regulamin-zimowisko.pdf" },
+      { "name": "Regulamin uczestnika", "url": "https://example.com/docs/regulamin-futurelab.pdf" },
       { "name": "Karta zdrowia", "url": "https://example.com/docs/karta-zdrowia.pdf" },
-      { "name": "Formularz wypożyczenia sprzętu", "url": "https://example.com/docs/wypozyczenie-sprzetu.pdf" }
+      { "name": "Zgoda rodziców", "url": "https://example.com/docs/zgoda-rodzicow.pdf" }
     ],
     "generalTerms": {
-      "insurance": "Ubezpieczenie NNW narciarskie do 100 000 zł i OC do 500 000 zł. Polisa obejmuje wszystkie aktywności na stoku oraz poza nim podczas obozu.",
-      "drugOrdering": "Leki na receptę wydawane przez pielęgniarkę. Leki OTC uczestnik może posiadać samodzielnie po poinformowaniu kadry.",
-      "specialDiet": "Diety specjalne dostępne po wcześniejszym zgłoszeniu. Hotel jest w stanie przygotować diety wegetariańskie i bezglutenowe.",
-      "deadlinesAndDocumentsInfo": "Formularz wypożyczenia sprzętu (wraz z rozmiarami butów i wzrostem) należy odesłać do 21 dni przed wyjazdem. Karta zdrowia — do 14 dni przed wyjazdem."
+      "insurance": "Ubezpieczenie NNW do 50 000 zł i OC do 500 000 zł. Polisa obejmuje cały czas pobytu oraz zajęcia na terenie ośrodka i wycieczki.",
+      "drugOrdering": "Leki na receptę wydawane przez pielęgniarkę obozową po przedstawieniu zaświadczenia lekarskiego. Leki OTC uczestnik może posiadać po poinformowaniu kadry.",
+      "specialDiet": "Diety specjalne (wegetariańska, wegańska, bezglutenowa) zapewniane po zgłoszeniu w formularzu zapisu do 7 dni przed wyjazdem.",
+      "deadlinesAndDocumentsInfo": "Kartę zdrowia przesłać elektronicznie do 14 dni przed wyjazdem. Zgodę rodziców dostarczyć w dniu wyjazdu."
     },
     "instructions": {
-      "howToPrepare": "<p>Zimowisko narciarskie jest doskonałe zarówno dla początkujących, jak i dla zaawansowanych narciarzy. Grupy są dobierane według poziomu, więc nie musisz mieć doświadczenia.</p><p>Polecamy wcześniejsze przygotowanie kondycyjne: ćwiczenia wzmacniające kolana i uda (przysiady, wykroki) przez 4–6 tygodni przed wyjazdem.</p>",
-      "whatToTake": "<ul><li>Kask narciarski (obowiązkowy — bez kasku nie dopuszczamy do jazdy)</li><li>Gogle narciarskie</li><li>Rękawice narciarskie (wodoodporne)</li><li>Kombinezon narciarski lub kurtka + spodnie narciarskie</li><li>Bielizna termiczna (2 komplety)</li><li>Grube skarpety narciarskie (3–4 pary)</li><li>Buty apres-ski lub śniegowce na wieczory</li></ul>"
+      "howToPrepare": "<p>Nie musisz mieć wcześniejszego doświadczenia z programowaniem — grupy są dobierane według poziomu, a naukę zaczynamy od podstaw. Jeśli jednak znasz już Scratch lub Python, poinformuj o tym w formularzu — trafi do grupy bardziej zaawansowanej.</p><p>Na obóz warto zabrać laptop lub tablet (nieobowiązkowo — sprzęt jest dostępny w ośrodku), notatnik i długopis do szkicowania pomysłów.</p>",
+      "whatToTake": "<ul><li>Laptop lub tablet (opcjonalnie — sprzęt dostępny na miejscu)</li><li>Mysz komputerowa (jeśli wolisz trackpad to też spoko)</li><li>Buty trekkingowe lub sportowe na wycieczki</li><li>Wygodne ubranie na co dzień</li><li>Kurtka przeciwdeszczowa</li><li>Strój kąpielowy na basen</li><li>Notatnik i długopis do szkicowania projektów</li><li>Krem z filtrem SPF 30+</li></ul>"
     },
     "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?event=event-003-uuid",
     "contact": {
-      "firstname": "Piotr",
-      "lastname": "Śnieżny",
-      "email": "piotr.sniezny@oaza-test.pl",
-      "phone": "+48 600 345 678"
+      "firstname": "Agnieszka",
+      "lastname": "Kowalska",
+      "email": "agnieszka.kowalska@oaza-test.pl",
+      "phone": "+48 603 333 444"
     },
     "turnusy": [
       {
-        "id": "session-005-uuid",
+        "id": "session-004-uuid",
         "name": "Turnus I",
-        "dateFrom": "2027-01-10",
-        "dateTo": "2027-01-17",
-        "numberOfDays": 8,
-        "priceFrom": 259000,
+        "dateFrom": "2026-08-12",
+        "dateTo": "2026-08-20",
+        "numberOfDays": 9,
+        "priceFrom": 339000,
         "transport": {
           "type": "bus",
-          "description": "Autokar z Krakowa bezpośrednio pod hotel"
+          "description": "Autokar z Krakowa (dworzec Kraków Główny) bezpośrednio pod centrum wypoczynkowe"
         },
         "meetingPoints_start": [
           {
-            "name": "Galeria Krakowska — parking P1",
-            "address": "ul. Pawia 5, Kraków",
+            "name": "Kraków Główny",
+            "address": "ul. Bosacka 18, Kraków",
             "gps": { "lat": 50.0681, "lng": 19.9452 },
-            "description": "Zbiórka przy wejściu do parkingu P1 Galerii Krakowskiej. Bagaże załadować do schowka autokaru.",
-            "date": "2027-01-10",
-            "hour": "07:30"
+            "description": "Zbiórka przy wejściu głównym do dworca od strony peronów. Autokar odjeżdża punktualnie.",
+            "date": "2026-08-12",
+            "hour": "08:00"
           }
         ],
         "meetingPoints_return": [
           {
-            "address": "ul. Pawia 5, Kraków",
+            "address": "ul. Bosacka 18, Kraków",
             "gps": { "lat": 50.0681, "lng": 19.9452 },
-            "description": "Powrót pod Galerię Krakowską.",
-            "date": "2027-01-17",
+            "description": "Powrót pod dworzec Kraków Główny. Szacowany przyjazd.",
+            "date": "2026-08-20",
             "hour": "17:00"
           }
         ],
-        "seatsAvailable": 7,
+        "seatsAvailable": 3,
         "seatsAll": 25,
-        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=session-005-uuid"
+        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=session-004-uuid"
       }
     ]
   }
