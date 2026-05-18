@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Campsflow\Admin;
 
+use Campsflow\Config;
 use Campsflow\PostType\EventPostType;
 use Campsflow\Sync\SyncLog;
 use Campsflow\Sync\SyncScheduler;
@@ -176,6 +177,8 @@ final class SettingsPage
         submit_button(__('Zapisz', 'campsflow'), 'primary cf-form__submit');
         echo '</form>';
 
+        $this->renderUrlInfo();
+
         // Rendered visually next to the select via CSS absolute/flex trick
         echo '<form id="cf-sync-now-form" method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
         wp_nonce_field('cf_sync_now');
@@ -229,6 +232,52 @@ final class SettingsPage
 
         submit_button(__('Zapisz', 'campsflow'), 'primary cf-form__submit');
         echo '</form>';
+    }
+
+    private function renderUrlInfo(): void
+    {
+        $tenantSlug = (string) get_option('campsflow_tenant_slug', '');
+        $apiUrl     = Config::apiUrl();
+        $adminUrl   = Config::adminUrl();
+        $apiOverride   = Config::isOverridden('CAMPSFLOW_API_URL');
+        $adminOverride = Config::isOverridden('CAMPSFLOW_ADMIN_URL');
+        $eventsUrl  = $tenantSlug ? Config::eventsEndpoint($tenantSlug) : $apiUrl . '/api/v1/public/{tenant_slug}/events';
+
+        echo '<hr class="cf-divider">';
+        echo '<h3>' . esc_html__('Adresy URL synchronizacji', 'campsflow') . '</h3>';
+        echo '<table class="cf-url-table">';
+        $this->urlRow('API', $apiUrl, $apiOverride, 'CAMPSFLOW_API_URL');
+        $this->urlRow('Events endpoint', $eventsUrl, $apiOverride, 'CAMPSFLOW_API_URL');
+        $this->urlRow('Panel Campsflow', $adminUrl, $adminOverride, 'CAMPSFLOW_ADMIN_URL');
+        echo '</table>';
+
+        echo '<details class="cf-url-override">';
+        echo '<summary>' . esc_html__('Jak nadpisać URL (np. localhost do testów)', 'campsflow') . '</summary>';
+        echo '<div class="cf-url-override__body">';
+        echo '<p class="cf-form__desc">' . esc_html__('Opcja 1 — stała PHP w wp-config.php:', 'campsflow') . '</p>';
+        echo '<pre class="cf-code">define(\'CAMPSFLOW_API_URL\', \'http://localhost:3000\');
+define(\'CAMPSFLOW_ADMIN_URL\', \'http://localhost:3001\');</pre>';
+        echo '<p class="cf-form__desc">' . esc_html__('Opcja 2 — w .wp-env.json (środowisko deweloperskie):', 'campsflow') . '</p>';
+        echo '<pre class="cf-code">"config": {
+  "CAMPSFLOW_API_URL": "http://host.docker.internal:3000",
+  "CAMPSFLOW_ADMIN_URL": "http://host.docker.internal:3001"
+}</pre>';
+        echo '<p class="cf-form__desc">' . esc_html__('Zmienne środowiskowe (OS / Docker):', 'campsflow') . '</p>';
+        echo '<pre class="cf-code">CAMPSFLOW_API_URL=http://localhost:3000</pre>';
+        echo '</div></details>';
+    }
+
+    private function urlRow(string $label, string $url, bool $overridden, string $constant): void
+    {
+        $badge = $overridden
+            ? '<span class="cf-url-badge cf-url-badge--override" title="' . esc_attr($constant) . '">' . esc_html__('nadpisany', 'campsflow') . '</span>'
+            : '<span class="cf-url-badge cf-url-badge--default">' . esc_html__('domyślny', 'campsflow') . '</span>';
+
+        echo '<tr>';
+        echo '<td class="cf-url-table__label">' . esc_html($label) . '</td>';
+        echo '<td><code class="cf-url-code">' . esc_html($url) . '</code></td>';
+        echo '<td>' . $badge . '</td>';
+        echo '</tr>';
     }
 
     private function renderHistoryTab(): void
@@ -338,6 +387,20 @@ final class SettingsPage
         .cf-form__desc--set { color: #16a34a; }
         .cf-divider { margin: 28px 0; border-color: #e5e7eb; }
         .cf-form__submit { margin-top: 8px !important; }
+
+        /* URL table */
+        .cf-url-table { border-collapse: collapse; margin-bottom: 12px; }
+        .cf-url-table td { padding: 5px 12px 5px 0; vertical-align: middle; font-size: 13px; }
+        .cf-url-table__label { color: #6b7280; white-space: nowrap; min-width: 130px; }
+        .cf-url-code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12px; word-break: break-all; }
+        .cf-url-badge { font-size: 11px; padding: 1px 6px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+        .cf-url-badge--default  { background: #f3f4f6; color: #6b7280; }
+        .cf-url-badge--override { background: #fef3c7; color: #92400e; }
+        .cf-url-override { margin-top: 4px; }
+        .cf-url-override summary { cursor: pointer; font-size: 13px; color: #2563eb; }
+        .cf-url-override summary:hover { text-decoration: underline; }
+        .cf-url-override__body { margin-top: 10px; }
+        .cf-code { background: #1e1e2e; color: #cdd6f4; padding: 10px 14px; border-radius: 6px; font-size: 12px; overflow-x: auto; }
 
         /* Stat grid */
         .cf-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0 28px; max-width: 700px; }

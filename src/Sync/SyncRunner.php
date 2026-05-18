@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Campsflow\Sync;
 
+use Campsflow\Config;
 use Campsflow\PostType\EventPostType;
 use Campsflow\PostType\PostStatus;
 use Campsflow\PostType\SessionPostType;
@@ -18,21 +19,12 @@ final class SyncRunner
 {
     public function run(): SyncStats
     {
-        $fixturePath = CAMPSFLOW_PLUGIN_DIR . 'tests/fixtures/api-events.json';
-
-        if (! file_exists($fixturePath)) {
-            throw new \RuntimeException('Fixture file not found: ' . $fixturePath);
-        }
-
-        $json = file_get_contents($fixturePath);
-        if ($json === false) {
-            throw new \RuntimeException('Cannot read fixture file.');
-        }
-
-        $events = json_decode($json, true);
-        if (! is_array($events)) {
-            throw new \RuntimeException('Invalid JSON in fixture file.');
-        }
+        // TODO: replace with fetchFromApi() when Campsflow public API is ready:
+        // $events = $this->fetchFromApi(
+        //     Config::eventsEndpoint(get_option('campsflow_tenant_slug')),
+        //     get_option('campsflow_api_key'),
+        // );
+        $events = $this->loadFixture();
 
         $transformer    = new Transformer();
         $stats          = new SyncStats();
@@ -61,6 +53,60 @@ final class SyncRunner
         $this->inactivateMissing(SessionPostType::SLUG, 'cf_session_id', $seenSessionIds, $stats, false);
 
         return $stats;
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function loadFixture(): array
+    {
+        $path = CAMPSFLOW_PLUGIN_DIR . 'tests/fixtures/api-events.json';
+
+        if (! file_exists($path)) {
+            throw new \RuntimeException('Fixture file not found: ' . $path);
+        }
+
+        $json = file_get_contents($path);
+        if ($json === false) {
+            throw new \RuntimeException('Cannot read fixture file.');
+        }
+
+        $data = json_decode($json, true);
+        if (! is_array($data)) {
+            throw new \RuntimeException('Invalid JSON in fixture file.');
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function fetchFromApi(string $url, string $apiKey): array
+    {
+        $response = wp_remote_get($url, [
+            'timeout' => 15,
+            'headers' => [
+                'Authorization' => 'Bearer ' . $apiKey,
+                'Accept'        => 'application/json',
+            ],
+        ]);
+
+        if (is_wp_error($response)) {
+            throw new \RuntimeException('API request failed: ' . $response->get_error_message());
+        }
+
+        $code = (int) wp_remote_retrieve_response_code($response);
+        if ($code !== 200) {
+            throw new \RuntimeException('API returned HTTP ' . $code);
+        }
+
+        $data = json_decode(wp_remote_retrieve_body($response), true);
+        if (! is_array($data)) {
+            throw new \RuntimeException('API response is not valid JSON array.');
+        }
+
+        return $data;
     }
 
     /**
