@@ -153,7 +153,11 @@ final class SettingsPage
         echo '<div class="cf-form__group">';
         echo '<label class="cf-form__label" for="campsflow_tenant_slug">' . esc_html__('Tenant slug', 'campsflow') . '</label>';
         echo '<input class="cf-form__input" type="text" id="campsflow_tenant_slug" name="campsflow_tenant_slug" value="' . esc_attr($tenantSlug) . '" placeholder="np. moj-oboz">';
-        echo '<p class="cf-form__desc">' . esc_html__('Identyfikator organizatora w systemie Campsflow.', 'campsflow') . '</p>';
+        if ($tenantSlug && preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $tenantSlug)) {
+            echo '<p class="cf-form__desc cf-form__desc--warn">⚠ ' . esc_html__('Tenant slug wygląda jak UUID — powinien to być czytelny identyfikator tekstowy, np. "moj-oboz". Sprawdź w ustawieniach systemu Campsflow.', 'campsflow') . '</p>';
+        } else {
+            echo '<p class="cf-form__desc">' . esc_html__('Identyfikator organizatora w systemie Campsflow.', 'campsflow') . '</p>';
+        }
         echo '</div>';
 
         echo '<div class="cf-form__group">';
@@ -390,7 +394,8 @@ define(\'CAMPSFLOW_ADMIN_URL\', \'http://localhost:3001\');</pre>';
         .cf-form__select { padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; min-width: 220px; }
         .cf-form__inline { display: flex; align-items: center; gap: 8px; font-size: 14px; }
         .cf-form__desc { color: #6b7280; font-size: 12px; margin: 4px 0 0; }
-        .cf-form__desc--set { color: #16a34a; }
+        .cf-form__desc--set  { color: #16a34a; }
+        .cf-form__desc--warn { color: #92400e; background: #fef3c7; border-radius: 4px; padding: 4px 8px; }
         .cf-divider { margin: 28px 0; border-color: #e5e7eb; }
         .cf-form__submit { margin-top: 8px !important; }
         .cf-form__interval-row { display: flex; align-items: center; gap: 10px; }
