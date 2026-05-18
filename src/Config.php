@@ -32,7 +32,7 @@ final class Config
     public static function eventsEndpoint(string $tenantSlug): string
     {
         assert($tenantSlug !== '', 'Tenant slug must not be empty');
-        return rtrim(self::apiUrl(), '/') . '/api/v1/public/' . rawurlencode($tenantSlug) . '/events';
+        return rtrim(self::apiUrl(), '/') . '/api/public/' . rawurlencode($tenantSlug) . '/events';
     }
 
     public static function adminEventUrl(string $tenantSlug, string $cfEventId): string
