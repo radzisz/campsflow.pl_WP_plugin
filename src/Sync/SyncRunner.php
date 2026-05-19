@@ -17,12 +17,14 @@ final class SyncRunner
         $tenantSlug = (string) get_option('campsflow_tenant_slug', '');
         $apiKey     = (string) get_option('campsflow_api_key', '');
 
-        $events = ($tenantSlug && $apiKey)
-            ? $this->fetchFromApi(Config::eventsEndpoint($tenantSlug), $apiKey)
-            : $this->loadFixture();
+        $usingFixture = ! $tenantSlug || ! $apiKey;
+        $events = $usingFixture
+            ? $this->loadFixture()
+            : $this->fetchFromApi(Config::eventsEndpoint($tenantSlug), $apiKey);
 
         $transformer    = new Transformer();
         $stats          = new SyncStats();
+        $stats->isFixture = $usingFixture;
         $seenEventIds   = [];
         $seenSessionIds = [];
 
@@ -73,12 +75,14 @@ final class SyncRunner
         ];
 
         if ($existing) {
-            $postData['ID'] = $existing;
+            $postData['ID']        = $existing;
+            $postData['post_name'] = $cfId;
             wp_update_post($postData);
             $postId = $existing;
             $stats->eventsUpdated++;
         } else {
             $postId = (int) wp_insert_post($postData);
+            wp_update_post(['ID' => $postId, 'post_name' => $cfId]);
             $stats->eventsAdded++;
         }
 
@@ -97,35 +101,35 @@ final class SyncRunner
     {
         // Localization
         if (isset($event['localization']) && is_array($event['localization'])) {
-            update_post_meta($postId, 'cf_localization', wp_json_encode($event['localization']));
+            update_post_meta($postId, 'cf_localization', wp_json_encode($event['localization'], JSON_UNESCAPED_UNICODE));
         }
 
         // Multimedia
         $multimediaUrls = is_array($event['multimediaUrls'] ?? null) ? $event['multimediaUrls'] : [];
-        update_post_meta($postId, 'cf_multimedia_urls', wp_json_encode($multimediaUrls));
+        update_post_meta($postId, 'cf_multimedia_urls', wp_json_encode($multimediaUrls, JSON_UNESCAPED_UNICODE));
         update_post_meta($postId, 'cf_lead_image_url', (string) ($event['leadImageUrl'] ?? $multimediaUrls[0] ?? ''));
 
         $videoUrls = is_array($event['videoUrls'] ?? null) ? $event['videoUrls'] : [];
-        update_post_meta($postId, 'cf_video_urls', wp_json_encode($videoUrls));
+        update_post_meta($postId, 'cf_video_urls', wp_json_encode($videoUrls, JSON_UNESCAPED_UNICODE));
         update_post_meta($postId, 'cf_lead_video_url', (string) ($event['leadVideoUrl'] ?? $videoUrls[0] ?? ''));
 
         // Description (general already in post_content; keep full object for program/priceInclude)
         if (isset($event['description']) && is_array($event['description'])) {
-            update_post_meta($postId, 'cf_description', wp_json_encode($event['description']));
+            update_post_meta($postId, 'cf_description', wp_json_encode($event['description'], JSON_UNESCAPED_UNICODE));
         }
 
         // Documents
         $documents = is_array($event['documents'] ?? null) ? $event['documents'] : [];
-        update_post_meta($postId, 'cf_documents', wp_json_encode($documents));
+        update_post_meta($postId, 'cf_documents', wp_json_encode($documents, JSON_UNESCAPED_UNICODE));
 
         // General terms
         if (isset($event['generalTerms']) && is_array($event['generalTerms'])) {
-            update_post_meta($postId, 'cf_general_terms', wp_json_encode($event['generalTerms']));
+            update_post_meta($postId, 'cf_general_terms', wp_json_encode($event['generalTerms'], JSON_UNESCAPED_UNICODE));
         }
 
         // Instructions
         if (isset($event['instructions']) && is_array($event['instructions'])) {
-            update_post_meta($postId, 'cf_instructions', wp_json_encode($event['instructions']));
+            update_post_meta($postId, 'cf_instructions', wp_json_encode($event['instructions'], JSON_UNESCAPED_UNICODE));
         }
 
         // Reservation URL
@@ -133,7 +137,7 @@ final class SyncRunner
 
         // Contact
         if (isset($event['contact']) && is_array($event['contact'])) {
-            update_post_meta($postId, 'cf_contact', wp_json_encode($event['contact']));
+            update_post_meta($postId, 'cf_contact', wp_json_encode($event['contact'], JSON_UNESCAPED_UNICODE));
         }
     }
 
@@ -295,9 +299,18 @@ final class SyncRunner
             throw new \RuntimeException('API returned HTTP ' . $code);
         }
 
-        $data = json_decode(wp_remote_retrieve_body($response), true);
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
         if (! is_array($data)) {
-            throw new \RuntimeException('API response is not valid JSON array.');
+            $preview = substr($body, 0, 200);
+            throw new \RuntimeException(
+                sprintf(
+                    'API response is not a valid JSON array (url: %s, json_error: %s, body: %s)',
+                    $url,
+                    json_last_error_msg(),
+                    $preview
+                )
+            );
         }
 
         return $data;

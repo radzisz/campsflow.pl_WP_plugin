@@ -1,0 +1,50 @@
+[changelog]
+header = "# Changelog\n\nWszystkie istotne zmiany są dokumentowane w tym pliku.\n"
+body   = """
+{% if version %}\
+## [{{ version | trim_start_matches(pat="v") }}] — {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+## [Unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+### {{ group }}
+{% for commit in commits %}\
+- {{ commit.message | split(pat="\n") | first | trim }}\
+{% if commit.breaking %} ⚠️ BREAKING{% endif %}
+
+{% endfor %}\
+{% endfor %}\n
+"""
+footer = ""
+trim   = true
+
+[git]
+conventional_commits = true
+filter_unconventional = false
+split_commits = false
+tag_pattern = "v[0-9].*"
+skip_tags = ""
+ignore_tags = ""
+topo_order = false
+sort_commits = "oldest"
+
+commit_preprocessors = [
+    { pattern = "\\(#(\\d+)\\)", replace = "([#$1](https://github.com/campsflow/campsflow-wp/issues/$1))" },
+]
+
+commit_parsers = [
+    { message = "^feat",     group = "Dodano"      },
+    { message = "^fix",      group = "Naprawiono"  },
+    { message = "^refactor", group = "Zmieniono"   },
+    { message = "^perf",     group = "Zmieniono"   },
+    { message = "^config",   group = "Zmieniono"   },
+    { message = "^ui",       group = "Zmieniono"   },
+    { message = "^test",     skip = true           },
+    { message = "^ci",       skip = true           },
+    { message = "^chore",    skip = true           },
+    { message = "^docs",     skip = true           },
+    { message = "^first commit", skip = true       },
+]
+
+protect_breaking_commits = false
+filter_commits = true

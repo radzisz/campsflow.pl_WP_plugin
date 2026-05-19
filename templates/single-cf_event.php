@@ -38,8 +38,23 @@ $instr        = $instrRaw ? (json_decode($instrRaw, true) ?? []) : [];
 $contactRaw   = (string) get_post_meta($eventId, 'cf_contact', true);
 $contact      = $contactRaw ? (json_decode($contactRaw, true) ?? []) : [];
 
-$leadImage    = (string) get_post_meta($eventId, 'cf_lead_image_url', true);
-$leadVideo    = (string) get_post_meta($eventId, 'cf_lead_video_url', true);
+$leadImage     = (string) get_post_meta($eventId, 'cf_lead_image_url', true);
+$leadVideo     = (string) get_post_meta($eventId, 'cf_lead_video_url', true);
+
+$multimediaRaw = (string) get_post_meta($eventId, 'cf_multimedia_urls', true);
+$galleryUrls   = $multimediaRaw ? (json_decode($multimediaRaw, true) ?? []) : [];
+if (! is_array($galleryUrls)) {
+    $galleryUrls = [];
+}
+
+$videoUrlsRaw = (string) get_post_meta($eventId, 'cf_video_urls', true);
+$videoUrls    = $videoUrlsRaw ? (json_decode($videoUrlsRaw, true) ?? []) : [];
+if (! is_array($videoUrls)) {
+    $videoUrls = [];
+}
+if ($leadVideo && ! in_array($leadVideo, $videoUrls, true)) {
+    array_unshift($videoUrls, $leadVideo);
+}
 
 $sessions = new WP_Query([
     'post_type'      => SessionPostType::SLUG,
@@ -155,6 +170,51 @@ $transportIcons = [
           <?php endif; ?>
         </div>
         <?php endif; ?>
+      </div>
+      <?php endif; ?>
+
+      <!-- Gallery -->
+      <?php if (count($galleryUrls) > 1): ?>
+      <div class="cf-section cf-gallery">
+        <h2 class="cf-section__title"><?php esc_html_e('Galeria', 'campsflow'); ?></h2>
+        <div class="cf-gallery__grid">
+          <?php foreach ($galleryUrls as $imgUrl):
+            if (! is_string($imgUrl) || $imgUrl === '') continue; ?>
+          <a href="<?php echo esc_url($imgUrl); ?>" class="cf-gallery__item" target="_blank" rel="noopener">
+            <img src="<?php echo esc_url($imgUrl); ?>" alt="" loading="lazy" class="cf-gallery__img">
+          </a>
+          <?php endforeach; ?>
+        </div>
+      </div>
+      <?php endif; ?>
+
+      <!-- Videos -->
+      <?php if (! empty($videoUrls)): ?>
+      <div class="cf-section cf-videos">
+        <h2 class="cf-section__title"><?php esc_html_e('Wideo', 'campsflow'); ?></h2>
+        <?php foreach ($videoUrls as $videoUrl):
+          if (! is_string($videoUrl) || $videoUrl === '') continue;
+          $embedUrl = null;
+          if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/', $videoUrl, $m)) {
+              $embedUrl = 'https://www.youtube-nocookie.com/embed/' . $m[1];
+          } elseif (preg_match('/vimeo\.com\/(\d+)/', $videoUrl, $m)) {
+              $embedUrl = 'https://player.vimeo.com/video/' . $m[1];
+          }
+        ?>
+          <?php if ($embedUrl): ?>
+          <div class="cf-video-wrap">
+            <iframe src="<?php echo esc_url($embedUrl); ?>" loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen title="<?php esc_attr_e('Film', 'campsflow'); ?>"></iframe>
+          </div>
+          <?php else: ?>
+          <div class="cf-video-wrap">
+            <video controls preload="none">
+              <source src="<?php echo esc_url($videoUrl); ?>">
+            </video>
+          </div>
+          <?php endif; ?>
+        <?php endforeach; ?>
       </div>
       <?php endif; ?>
 

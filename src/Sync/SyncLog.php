@@ -15,6 +15,7 @@ final class SyncLog
             'duration_ms' => $durationMs,
             'status'      => $error ? 'error' : 'ok',
             'error'       => $error,
+            'is_fixture'  => $stats->isFixture,
             'stats'       => $stats->toArray(),
         ];
 

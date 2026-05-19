@@ -21,15 +21,15 @@ final class Transformer
         assert(isset($apiTurnus['id'], $apiTurnus['seatsAvailable'], $apiTurnus['seatsAll']));
 
         $transport = isset($apiTurnus['transport']) && is_array($apiTurnus['transport'])
-            ? (string) wp_json_encode($apiTurnus['transport'])
-            : wp_json_encode(['type' => 'own', 'description' => '']);
+            ? (string) wp_json_encode($apiTurnus['transport'], JSON_UNESCAPED_UNICODE)
+            : (string) wp_json_encode(['type' => 'own', 'description' => '']);
 
         $meetingStart = isset($apiTurnus['meetingPoints_start']) && is_array($apiTurnus['meetingPoints_start'])
-            ? (string) wp_json_encode($apiTurnus['meetingPoints_start'])
+            ? (string) wp_json_encode($apiTurnus['meetingPoints_start'], JSON_UNESCAPED_UNICODE)
             : '[]';
 
         $meetingReturn = isset($apiTurnus['meetingPoints_return']) && is_array($apiTurnus['meetingPoints_return'])
-            ? (string) wp_json_encode($apiTurnus['meetingPoints_return'])
+            ? (string) wp_json_encode($apiTurnus['meetingPoints_return'], JSON_UNESCAPED_UNICODE)
             : '[]';
 
         return new TransformedTurnus(

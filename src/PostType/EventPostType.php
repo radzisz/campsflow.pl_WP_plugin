@@ -19,11 +19,11 @@ final class EventPostType
         register_post_type(self::SLUG, [
             'labels' => [
                 'name'          => __('CampsFlow', 'campsflow'),
-                'singular_name' => __('Impreza', 'campsflow'),
+                'singular_name' => __('Wydarzenie', 'campsflow'),
                 'menu_name'     => __('CampsFlow', 'campsflow'),
-                'all_items'     => __('Imprezy', 'campsflow'),
-                'search_items'  => __('Szukaj imprez', 'campsflow'),
-                'not_found'     => __('Nie znaleziono imprez. Uruchom synchronizację.', 'campsflow'),
+                'all_items'     => __('Wydarzenia', 'campsflow'),
+                'search_items'  => __('Szukaj wydarzeń', 'campsflow'),
+                'not_found'     => __('Nie znaleziono wydarzeń. Uruchom synchronizację.', 'campsflow'),
             ],
             'public'            => true,
             'show_ui'           => true,

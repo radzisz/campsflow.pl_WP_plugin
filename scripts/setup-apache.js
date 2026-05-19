@@ -13,6 +13,7 @@ const env = { ...process.env, MSYS_NO_PATHCONV: '1' };
 // Dev seed values — must match supabase/seed/01_tenants.sql
 const DEV_TENANT_SLUG = 'oaza-test';
 const DEV_API_KEY     = 'wp-sync-oaza-test-dev-key';
+const DEV_API_URL     = 'http://host.docker.internal:3601';
 
 function run(cmd, opts = {}) {
     try {
@@ -54,8 +55,9 @@ console.log('✓ Rewrite rules flushed');
 // 4. CampsFlow plugin options — dev seed
 run(`docker exec ${cliContainer} wp option update campsflow_tenant_slug "${DEV_TENANT_SLUG}" --allow-root`);
 run(`docker exec ${cliContainer} wp option update campsflow_api_key "${DEV_API_KEY}" --allow-root`);
+run(`docker exec ${cliContainer} wp option update campsflow_api_url "${DEV_API_URL}" --allow-root`);
 console.log(`✓ CampsFlow options set (tenant: ${DEV_TENANT_SLUG})`);
 
 console.log('\nDev environment ready → http://localhost:8890');
 console.log(`  Tenant: ${DEV_TENANT_SLUG}`);
-console.log(`  API:    http://host.docker.internal:3501/api/public/${DEV_TENANT_SLUG}/events`);
+console.log(`  API:    http://host.docker.internal:3601/api/v1/public/${DEV_TENANT_SLUG}/events`);

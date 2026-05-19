@@ -2,9 +2,10 @@
     "name": "campsflow-wp",
     "private": true,
     "scripts": {
-        "env:start": "wp-env start && npm run env:setup",
+        "env:start": "node scripts/start.js",
         "env:setup": "node scripts/setup-apache.js",
-        "env:stop": "wp-env stop",
+        "env:stop": "node scripts/stop.js",
+        "env:upgrade": "wp-env start --update && npm run env:setup",
         "env:clean": "wp-env clean all",
         "env:logs": "wp-env logs",
         "env:flush": "node -e \"const {execSync}=require('child_process');const env={...process.env,MSYS_NO_PATHCONV:'1'};const wp=execSync('docker ps --filter publish=8890 --format {{.Names}}',{env}).toString().trim().replace('wordpress','cli');execSync('docker exec '+wp+' wp option update permalink_structure /%postname%/ --allow-root',{stdio:'inherit',env});execSync('docker exec '+wp+' wp rewrite flush --allow-root',{stdio:'inherit',env});\"",

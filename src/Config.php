@@ -16,8 +16,8 @@ namespace Campsflow;
  */
 final class Config
 {
-    private const DEFAULT_API_URL   = 'https://campsflow.pl';
-    private const DEFAULT_ADMIN_URL = 'https://admin.campsflow.pl';
+    private const DEFAULT_API_URL   = 'https://api.ukryteskarby.pl';
+    private const DEFAULT_ADMIN_URL = 'https://admin.ukryteskarby.pl';
 
     public static function apiUrl(): string
     {
@@ -32,7 +32,7 @@ final class Config
     public static function eventsEndpoint(string $tenantSlug): string
     {
         assert($tenantSlug !== '', 'Tenant slug must not be empty');
-        return rtrim(self::apiUrl(), '/') . '/api/public/' . rawurlencode($tenantSlug) . '/events';
+        return rtrim(self::apiUrl(), '/') . '/api/v1/public/' . rawurlencode($tenantSlug) . '/events';
     }
 
     public static function adminEventUrl(string $tenantSlug, string $cfEventId): string
@@ -63,6 +63,14 @@ final class Config
         $env = getenv($constant);
         if ($env !== false && $env !== '') {
             return $env;
+        }
+
+        if (function_exists('get_option')) {
+            $optionKey = strtolower(str_replace('CAMPSFLOW_', 'campsflow_', $constant));
+            $option    = get_option($optionKey, '');
+            if (is_string($option) && $option !== '') {
+                return $option;
+            }
         }
 
         return $default;

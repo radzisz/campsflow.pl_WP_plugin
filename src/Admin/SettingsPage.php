@@ -108,9 +108,17 @@ final class SettingsPage
 
     private function renderStatusBar(): void
     {
-        $nextRun = wp_next_scheduled(SyncScheduler::HOOK);
-        $lastRun = get_option('campsflow_last_sync', null);
-        $synced  = isset($_GET['cf_synced']) ? (int) $_GET['cf_synced'] : null;
+        $nextRun    = wp_next_scheduled(SyncScheduler::HOOK);
+        $lastRun    = get_option('campsflow_last_sync', null);
+        $synced     = isset($_GET['cf_synced']) ? (int) $_GET['cf_synced'] : null;
+        $lastEntry  = SyncLog::getAll()[0] ?? [];
+        $wasFixture = ! empty($lastEntry['is_fixture']);
+
+        if ($wasFixture) {
+            echo '<div class="cf-fixture-warning">⚠ ';
+            echo esc_html__('DANE TESTOWE — ostatni sync użył lokalnego fixture, nie prawdziwego API. Ustaw Tenant slug i API Key.', 'campsflow');
+            echo '</div>';
+        }
 
         echo '<div class="cf-status-bar">';
 
@@ -297,9 +305,9 @@ define(\'CAMPSFLOW_ADMIN_URL\', \'http://localhost:3001\');</pre>';
 
         // Aggregate stats cards
         echo '<div class="cf-stat-grid">';
-        $this->statCard(__('Imprezy dodane', 'campsflow'), $agg->totalEventsAdded, 'added');
-        $this->statCard(__('Imprezy zaktualizowane', 'campsflow'), $agg->totalEventsUpdated, 'updated');
-        $this->statCard(__('Imprezy nieaktywne', 'campsflow'), $agg->totalEventsInactivated, 'inactivated');
+        $this->statCard(__('Wydarzenia dodane', 'campsflow'), $agg->totalEventsAdded, 'added');
+        $this->statCard(__('Wydarzenia zaktualizowane', 'campsflow'), $agg->totalEventsUpdated, 'updated');
+        $this->statCard(__('Wydarzenia nieaktywne', 'campsflow'), $agg->totalEventsInactivated, 'inactivated');
         $this->statCard(__('Turnusy dodane', 'campsflow'), $agg->totalSessionsAdded, 'added');
         $this->statCard(__('Turnusy zaktualizowane', 'campsflow'), $agg->totalSessionsUpdated, 'updated');
         $this->statCard(__('Turnusy nieaktywne', 'campsflow'), $agg->totalSessionsInactivated, 'inactivated');
@@ -316,7 +324,7 @@ define(\'CAMPSFLOW_ADMIN_URL\', \'http://localhost:3001\');</pre>';
         echo '<th>' . esc_html__('Data', 'campsflow') . '</th>';
         echo '<th>' . esc_html__('Status', 'campsflow') . '</th>';
         echo '<th>' . esc_html__('Czas', 'campsflow') . '</th>';
-        echo '<th>' . esc_html__('Imprezy +/↻/×', 'campsflow') . '</th>';
+        echo '<th>' . esc_html__('Wydarzenia +/↻/×', 'campsflow') . '</th>';
         echo '<th>' . esc_html__('Turnusy +/↻/×', 'campsflow') . '</th>';
         echo '</tr></thead>';
         echo '<tbody>';
@@ -326,15 +334,20 @@ define(\'CAMPSFLOW_ADMIN_URL\', \'http://localhost:3001\');</pre>';
                 continue;
             }
 
-            $status   = (string) ($entry['status'] ?? 'ok');
-            $stats    = $entry['stats'] ?? [];
-            $ev       = $stats['events'] ?? [];
-            $se       = $stats['sessions'] ?? [];
-            $duration = isset($entry['duration_ms']) ? round((int) $entry['duration_ms'] / 1000, 1) . ' s' : '—';
-            $error    = (string) ($entry['error'] ?? '');
+            $status     = (string) ($entry['status'] ?? 'ok');
+            $stats      = $entry['stats'] ?? [];
+            $ev         = $stats['events'] ?? [];
+            $se         = $stats['sessions'] ?? [];
+            $duration   = isset($entry['duration_ms']) ? round((int) $entry['duration_ms'] / 1000, 1) . ' s' : '—';
+            $error      = (string) ($entry['error'] ?? '');
+            $isFixture  = ! empty($entry['is_fixture']);
 
             echo '<tr class="cf-history-row cf-history-row--' . esc_attr($status) . '">';
-            echo '<td><strong>' . esc_html((string) ($entry['synced_at'] ?? '')) . '</strong></td>';
+            echo '<td><strong>' . esc_html((string) ($entry['synced_at'] ?? '')) . '</strong>';
+            if ($isFixture) {
+                echo ' <span class="cf-badge-fixture" title="' . esc_attr__('Dane testowe — brak konfiguracji API', 'campsflow') . '">FIXTURE</span>';
+            }
+            echo '</td>';
             echo '<td>';
             if ($status === 'ok') {
                 echo '<span class="cf-badge-status cf-badge-status--ok">✓ OK</span>';
@@ -433,6 +446,8 @@ define(\'CAMPSFLOW_ADMIN_URL\', \'http://localhost:3001\');</pre>';
 
         /* History table */
         .cf-history-table { margin-top: 8px; }
+        .cf-fixture-warning { background: #fef3c7; border-left: 4px solid #f59e0b; color: #92400e; font-weight: 700; padding: 10px 16px; margin-bottom: 12px; font-size: 13px; }
+        .cf-badge-fixture { background: #fef3c7; color: #92400e; font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 3px; border: 1px solid #f59e0b; letter-spacing: .05em; vertical-align: middle; }
         .cf-history-table th { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #6b7280; }
         .cf-history-row--error td { background: #fff5f5; }
         .cf-history__empty { color: #9ca3af; margin-top: 24px; }

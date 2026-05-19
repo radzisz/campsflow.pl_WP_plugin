@@ -19,7 +19,7 @@ final class SessionPostType
             'labels' => [
                 'name'          => __('Turnusy', 'campsflow'),
                 'singular_name' => __('Turnus', 'campsflow'),
-                'all_items'     => __('Wszystkie turnusy', 'campsflow'),
+                'all_items'     => __('Turnusy', 'campsflow'),
                 'search_items'  => __('Szukaj turnusów', 'campsflow'),
                 'not_found'     => __('Nie znaleziono turnusów.', 'campsflow'),
             ],

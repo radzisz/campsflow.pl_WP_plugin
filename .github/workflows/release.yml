@@ -29,6 +29,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # git-cliff needs full history
+
+      - name: Generate changelog
+        uses: orhun/git-cliff-action@v3
+        id: cliff
+        with:
+          config: cliff.toml
+          args: --latest --strip header
+        env:
+          OUTPUT: /tmp/RELEASE_NOTES.md
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -45,10 +56,8 @@ jobs:
           PLUGIN_SLUG="campsflow"
           ZIP_NAME="${PLUGIN_SLUG}-${VERSION}.zip"
 
-          # Collect files (respects .distignore)
           rsync -av --exclude-from=.distignore . /tmp/${PLUGIN_SLUG}/
 
-          # Zip with plugin slug as root folder (WP convention)
           cd /tmp
           zip -r "${ZIP_NAME}" "${PLUGIN_SLUG}/"
           echo "ZIP_PATH=/tmp/${ZIP_NAME}" >> $GITHUB_ENV
@@ -59,16 +68,13 @@ jobs:
         with:
           name: "Campsflow WP Plugin ${{ github.ref_name }}"
           body: |
-            ## Instalacja
+            ${{ steps.cliff.outputs.content }}
 
-            1. Pobierz plik `${{ env.ZIP_NAME }}` poniżej
-            2. WP Admin → Pluginy → Dodaj nowy → Wyślij plugin → wybierz ZIP
-            3. Aktywuj plugin
+            ---
 
-            ## Aktualizacja
+            **Instalacja:** WP Admin → Pluginy → Dodaj nowy → Wyślij plugin → wybierz `${{ env.ZIP_NAME }}`
 
-            Plugin sprawdza aktualizacje automatycznie przez WP Update Checker.
-            Aktualizacja pojawi się w WP Admin → Pluginy jak każda inna.
+            **Aktualizacja:** pojawi się automatycznie w WP Admin → Pluginy.
           files: ${{ env.ZIP_PATH }}
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}

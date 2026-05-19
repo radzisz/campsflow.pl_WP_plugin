@@ -2,6 +2,10 @@
 
 # Dev
 tests/
+scripts/
+CLAUDE.md
+CHANGELOG.md
+cliff.toml
 .wp-env.json
 phpunit.xml
 phpstan.neon
@@ -18,7 +22,19 @@ node_modules/
 composer.json
 composer.lock
 
-# CI
+# CI / VCS
+.git/
 .github/
 .gitignore
+.gitattributes
 .distignore
+
+# Build artefakty
+dist/
+coverage/
+.phpunit.result.cache
+
+# Inne repo-specyficzne
+supabase/
+.claude/
+README.md

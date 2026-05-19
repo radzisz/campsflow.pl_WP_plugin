@@ -5,12 +5,13 @@ namespace Campsflow\Sync;
 
 final class SyncStats
 {
-    public int $eventsAdded      = 0;
-    public int $eventsUpdated    = 0;
-    public int $eventsInactivated = 0;
-    public int $sessionsAdded     = 0;
-    public int $sessionsUpdated   = 0;
-    public int $sessionsInactivated = 0;
+    public int  $eventsAdded      = 0;
+    public int  $eventsUpdated    = 0;
+    public int  $eventsInactivated = 0;
+    public int  $sessionsAdded     = 0;
+    public int  $sessionsUpdated   = 0;
+    public int  $sessionsInactivated = 0;
+    public bool $isFixture         = false;
 
     public function totalSessions(): int
     {
