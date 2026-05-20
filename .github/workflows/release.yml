@@ -30,16 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # git-cliff needs full history
-
-      - name: Generate changelog
-        uses: orhun/git-cliff-action@v3
-        id: cliff
-        with:
-          config: cliff.toml
-          args: --latest --strip header
-        env:
-          OUTPUT: /tmp/RELEASE_NOTES.md
+          fetch-depth: 0
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -55,11 +46,9 @@ jobs:
           VERSION="${GITHUB_REF_NAME}"
           PLUGIN_SLUG="campsflow"
           ZIP_NAME="${PLUGIN_SLUG}-${VERSION}.zip"
-
-          rsync -av --exclude-from=.distignore . /tmp/${PLUGIN_SLUG}/
-
-          cd /tmp
-          zip -r "${ZIP_NAME}" "${PLUGIN_SLUG}/"
+          mkdir -p /tmp/${PLUGIN_SLUG}
+          rsync -a --exclude-from=.distignore . /tmp/${PLUGIN_SLUG}/
+          cd /tmp && zip -r "${ZIP_NAME}" "${PLUGIN_SLUG}/"
           echo "ZIP_PATH=/tmp/${ZIP_NAME}" >> $GITHUB_ENV
           echo "ZIP_NAME=${ZIP_NAME}" >> $GITHUB_ENV
 
@@ -68,16 +57,9 @@ jobs:
         with:
           name: "Campsflow WP Plugin ${{ github.ref_name }}"
           body: |
-            ${{ steps.cliff.outputs.content }}
-
-            ---
-
             **Instalacja:** WP Admin → Pluginy → Dodaj nowy → Wyślij plugin → wybierz `${{ env.ZIP_NAME }}`
 
             **Aktualizacja:** pojawi się automatycznie w WP Admin → Pluginy.
           files: ${{ env.ZIP_PATH }}
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
-          # Release is created atomically with the ZIP attached.
-          # The puc filter in campsflow.php rejects /zipball/ source archives
-          # in case PUC runs before this job completes.

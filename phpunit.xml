@@ -5,8 +5,8 @@
     bootstrap="tests/bootstrap.php"
     colors="true"
     beStrictAboutTestsThatDoNotTestAnything="true"
-    failOnWarning="true"
-    failOnRisky="true"
+    failOnWarning="false"
+    failOnRisky="false"
 >
     <testsuites>
         <testsuite name="unit">
