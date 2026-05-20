@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 /**
- * Interactive release script.
- * Usage: node scripts/release.js
+ * Release script.
  *
- * 1. Asks: patch / minor / major
- * 2. Bumps version in campsflow.php
- * 3. Runs tests + static analysis
- * 4. Builds ZIP via Docker
- * 5. Commits, tags, pushes
+ * Interactive:   node scripts/release.js
+ * Non-interactive: node scripts/release.js patch|minor|major
+ *
+ * 1. Bumps version in campsflow.php
+ * 2. Runs tests + static analysis via Docker
+ * 3. Builds ZIP via Docker
+ * 4. Commits, tags, pushes
  */
 
-const { execSync, spawnSync } = require('child_process');
+const { execSync } = require('child_process');
 const fs      = require('fs');
 const path    = require('path');
 const readline = require('readline');
@@ -53,31 +54,42 @@ function ask(rl, question) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function main() {
-    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-
     const current = readVersion();
-    console.log(`\nAktualna wersja: ${current}`);
-    console.log(`  patch  → ${bumpVersion(current, 'patch')}`);
-    console.log(`  minor  → ${bumpVersion(current, 'minor')}`);
-    console.log(`  major  → ${bumpVersion(current, 'major')}\n`);
+    const argType = process.argv[2];
 
-    const type = await ask(rl, 'Typ release [patch/minor/major]: ');
-    if (!['patch', 'minor', 'major'].includes(type.trim())) {
-        console.error('Nieprawidłowy typ. Wpisz: patch, minor lub major');
+    let type;
+    if (argType) {
+        // Non-interactive mode: node scripts/release.js patch|minor|major
+        if (!['patch', 'minor', 'major'].includes(argType)) {
+            console.error('Użycie: node scripts/release.js [patch|minor|major]');
+            process.exit(1);
+        }
+        type = argType;
+    } else {
+        // Interactive mode
+        const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+        console.log(`\nAktualna wersja: ${current}`);
+        console.log(`  patch  → ${bumpVersion(current, 'patch')}`);
+        console.log(`  minor  → ${bumpVersion(current, 'minor')}`);
+        console.log(`  major  → ${bumpVersion(current, 'major')}\n`);
+        const answer = await ask(rl, 'Typ release [patch/minor/major]: ');
+        if (!['patch', 'minor', 'major'].includes(answer.trim())) {
+            console.error('Nieprawidłowy typ.');
+            rl.close();
+            process.exit(1);
+        }
+        type = answer.trim();
+        const confirm = await ask(rl, `Wydać v${bumpVersion(current, type)}? [t/n]: `);
         rl.close();
-        process.exit(1);
+        if (confirm.trim().toLowerCase() !== 't') {
+            console.log('Anulowano.');
+            process.exit(0);
+        }
     }
 
-    const newVer = bumpVersion(current, type.trim());
-    const confirm = await ask(rl, `Wydać v${newVer}? [t/n]: `);
-    rl.close();
+    const newVer = bumpVersion(current, type);
 
-    if (confirm.trim().toLowerCase() !== 't') {
-        console.log('Anulowano.');
-        process.exit(0);
-    }
-
-    console.log(`\n=== Bumping do v${newVer} ===`);
+    console.log(`\n=== v${current} → v${newVer} ===`);
     writeVersion(newVer);
 
     console.log('\n=== Testy + analiza ===');
