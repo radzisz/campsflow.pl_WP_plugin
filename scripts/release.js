@@ -97,9 +97,7 @@ async function main() {
     run([
         'docker run --rm',
         `-v "${ROOT}:/src"`,
-        'php:8.2-cli bash -c "',
-        'apt-get update -q && apt-get install -q -y unzip > /dev/null 2>&1 &&',
-        'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer > /dev/null 2>&1 &&',
+        'campsflow-dev bash -c "',
         'cp -r /src /tmp/test-src && cd /tmp/test-src &&',
         'composer install --no-interaction --prefer-dist --quiet &&',
         'vendor/bin/phpunit --testsuite unit &&',
@@ -116,9 +114,7 @@ async function main() {
     run([
         'docker run --rm',
         `-v "${ROOT}:/src" -v "${distDir}:/dist"`,
-        'php:8.2-cli bash -c "',
-        'apt-get update -q && apt-get install -q -y rsync zip > /dev/null 2>&1 &&',
-        'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer > /dev/null 2>&1 &&',
+        'campsflow-dev bash -c "',
         'cp -r /src /tmp/build-src && cd /tmp/build-src &&',
         'composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader --quiet &&',
         'mkdir -p /tmp/stage/campsflow &&',
