@@ -9,108 +9,104 @@ use Campsflow\PostType\EventPostType;
  * Adds "Edytuj wygląd" submenu links that open Elementor editor
  * for the listing page and (if Elementor Pro) the Theme Builder template.
  */
-final class ElementorLinks
-{
-    public function register(): void
-    {
-        if (! did_action('elementor/loaded')) {
-            add_action('elementor/loaded', [$this, 'addMenuItems']);
-        } else {
-            $this->addMenuItems();
-        }
-    }
+final class ElementorLinks {
 
-    public function addMenuItems(): void
-    {
-        add_action('admin_menu', [$this, 'addSubmenus']);
-        add_action('admin_head', [$this, 'fixMenuUrls']);
-    }
+	public function register(): void {
+		if ( ! did_action( 'elementor/loaded' ) ) {
+			add_action( 'elementor/loaded', array( $this, 'addMenuItems' ) );
+		} else {
+			$this->addMenuItems();
+		}
+	}
 
-    public function addSubmenus(): void
-    {
-        $listingPageId = $this->getListingPageId();
+	public function addMenuItems(): void {
+		add_action( 'admin_menu', array( $this, 'addSubmenus' ) );
+		add_action( 'admin_head', array( $this, 'fixMenuUrls' ) );
+	}
 
-        // Listing page — link to Elementor editor (always shown if page exists)
-        if ($listingPageId) {
-            $editUrl = admin_url('post.php?post=' . $listingPageId . '&action=elementor');
-            add_submenu_page(
-                'edit.php?post_type=' . EventPostType::SLUG,
-                __('Edytuj listę obozów', 'campsflow'),
-                __('✏ Edytuj listę', 'campsflow'),
-                'manage_options',
-                'cf-edit-listing',
-                static function () use ($editUrl): void {
-                    wp_redirect($editUrl);
-                    exit;
-                },
-            );
-        }
+	public function addSubmenus(): void {
+		$listingPageId = $this->getListingPageId();
 
-        // WPBakery — standard edit screen (WPBakery overlays it)
-        if ($listingPageId && $this->hasWpBakery()) {
-            $wpbUrl = admin_url('post.php?post=' . $listingPageId . '&action=edit');
-            add_submenu_page(
-                'edit.php?post_type=' . EventPostType::SLUG,
-                __('Edytuj listę — WPBakery', 'campsflow'),
-                __('✏ Edytuj listę (WPB)', 'campsflow'),
-                'manage_options',
-                'cf-edit-listing-wpb',
-                static function () use ($wpbUrl): void {
-                    wp_redirect($wpbUrl);
-                    exit;
-                },
-            );
-        }
+		// Listing page — link to Elementor editor (always shown if page exists)
+		if ( $listingPageId ) {
+			$editUrl = admin_url( 'post.php?post=' . $listingPageId . '&action=elementor' );
+			add_submenu_page(
+				'edit.php?post_type=' . EventPostType::SLUG,
+				__( 'Edytuj listę obozów', 'campsflow' ),
+				__( '✏ Edytuj listę', 'campsflow' ),
+				'manage_options',
+				'cf-edit-listing',
+				static function () use ( $editUrl ): void {
+					wp_redirect( $editUrl );
+					exit;
+				},
+			);
+		}
 
-        // Elementor Pro Theme Builder — single cf_event template (only if one exists)
-        if ($this->hasElementorPro() && $this->hasSingleEventTemplate()) {
-            $themeBuilderUrl = admin_url(
-                'edit.php?post_type=elementor_library'
-                . '&tabs_group=theme'
-                . '&elementor_library_type=single-post'
-            );
-            add_submenu_page(
-                'edit.php?post_type=' . EventPostType::SLUG,
-                __('Szablon strony imprezy (Elementor Pro)', 'campsflow'),
-                __('✏ Szablon imprezy', 'campsflow'),
-                'manage_options',
-                'cf-edit-single',
-                static function () use ($themeBuilderUrl): void {
-                    wp_redirect($themeBuilderUrl);
-                    exit;
-                },
-            );
-        }
-    }
+		// WPBakery — standard edit screen (WPBakery overlays it)
+		if ( $listingPageId && $this->hasWpBakery() ) {
+			$wpbUrl = admin_url( 'post.php?post=' . $listingPageId . '&action=edit' );
+			add_submenu_page(
+				'edit.php?post_type=' . EventPostType::SLUG,
+				__( 'Edytuj listę — WPBakery', 'campsflow' ),
+				__( '✏ Edytuj listę (WPB)', 'campsflow' ),
+				'manage_options',
+				'cf-edit-listing-wpb',
+				static function () use ( $wpbUrl ): void {
+					wp_redirect( $wpbUrl );
+					exit;
+				},
+			);
+		}
 
-    /**
-     * Replaces the submenu href with direct URLs so the browser navigates
-     * without going through wp-admin/admin.php?page=cf-edit-*.
-     */
-    public function fixMenuUrls(): void
-    {
-        $listingPageId = $this->getListingPageId();
-        $links         = [];
+		// Elementor Pro Theme Builder — single cf_event template (only if one exists)
+		if ( $this->hasElementorPro() && $this->hasSingleEventTemplate() ) {
+			$themeBuilderUrl = admin_url(
+				'edit.php?post_type=elementor_library'
+				. '&tabs_group=theme'
+				. '&elementor_library_type=single-post'
+			);
+			add_submenu_page(
+				'edit.php?post_type=' . EventPostType::SLUG,
+				__( 'Szablon strony imprezy (Elementor Pro)', 'campsflow' ),
+				__( '✏ Szablon imprezy', 'campsflow' ),
+				'manage_options',
+				'cf-edit-single',
+				static function () use ( $themeBuilderUrl ): void {
+					wp_redirect( $themeBuilderUrl );
+					exit;
+				},
+			);
+		}
+	}
 
-        if ($listingPageId) {
-            $links['cf-edit-listing'] = admin_url(
-                'post.php?post=' . $listingPageId . '&action=elementor'
-            );
-        }
+	/**
+	 * Replaces the submenu href with direct URLs so the browser navigates
+	 * without going through wp-admin/admin.php?page=cf-edit-*.
+	 */
+	public function fixMenuUrls(): void {
+		$listingPageId = $this->getListingPageId();
+		$links         = array();
 
-        if ($this->hasElementorPro()) {
-            $links['cf-edit-single'] = admin_url(
-                'edit.php?post_type=elementor_library&tabs_group=theme&elementor_library_type=single-post'
-            );
-        }
+		if ( $listingPageId ) {
+			$links['cf-edit-listing'] = admin_url(
+				'post.php?post=' . $listingPageId . '&action=elementor'
+			);
+		}
 
-        if (empty($links)) {
-            return;
-        }
+		if ( $this->hasElementorPro() ) {
+			$links['cf-edit-single'] = admin_url(
+				'edit.php?post_type=elementor_library&tabs_group=theme&elementor_library_type=single-post'
+			);
+		}
 
-        echo '<script>
+		if ( empty( $links ) ) {
+			return;
+		}
+
+		echo '<script>
         (function() {
-            var links = ' . wp_json_encode($links) . ';
+            var links = ' . wp_json_encode( $links ) . ';
             document.querySelectorAll("#adminmenu a").forEach(function(a) {
                 Object.keys(links).forEach(function(slug) {
                     if (a.href && a.href.indexOf("page=" + slug) !== -1) {
@@ -122,43 +118,43 @@ final class ElementorLinks
             });
         })();
         </script>';
-    }
+	}
 
-    private function getListingPageId(): int
-    {
-        // Try to find a page using the CPT archive slug
-        $archiveSlug = get_post_type_archive_link('cf_event');
-        if (! $archiveSlug) {
-            return 0;
-        }
+	private function getListingPageId(): int {
+		// Try to find a page using the CPT archive slug
+		$archiveSlug = get_post_type_archive_link( 'cf_event' );
+		if ( ! $archiveSlug ) {
+			return 0;
+		}
 
-        // Fall back to looking for a page named 'obozy'
-        $page = get_page_by_path('obozy', OBJECT, 'page');
-        return $page ? (int) $page->ID : 0;
-    }
+		// Fall back to looking for a page named 'obozy'
+		$page = get_page_by_path( 'obozy', OBJECT, 'page' );
+		return $page ? (int) $page->ID : 0;
+	}
 
-    private function hasElementorPro(): bool
-    {
-        return defined('ELEMENTOR_PRO_VERSION');
-    }
+	private function hasElementorPro(): bool {
+		return defined( 'ELEMENTOR_PRO_VERSION' );
+	}
 
-    private function hasSingleEventTemplate(): bool
-    {
-        $templates = get_posts([
-            'post_type'      => 'elementor_library',
-            'post_status'    => 'publish',
-            'posts_per_page' => 1,
-            'fields'         => 'ids',
-            'meta_query'     => [[
-                'key'   => '_elementor_template_type',
-                'value' => 'single-post',
-            ]],
-        ]);
-        return ! empty($templates);
-    }
+	private function hasSingleEventTemplate(): bool {
+		$templates = get_posts(
+			array(
+				'post_type'      => 'elementor_library',
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+				'meta_query'     => array(
+					array(
+						'key'   => '_elementor_template_type',
+						'value' => 'single-post',
+					),
+				),
+			)
+		);
+		return ! empty( $templates );
+	}
 
-    private function hasWpBakery(): bool
-    {
-        return defined('WPB_VC_VERSION') || class_exists('WPBMap');
-    }
+	private function hasWpBakery(): bool {
+		return defined( 'WPB_VC_VERSION' ) || class_exists( 'WPBMap' );
+	}
 }

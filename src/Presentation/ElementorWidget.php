@@ -8,168 +8,224 @@ use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Widget_Base;
 
-final class ElementorWidget extends Widget_Base
-{
-    public function get_name(): string
-    {
-        return 'campsflow_listing';
-    }
+final class ElementorWidget extends Widget_Base {
 
-    public function get_title(): string
-    {
-        return __('CampsFlow — Lista obozów', 'campsflow');
-    }
+	public function get_name(): string {
+		return 'campsflow_listing';
+	}
 
-    public function get_icon(): string
-    {
-        return 'eicon-posts-grid';
-    }
+	public function get_title(): string {
+		return __( 'CampsFlow — Lista obozów', 'campsflow' );
+	}
 
-    public function get_categories(): array
-    {
-        return ['campsflow'];
-    }
+	public function get_icon(): string {
+		return 'eicon-posts-grid';
+	}
 
-    public function get_keywords(): array
-    {
-        return ['obozy', 'turnusy', 'campsflow', 'lista'];
-    }
+	public function get_categories(): array {
+		return array( 'campsflow' );
+	}
 
-    protected function register_controls(): void
-    {
-        // ── Content ────────────────────────────────────────────────
+	public function get_keywords(): array {
+		return array( 'obozy', 'turnusy', 'campsflow', 'lista' );
+	}
 
-        $this->start_controls_section('section_content', [
-            'label' => __('Zawartość', 'campsflow'),
-            'tab'   => Controls_Manager::TAB_CONTENT,
-        ]);
+	protected function register_controls(): void {
+		// ── Content ────────────────────────────────────────────────
 
-        $this->add_control('view', [
-            'label'   => __('Widok', 'campsflow'),
-            'type'    => Controls_Manager::SELECT,
-            'default' => 'events',
-            'options' => [
-                'events'   => __('Lista imprez', 'campsflow'),
-                'sessions' => __('Lista turnusów (płaska)', 'campsflow'),
-            ],
-        ]);
+		$this->start_controls_section(
+			'section_content',
+			array(
+				'label' => __( 'Zawartość', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_CONTENT,
+			)
+		);
 
-        $this->add_responsive_control('columns', [
-            'label'          => __('Kolumny', 'campsflow'),
-            'type'           => Controls_Manager::NUMBER,
-            'default'        => 3,
-            'tablet_default' => 2,
-            'mobile_default' => 1,
-            'min'            => 1,
-            'max'            => 4,
-            'selectors'      => [
-                '{{WRAPPER}} .cf-listing' => '--cf-columns: {{VALUE}}',
-            ],
-        ]);
+		$this->add_control(
+			'view',
+			array(
+				'label'   => __( 'Widok', 'campsflow' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'events',
+				'options' => array(
+					'events'   => __( 'Lista imprez', 'campsflow' ),
+					'sessions' => __( 'Lista turnusów (płaska)', 'campsflow' ),
+				),
+			)
+		);
 
-        $this->end_controls_section();
+		$this->add_responsive_control(
+			'columns',
+			array(
+				'label'          => __( 'Kolumny', 'campsflow' ),
+				'type'           => Controls_Manager::NUMBER,
+				'default'        => 3,
+				'tablet_default' => 2,
+				'mobile_default' => 1,
+				'min'            => 1,
+				'max'            => 4,
+				'selectors'      => array(
+					'{{WRAPPER}} .cf-listing' => '--cf-columns: {{VALUE}}',
+				),
+			)
+		);
 
-        // ── Style: Ogólne ──────────────────────────────────────────
+		$this->end_controls_section();
 
-        $this->start_controls_section('section_style_general', [
-            'label' => __('Kolory i akcent', 'campsflow'),
-            'tab'   => Controls_Manager::TAB_STYLE,
-        ]);
+		// ── Style: Ogólne ──────────────────────────────────────────
 
-        $this->add_control('accent_color', [
-            'label'     => __('Kolor akcentu (przyciski, linie)', 'campsflow'),
-            'type'      => Controls_Manager::COLOR,
-            'default'   => '#2563eb',
-            'selectors' => [
-                '{{WRAPPER}} .cf-listing' => '--cf-accent: {{VALUE}}',
-            ],
-        ]);
+		$this->start_controls_section(
+			'section_style_general',
+			array(
+				'label' => __( 'Kolory i akcent', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
 
-        $this->add_control('accent_hover_color', [
-            'label'     => __('Kolor akcentu — hover', 'campsflow'),
-            'type'      => Controls_Manager::COLOR,
-            'default'   => '#1d4ed8',
-            'selectors' => [
-                '{{WRAPPER}} .cf-listing' => '--cf-accent-hover: {{VALUE}}',
-            ],
-        ]);
+		$this->add_control(
+			'accent_color',
+			array(
+				'label'     => __( 'Kolor akcentu (przyciski, linie)', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#2563eb',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-listing' => '--cf-accent: {{VALUE}}',
+				),
+			)
+		);
 
-        $this->add_control('gap', [
-            'label'     => __('Odstęp między kartami', 'campsflow'),
-            'type'      => Controls_Manager::SLIDER,
-            'range'     => ['px' => ['min' => 8, 'max' => 64]],
-            'default'   => ['size' => 24, 'unit' => 'px'],
-            'selectors' => [
-                '{{WRAPPER}} .cf-listing' => '--cf-gap: {{SIZE}}{{UNIT}}',
-            ],
-        ]);
+		$this->add_control(
+			'accent_hover_color',
+			array(
+				'label'     => __( 'Kolor akcentu — hover', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#1d4ed8',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-listing' => '--cf-accent-hover: {{VALUE}}',
+				),
+			)
+		);
 
-        $this->end_controls_section();
+		$this->add_control(
+			'gap',
+			array(
+				'label'     => __( 'Odstęp między kartami', 'campsflow' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => array(
+					'px' => array(
+						'min' => 8,
+						'max' => 64,
+					),
+				),
+				'default'   => array(
+					'size' => 24,
+					'unit' => 'px',
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .cf-listing' => '--cf-gap: {{SIZE}}{{UNIT}}',
+				),
+			)
+		);
 
-        // ── Style: Karta ───────────────────────────────────────────
+		$this->end_controls_section();
 
-        $this->start_controls_section('section_style_card', [
-            'label' => __('Karta imprezy', 'campsflow'),
-            'tab'   => Controls_Manager::TAB_STYLE,
-        ]);
+		// ── Style: Karta ───────────────────────────────────────────
 
-        $this->add_control('card_bg', [
-            'label'     => __('Tło karty', 'campsflow'),
-            'type'      => Controls_Manager::COLOR,
-            'default'   => '#ffffff',
-            'selectors' => [
-                '{{WRAPPER}} .cf-listing' => '--cf-card-bg: {{VALUE}}',
-            ],
-        ]);
+		$this->start_controls_section(
+			'section_style_card',
+			array(
+				'label' => __( 'Karta imprezy', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
 
-        $this->add_control('card_radius', [
-            'label'     => __('Zaokrąglenie rogów', 'campsflow'),
-            'type'      => Controls_Manager::SLIDER,
-            'range'     => ['px' => ['min' => 0, 'max' => 32]],
-            'default'   => ['size' => 10, 'unit' => 'px'],
-            'selectors' => [
-                '{{WRAPPER}} .cf-listing' => '--cf-card-radius: {{SIZE}}{{UNIT}}',
-            ],
-        ]);
+		$this->add_control(
+			'card_bg',
+			array(
+				'label'     => __( 'Tło karty', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-listing' => '--cf-card-bg: {{VALUE}}',
+				),
+			)
+		);
 
-        $this->add_group_control(Group_Control_Box_Shadow::get_type(), [
-            'name'     => 'card_shadow',
-            'selector' => '{{WRAPPER}} .cf-card',
-        ]);
+		$this->add_control(
+			'card_radius',
+			array(
+				'label'     => __( 'Zaokrąglenie rogów', 'campsflow' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 32,
+					),
+				),
+				'default'   => array(
+					'size' => 10,
+					'unit' => 'px',
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .cf-listing' => '--cf-card-radius: {{SIZE}}{{UNIT}}',
+				),
+			)
+		);
 
-        $this->end_controls_section();
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			array(
+				'name'     => 'card_shadow',
+				'selector' => '{{WRAPPER}} .cf-card',
+			)
+		);
 
-        // ── Style: Typografia ──────────────────────────────────────
+		$this->end_controls_section();
 
-        $this->start_controls_section('section_style_typography', [
-            'label' => __('Typografia', 'campsflow'),
-            'tab'   => Controls_Manager::TAB_STYLE,
-        ]);
+		// ── Style: Typografia ──────────────────────────────────────
 
-        $this->add_group_control(Group_Control_Typography::get_type(), [
-            'name'     => 'title_typography',
-            'label'    => __('Tytuł imprezy', 'campsflow'),
-            'selector' => '{{WRAPPER}} .cf-card__title, {{WRAPPER}} .cf-sessions-flat__event',
-        ]);
+		$this->start_controls_section(
+			'section_style_typography',
+			array(
+				'label' => __( 'Typografia', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
 
-        $this->add_group_control(Group_Control_Typography::get_type(), [
-            'name'     => 'session_typography',
-            'label'    => __('Daty turnusu', 'campsflow'),
-            'selector' => '{{WRAPPER}} .cf-session__dates, {{WRAPPER}} .cf-sessions-box__dates',
-        ]);
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'title_typography',
+				'label'    => __( 'Tytuł imprezy', 'campsflow' ),
+				'selector' => '{{WRAPPER}} .cf-card__title, {{WRAPPER}} .cf-sessions-flat__event',
+			)
+		);
 
-        $this->end_controls_section();
-    }
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'session_typography',
+				'label'    => __( 'Daty turnusu', 'campsflow' ),
+				'selector' => '{{WRAPPER}} .cf-session__dates, {{WRAPPER}} .cf-sessions-box__dates',
+			)
+		);
 
-    protected function render(): void
-    {
-        $settings = $this->get_settings_for_display();
-        $view     = in_array($settings['view'] ?? '', ['events', 'sessions'], true)
-            ? $settings['view']
-            : 'events';
+		$this->end_controls_section();
+	}
 
-        $shortcode = new ListingShortcode();
+	protected function render(): void {
+		$settings = $this->get_settings_for_display();
+		$view     = in_array( $settings['view'] ?? '', array( 'events', 'sessions' ), true )
+			? $settings['view']
+			: 'events';
+
+		$shortcode = new ListingShortcode();
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        echo $shortcode->render(['view' => $view, 'columns' => '3']);
-    }
+		echo $shortcode->render(
+			array(
+				'view'    => $view,
+				'columns' => '3',
+			)
+		);
+	}
 }

@@ -8,194 +8,207 @@ use Campsflow\PostType\EventPostType;
 use Campsflow\Sync\SyncLog;
 use Campsflow\Sync\SyncScheduler;
 
-final class SettingsPage
-{
-    private const TAB_SYNC     = 'sync';
-    private const TAB_SETTINGS = 'settings';
-    private const TAB_HISTORY  = 'history';
+final class SettingsPage {
 
-    public function register(): void
-    {
-        add_action('admin_menu', [$this, 'addMenuPage']);
-        add_action('admin_init', [$this, 'registerSettings']);
-        add_action('update_option_campsflow_sync_interval', [$this, 'onIntervalChange'], 10, 0);
-    }
+	private const TAB_SYNC     = 'sync';
+	private const TAB_SETTINGS = 'settings';
+	private const TAB_HISTORY  = 'history';
 
-    public function addMenuPage(): void
-    {
-        add_submenu_page(
-            'edit.php?post_type=' . EventPostType::SLUG,
-            __('CampsFlow — Ustawienia', 'campsflow'),
-            __('Ustawienia', 'campsflow'),
-            'manage_options',
-            'cf-settings',
-            [$this, 'renderPage'],
-        );
-    }
+	public function register(): void {
+		add_action( 'admin_menu', array( $this, 'addMenuPage' ) );
+		add_action( 'admin_init', array( $this, 'registerSettings' ) );
+		add_action( 'update_option_campsflow_sync_interval', array( $this, 'onIntervalChange' ), 10, 0 );
+	}
 
-    public function registerSettings(): void
-    {
-        $san = 'sanitize_text_field';
+	public function addMenuPage(): void {
+		add_submenu_page(
+			'edit.php?post_type=' . EventPostType::SLUG,
+			__( 'CampsFlow — Ustawienia', 'campsflow' ),
+			__( 'Ustawienia', 'campsflow' ),
+			'manage_options',
+			'cf-settings',
+			array( $this, 'renderPage' ),
+		);
+	}
 
-        foreach (['campsflow_tenant_slug' => '', 'campsflow_api_key' => '', 'campsflow_sync_interval' => 'hourly'] as $key => $default) {
-            register_setting('campsflow_sync', $key, ['sanitize_callback' => $san, 'default' => $default]);
-        }
+	public function registerSettings(): void {
+		$san = 'sanitize_text_field';
 
-        foreach (['campsflow_few_left_pct' => '25', 'campsflow_almost_full_pct' => '10'] as $key => $default) {
-            register_setting('campsflow_settings', $key, ['sanitize_callback' => $san, 'default' => $default]);
-        }
-    }
+		foreach ( array(
+			'campsflow_tenant_slug'   => '',
+			'campsflow_api_key'       => '',
+			'campsflow_sync_interval' => 'hourly',
+		) as $key => $default ) {
+			register_setting(
+				'campsflow_sync',
+				$key,
+				array(
+					'sanitize_callback' => $san,
+					'default'           => $default,
+				)
+			);
+		}
 
-    public function onIntervalChange(): void
-    {
-        SyncScheduler::reschedule();
-    }
+		foreach ( array(
+			'campsflow_few_left_pct'    => '25',
+			'campsflow_almost_full_pct' => '10',
+		) as $key => $default ) {
+			register_setting(
+				'campsflow_settings',
+				$key,
+				array(
+					'sanitize_callback' => $san,
+					'default'           => $default,
+				)
+			);
+		}
+	}
 
-    public function renderPage(): void
-    {
-        if (! current_user_can('manage_options')) {
-            return;
-        }
+	public function onIntervalChange(): void {
+		SyncScheduler::reschedule();
+	}
 
-        $activeTab = in_array($_GET['tab'] ?? '', [self::TAB_SYNC, self::TAB_SETTINGS, self::TAB_HISTORY], true)
-            ? $_GET['tab']
-            : self::TAB_SYNC;
+	public function renderPage(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
 
-        echo '<div class="wrap">';
-        echo '<h1>' . esc_html__('CampsFlow', 'campsflow') . '</h1>';
+		$activeTab = in_array( $_GET['tab'] ?? '', array( self::TAB_SYNC, self::TAB_SETTINGS, self::TAB_HISTORY ), true )
+			? $_GET['tab']
+			: self::TAB_SYNC;
 
-        $this->renderTabs($activeTab);
-        $this->renderStatusBar();
+		echo '<div class="wrap">';
+		echo '<h1>' . esc_html__( 'CampsFlow', 'campsflow' ) . '</h1>';
 
-        if ($activeTab === self::TAB_SYNC) {
-            $this->renderSyncTab();
-        } elseif ($activeTab === self::TAB_HISTORY) {
-            $this->renderHistoryTab();
-        } else {
-            $this->renderSettingsTab();
-        }
+		$this->renderTabs( $activeTab );
+		$this->renderStatusBar();
 
-        echo '</div>';
-        $this->renderStyles();
-    }
+		if ( $activeTab === self::TAB_SYNC ) {
+			$this->renderSyncTab();
+		} elseif ( $activeTab === self::TAB_HISTORY ) {
+			$this->renderHistoryTab();
+		} else {
+			$this->renderSettingsTab();
+		}
 
-    private function renderTabs(string $activeTab): void
-    {
-        $base = admin_url('edit.php?post_type=' . EventPostType::SLUG . '&page=cf-settings');
-        $tabs = [
-            self::TAB_SYNC     => __('Synchronizacja', 'campsflow'),
-            self::TAB_SETTINGS => __('Ustawienia', 'campsflow'),
-            self::TAB_HISTORY  => __('Historia', 'campsflow'),
-        ];
+		echo '</div>';
+		$this->renderStyles();
+	}
 
-        echo '<nav class="nav-tab-wrapper cf-tabs">';
-        foreach ($tabs as $slug => $label) {
-            $active = $activeTab === $slug ? ' nav-tab-active' : '';
-            $url    = esc_url(add_query_arg('tab', $slug, $base));
-            echo '<a href="' . $url . '" class="nav-tab' . $active . '">' . esc_html($label) . '</a>';
-        }
-        echo '</nav>';
-    }
+	private function renderTabs( string $activeTab ): void {
+		$base = admin_url( 'edit.php?post_type=' . EventPostType::SLUG . '&page=cf-settings' );
+		$tabs = array(
+			self::TAB_SYNC     => __( 'Synchronizacja', 'campsflow' ),
+			self::TAB_SETTINGS => __( 'Ustawienia', 'campsflow' ),
+			self::TAB_HISTORY  => __( 'Historia', 'campsflow' ),
+		);
 
-    private function renderStatusBar(): void
-    {
-        $nextRun    = wp_next_scheduled(SyncScheduler::HOOK);
-        $lastRun    = get_option('campsflow_last_sync', null);
-        $synced     = isset($_GET['cf_synced']) ? (int) $_GET['cf_synced'] : null;
-        $lastEntry  = SyncLog::getAll()[0] ?? [];
-        $wasFixture = ! empty($lastEntry['is_fixture']);
+		echo '<nav class="nav-tab-wrapper cf-tabs">';
+		foreach ( $tabs as $slug => $label ) {
+			$active = $activeTab === $slug ? ' nav-tab-active' : '';
+			$url    = esc_url( add_query_arg( 'tab', $slug, $base ) );
+			echo '<a href="' . $url . '" class="nav-tab' . $active . '">' . esc_html( $label ) . '</a>';
+		}
+		echo '</nav>';
+	}
 
-        if ($wasFixture) {
-            echo '<div class="cf-fixture-warning">⚠ ';
-            echo esc_html__('DANE TESTOWE — ostatni sync użył lokalnego fixture, nie prawdziwego API. Ustaw Tenant slug i API Key.', 'campsflow');
-            echo '</div>';
-        }
+	private function renderStatusBar(): void {
+		$nextRun    = wp_next_scheduled( SyncScheduler::HOOK );
+		$lastRun    = get_option( 'campsflow_last_sync', null );
+		$synced     = isset( $_GET['cf_synced'] ) ? (int) $_GET['cf_synced'] : null;
+		$lastEntry  = SyncLog::getAll()[0] ?? array();
+		$wasFixture = ! empty( $lastEntry['is_fixture'] );
 
-        echo '<div class="cf-status-bar">';
+		if ( $wasFixture ) {
+			echo '<div class="cf-fixture-warning">⚠ ';
+			echo esc_html__( 'DANE TESTOWE — ostatni sync użył lokalnego fixture, nie prawdziwego API. Ustaw Tenant slug i API Key.', 'campsflow' );
+			echo '</div>';
+		}
 
-        if ($nextRun) {
-            $diff = $nextRun - time();
-            echo '<span class="cf-status-bar__dot cf-status-bar__dot--ok"></span>';
-            echo esc_html__('Synchronizacja aktywna', 'campsflow') . ' · ';
-            if ($diff > 0) {
-                echo esc_html__('Następna za:', 'campsflow') . ' <strong>' . esc_html($this->humanDiff($diff)) . '</strong>';
-            } else {
-                echo '<strong>' . esc_html__('Oczekuje na uruchomienie (odwiedź stronę publiczną)', 'campsflow') . '</strong>';
-            }
-        } else {
-            echo '<span class="cf-status-bar__dot cf-status-bar__dot--warn"></span>';
-            echo esc_html__('Brak zaplanowanej synchronizacji', 'campsflow');
-        }
+		echo '<div class="cf-status-bar">';
 
-        if ($lastRun) {
-            echo ' &nbsp;·&nbsp; ' . esc_html__('Ostatnia:', 'campsflow') . ' <strong>' . esc_html($lastRun) . '</strong>';
-        }
+		if ( $nextRun ) {
+			$diff = $nextRun - time();
+			echo '<span class="cf-status-bar__dot cf-status-bar__dot--ok"></span>';
+			echo esc_html__( 'Synchronizacja aktywna', 'campsflow' ) . ' · ';
+			if ( $diff > 0 ) {
+				echo esc_html__( 'Następna za:', 'campsflow' ) . ' <strong>' . esc_html( $this->humanDiff( $diff ) ) . '</strong>';
+			} else {
+				echo '<strong>' . esc_html__( 'Oczekuje na uruchomienie (odwiedź stronę publiczną)', 'campsflow' ) . '</strong>';
+			}
+		} else {
+			echo '<span class="cf-status-bar__dot cf-status-bar__dot--warn"></span>';
+			echo esc_html__( 'Brak zaplanowanej synchronizacji', 'campsflow' );
+		}
 
-        if ($synced !== null) {
-            echo ' &nbsp;·&nbsp; <strong class="cf-status-bar__ok">✓ ';
-            echo esc_html(sprintf(__('Zsynchronizowano %d turnusów', 'campsflow'), $synced));
-            echo '</strong>';
-        }
+		if ( $lastRun ) {
+			echo ' &nbsp;·&nbsp; ' . esc_html__( 'Ostatnia:', 'campsflow' ) . ' <strong>' . esc_html( $lastRun ) . '</strong>';
+		}
 
-        echo '</div>';
-    }
+		if ( $synced !== null ) {
+			echo ' &nbsp;·&nbsp; <strong class="cf-status-bar__ok">✓ ';
+			echo esc_html( sprintf( __( 'Zsynchronizowano %d turnusów', 'campsflow' ), $synced ) );
+			echo '</strong>';
+		}
 
-    private function renderSyncTab(): void
-    {
-        $tenantSlug = (string) get_option('campsflow_tenant_slug', '');
-        $apiKey     = (string) get_option('campsflow_api_key', '');
-        $interval   = (string) get_option('campsflow_sync_interval', 'hourly');
+		echo '</div>';
+	}
 
-        echo '<form method="post" action="options.php" class="cf-form">';
-        settings_fields('campsflow_sync');
+	private function renderSyncTab(): void {
+		$tenantSlug = (string) get_option( 'campsflow_tenant_slug', '' );
+		$apiKey     = (string) get_option( 'campsflow_api_key', '' );
+		$interval   = (string) get_option( 'campsflow_sync_interval', 'hourly' );
 
-        echo '<div class="cf-form__group">';
-        echo '<label class="cf-form__label" for="campsflow_tenant_slug">' . esc_html__('Tenant slug', 'campsflow') . '</label>';
-        echo '<input class="cf-form__input" type="text" id="campsflow_tenant_slug" name="campsflow_tenant_slug" value="' . esc_attr($tenantSlug) . '" placeholder="np. moj-oboz">';
-        if ($tenantSlug && preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $tenantSlug)) {
-            echo '<p class="cf-form__desc cf-form__desc--warn">⚠ ' . esc_html__('Tenant slug wygląda jak UUID — powinien to być czytelny identyfikator tekstowy, np. "moj-oboz". Sprawdź w ustawieniach systemu Campsflow.', 'campsflow') . '</p>';
-        } else {
-            echo '<p class="cf-form__desc">' . esc_html__('Identyfikator organizatora w systemie Campsflow.', 'campsflow') . '</p>';
-        }
-        echo '</div>';
+		echo '<form method="post" action="options.php" class="cf-form">';
+		settings_fields( 'campsflow_sync' );
 
-        echo '<div class="cf-form__group">';
-        echo '<label class="cf-form__label" for="campsflow_api_key">' . esc_html__('API Key', 'campsflow') . '</label>';
-        echo '<input class="cf-form__input cf-form__input--key" type="password" id="campsflow_api_key" name="campsflow_api_key" value="' . esc_attr($apiKey) . '" autocomplete="new-password">';
-        if ($apiKey) {
-            echo '<p class="cf-form__desc cf-form__desc--set">✓ ' . esc_html__('Klucz jest ustawiony. Wpisz nowy żeby zmienić.', 'campsflow') . '</p>';
-        } else {
-            echo '<p class="cf-form__desc">' . esc_html__('Klucz API z panelu Campsflow (Ustawienia → Integracje).', 'campsflow') . '</p>';
-        }
-        echo '</div>';
+		echo '<div class="cf-form__group">';
+		echo '<label class="cf-form__label" for="campsflow_tenant_slug">' . esc_html__( 'Tenant slug', 'campsflow' ) . '</label>';
+		echo '<input class="cf-form__input" type="text" id="campsflow_tenant_slug" name="campsflow_tenant_slug" value="' . esc_attr( $tenantSlug ) . '" placeholder="np. moj-oboz">';
+		if ( $tenantSlug && preg_match( '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $tenantSlug ) ) {
+			echo '<p class="cf-form__desc cf-form__desc--warn">⚠ ' . esc_html__( 'Tenant slug wygląda jak UUID — powinien to być czytelny identyfikator tekstowy, np. "moj-oboz". Sprawdź w ustawieniach systemu Campsflow.', 'campsflow' ) . '</p>';
+		} else {
+			echo '<p class="cf-form__desc">' . esc_html__( 'Identyfikator organizatora w systemie Campsflow.', 'campsflow' ) . '</p>';
+		}
+		echo '</div>';
 
-        echo '<div class="cf-form__group">';
-        echo '<label class="cf-form__label" for="campsflow_sync_interval">' . esc_html__('Częstotliwość synchronizacji', 'campsflow') . '</label>';
-        echo '<div class="cf-form__interval-row">';
-        echo '<select class="cf-form__select" id="campsflow_sync_interval" name="campsflow_sync_interval">';
-        foreach (SyncScheduler::INTERVALS as $value => $label) {
-            $selected = selected($interval, $value, false);
-            echo '<option value="' . esc_attr($value) . '"' . $selected . '>' . esc_html($label) . '</option>';
-        }
-        echo '</select>';
+		echo '<div class="cf-form__group">';
+		echo '<label class="cf-form__label" for="campsflow_api_key">' . esc_html__( 'API Key', 'campsflow' ) . '</label>';
+		echo '<input class="cf-form__input cf-form__input--key" type="password" id="campsflow_api_key" name="campsflow_api_key" value="' . esc_attr( $apiKey ) . '" autocomplete="new-password">';
+		if ( $apiKey ) {
+			echo '<p class="cf-form__desc cf-form__desc--set">✓ ' . esc_html__( 'Klucz jest ustawiony. Wpisz nowy żeby zmienić.', 'campsflow' ) . '</p>';
+		} else {
+			echo '<p class="cf-form__desc">' . esc_html__( 'Klucz API z panelu Campsflow (Ustawienia → Integracje).', 'campsflow' ) . '</p>';
+		}
+		echo '</div>';
 
-        // Button is OUTSIDE the settings form via the HTML `form` attribute (HTML5 standard).
-        // The hidden sync-now form is rendered below (id="cf-sync-now-form").
-        echo '<button type="submit" form="cf-sync-now-form" class="button button-secondary cf-sync-now-btn">';
-        echo '<span class="dashicons dashicons-update"></span> ';
-        echo esc_html__('Synchronizuj teraz', 'campsflow');
-        echo '</button>';
+		echo '<div class="cf-form__group">';
+		echo '<label class="cf-form__label" for="campsflow_sync_interval">' . esc_html__( 'Częstotliwość synchronizacji', 'campsflow' ) . '</label>';
+		echo '<div class="cf-form__interval-row">';
+		echo '<select class="cf-form__select" id="campsflow_sync_interval" name="campsflow_sync_interval">';
+		foreach ( SyncScheduler::INTERVALS as $value => $label ) {
+			$selected = selected( $interval, $value, false );
+			echo '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_html( $label ) . '</option>';
+		}
+		echo '</select>';
 
-        echo '</div></div>';
-        submit_button(__('Zapisz', 'campsflow'), 'primary cf-form__submit');
-        echo '</form>';
+		// Button is OUTSIDE the settings form via the HTML `form` attribute (HTML5 standard).
+		// The hidden sync-now form is rendered below (id="cf-sync-now-form").
+		echo '<button type="submit" form="cf-sync-now-form" class="button button-secondary cf-sync-now-btn">';
+		echo '<span class="dashicons dashicons-update"></span> ';
+		echo esc_html__( 'Synchronizuj teraz', 'campsflow' );
+		echo '</button>';
 
-        // Hidden sync-now form — associated to the button above via id="cf-sync-now-form"
-        echo '<form id="cf-sync-now-form" method="post" action="' . esc_url(admin_url('admin-post.php')) . '" style="display:none">';
-        wp_nonce_field('cf_sync_now');
-        echo '<input type="hidden" name="action" value="cf_sync_now">';
-        echo '</form>';
-        echo '<script>
+		echo '</div></div>';
+		submit_button( __( 'Zapisz', 'campsflow' ), 'primary cf-form__submit' );
+		echo '</form>';
+
+		// Hidden sync-now form — associated to the button above via id="cf-sync-now-form"
+		echo '<form id="cf-sync-now-form" method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" style="display:none">';
+		wp_nonce_field( 'cf_sync_now' );
+		echo '<input type="hidden" name="action" value="cf_sync_now">';
+		echo '</form>';
+		echo '<script>
         document.querySelector(".cf-sync-now-btn").addEventListener("click", function(e) {
             e.preventDefault();
             var btn = this;
@@ -205,178 +218,172 @@ final class SettingsPage
         });
         </script>';
 
-        $this->renderUrlInfo();
-    }
+		$this->renderUrlInfo();
+	}
 
-    private function renderSettingsTab(): void
-    {
-        $fewLeft    = (string) get_option('campsflow_few_left_pct', '30');
-        $almostFull = (string) get_option('campsflow_almost_full_pct', '10');
+	private function renderSettingsTab(): void {
+		$fewLeft    = (string) get_option( 'campsflow_few_left_pct', '30' );
+		$almostFull = (string) get_option( 'campsflow_almost_full_pct', '10' );
 
-        echo '<form method="post" action="options.php" class="cf-form">';
-        settings_fields('campsflow_settings');
+		echo '<form method="post" action="options.php" class="cf-form">';
+		settings_fields( 'campsflow_settings' );
 
-        echo '<h3>' . esc_html__('Poziomy dostępności miejsc', 'campsflow') . '</h3>';
-        echo '<p class="cf-form__desc">' . esc_html__('Określ przy jakim procencie wolnych miejsc pojawia się etykieta ostrzegawcza.', 'campsflow') . '</p>';
+		echo '<h3>' . esc_html__( 'Poziomy dostępności miejsc', 'campsflow' ) . '</h3>';
+		echo '<p class="cf-form__desc">' . esc_html__( 'Określ przy jakim procencie wolnych miejsc pojawia się etykieta ostrzegawcza.', 'campsflow' ) . '</p>';
 
-        echo '<div class="cf-form__group">';
-        echo '<label class="cf-form__label" for="campsflow_few_left_pct">';
-        echo '<span class="cf-badge cf-badge--few_left">' . esc_html__('Mało miejsc', 'campsflow') . '</span>';
-        echo ' &nbsp;' . esc_html__('poniżej', 'campsflow') . '</label>';
-        echo '<div class="cf-form__inline">';
-        echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_few_left_pct" name="campsflow_few_left_pct" value="' . esc_attr($fewLeft) . '" min="1" max="99"> %';
-        echo '</div>';
-        echo '<p class="cf-form__desc">' . esc_html__('Domyślnie: 25% — pokazuj gdy zostało mniej niż 25% miejsc.', 'campsflow') . '</p>';
-        echo '</div>';
+		echo '<div class="cf-form__group">';
+		echo '<label class="cf-form__label" for="campsflow_few_left_pct">';
+		echo '<span class="cf-badge cf-badge--few_left">' . esc_html__( 'Mało miejsc', 'campsflow' ) . '</span>';
+		echo ' &nbsp;' . esc_html__( 'poniżej', 'campsflow' ) . '</label>';
+		echo '<div class="cf-form__inline">';
+		echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_few_left_pct" name="campsflow_few_left_pct" value="' . esc_attr( $fewLeft ) . '" min="1" max="99"> %';
+		echo '</div>';
+		echo '<p class="cf-form__desc">' . esc_html__( 'Domyślnie: 25% — pokazuj gdy zostało mniej niż 25% miejsc.', 'campsflow' ) . '</p>';
+		echo '</div>';
 
-        echo '<div class="cf-form__group">';
-        echo '<label class="cf-form__label" for="campsflow_almost_full_pct">';
-        echo '<span class="cf-badge cf-badge--almost_full">' . esc_html__('Na wyczerpaniu', 'campsflow') . '</span>';
-        echo ' &nbsp;' . esc_html__('poniżej', 'campsflow') . '</label>';
-        echo '<div class="cf-form__inline">';
-        echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_almost_full_pct" name="campsflow_almost_full_pct" value="' . esc_attr($almostFull) . '" min="1" max="99"> %';
-        echo '</div>';
-        echo '<p class="cf-form__desc">' . esc_html__('Domyślnie: 10% — pokazuj gdy zostało mniej niż 10% miejsc.', 'campsflow') . '</p>';
-        echo '</div>';
+		echo '<div class="cf-form__group">';
+		echo '<label class="cf-form__label" for="campsflow_almost_full_pct">';
+		echo '<span class="cf-badge cf-badge--almost_full">' . esc_html__( 'Na wyczerpaniu', 'campsflow' ) . '</span>';
+		echo ' &nbsp;' . esc_html__( 'poniżej', 'campsflow' ) . '</label>';
+		echo '<div class="cf-form__inline">';
+		echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_almost_full_pct" name="campsflow_almost_full_pct" value="' . esc_attr( $almostFull ) . '" min="1" max="99"> %';
+		echo '</div>';
+		echo '<p class="cf-form__desc">' . esc_html__( 'Domyślnie: 10% — pokazuj gdy zostało mniej niż 10% miejsc.', 'campsflow' ) . '</p>';
+		echo '</div>';
 
-        submit_button(__('Zapisz', 'campsflow'), 'primary cf-form__submit');
-        echo '</form>';
-    }
+		submit_button( __( 'Zapisz', 'campsflow' ), 'primary cf-form__submit' );
+		echo '</form>';
+	}
 
-    private function renderUrlInfo(): void
-    {
-        $tenantSlug = (string) get_option('campsflow_tenant_slug', '');
-        $apiUrl     = Config::apiUrl();
-        $adminUrl   = Config::adminUrl();
-        $apiOverride   = Config::isOverridden('CAMPSFLOW_API_URL');
-        $adminOverride = Config::isOverridden('CAMPSFLOW_ADMIN_URL');
-        $eventsUrl  = $tenantSlug ? Config::eventsEndpoint($tenantSlug) : $apiUrl . '/api/v1/public/{tenant_slug}/events';
+	private function renderUrlInfo(): void {
+		$tenantSlug    = (string) get_option( 'campsflow_tenant_slug', '' );
+		$apiUrl        = Config::apiUrl();
+		$adminUrl      = Config::adminUrl();
+		$apiOverride   = Config::isOverridden( 'CAMPSFLOW_API_URL' );
+		$adminOverride = Config::isOverridden( 'CAMPSFLOW_ADMIN_URL' );
+		$eventsUrl     = $tenantSlug ? Config::eventsEndpoint( $tenantSlug ) : $apiUrl . '/api/v1/public/{tenant_slug}/events';
 
-        echo '<hr class="cf-divider">';
-        echo '<h3>' . esc_html__('Adresy URL synchronizacji', 'campsflow') . '</h3>';
-        echo '<table class="cf-url-table">';
-        $this->urlRow('API', $apiUrl, $apiOverride, 'CAMPSFLOW_API_URL');
-        $this->urlRow('Events endpoint', $eventsUrl, $apiOverride, 'CAMPSFLOW_API_URL');
-        $this->urlRow('Panel Campsflow', $adminUrl, $adminOverride, 'CAMPSFLOW_ADMIN_URL');
-        echo '</table>';
+		echo '<hr class="cf-divider">';
+		echo '<h3>' . esc_html__( 'Adresy URL synchronizacji', 'campsflow' ) . '</h3>';
+		echo '<table class="cf-url-table">';
+		$this->urlRow( 'API', $apiUrl, $apiOverride, 'CAMPSFLOW_API_URL' );
+		$this->urlRow( 'Events endpoint', $eventsUrl, $apiOverride, 'CAMPSFLOW_API_URL' );
+		$this->urlRow( 'Panel Campsflow', $adminUrl, $adminOverride, 'CAMPSFLOW_ADMIN_URL' );
+		echo '</table>';
 
-        echo '<details class="cf-url-override">';
-        echo '<summary>' . esc_html__('Jak nadpisać URL (np. localhost do testów)', 'campsflow') . '</summary>';
-        echo '<div class="cf-url-override__body">';
-        echo '<p class="cf-form__desc">' . esc_html__('Opcja 1 — stała PHP w wp-config.php:', 'campsflow') . '</p>';
-        echo '<pre class="cf-code">define(\'CAMPSFLOW_API_URL\', \'http://localhost:3000\');
+		echo '<details class="cf-url-override">';
+		echo '<summary>' . esc_html__( 'Jak nadpisać URL (np. localhost do testów)', 'campsflow' ) . '</summary>';
+		echo '<div class="cf-url-override__body">';
+		echo '<p class="cf-form__desc">' . esc_html__( 'Opcja 1 — stała PHP w wp-config.php:', 'campsflow' ) . '</p>';
+		echo '<pre class="cf-code">define(\'CAMPSFLOW_API_URL\', \'http://localhost:3000\');
 define(\'CAMPSFLOW_ADMIN_URL\', \'http://localhost:3001\');</pre>';
-        echo '<p class="cf-form__desc">' . esc_html__('Opcja 2 — w .wp-env.json (środowisko deweloperskie):', 'campsflow') . '</p>';
-        echo '<pre class="cf-code">"config": {
+		echo '<p class="cf-form__desc">' . esc_html__( 'Opcja 2 — w .wp-env.json (środowisko deweloperskie):', 'campsflow' ) . '</p>';
+		echo '<pre class="cf-code">"config": {
   "CAMPSFLOW_API_URL": "http://host.docker.internal:3000",
   "CAMPSFLOW_ADMIN_URL": "http://host.docker.internal:3001"
 }</pre>';
-        echo '<p class="cf-form__desc">' . esc_html__('Zmienne środowiskowe (OS / Docker):', 'campsflow') . '</p>';
-        echo '<pre class="cf-code">CAMPSFLOW_API_URL=http://localhost:3000</pre>';
-        echo '</div></details>';
-    }
+		echo '<p class="cf-form__desc">' . esc_html__( 'Zmienne środowiskowe (OS / Docker):', 'campsflow' ) . '</p>';
+		echo '<pre class="cf-code">CAMPSFLOW_API_URL=http://localhost:3000</pre>';
+		echo '</div></details>';
+	}
 
-    private function urlRow(string $label, string $url, bool $overridden, string $constant): void
-    {
-        $badge = $overridden
-            ? '<span class="cf-url-badge cf-url-badge--override" title="' . esc_attr($constant) . '">' . esc_html__('nadpisany', 'campsflow') . '</span>'
-            : '<span class="cf-url-badge cf-url-badge--default">' . esc_html__('domyślny', 'campsflow') . '</span>';
+	private function urlRow( string $label, string $url, bool $overridden, string $constant ): void {
+		$badge = $overridden
+			? '<span class="cf-url-badge cf-url-badge--override" title="' . esc_attr( $constant ) . '">' . esc_html__( 'nadpisany', 'campsflow' ) . '</span>'
+			: '<span class="cf-url-badge cf-url-badge--default">' . esc_html__( 'domyślny', 'campsflow' ) . '</span>';
 
-        echo '<tr>';
-        echo '<td class="cf-url-table__label">' . esc_html($label) . '</td>';
-        echo '<td><code class="cf-url-code">' . esc_html($url) . '</code></td>';
-        echo '<td>' . $badge . '</td>';
-        echo '</tr>';
-    }
+		echo '<tr>';
+		echo '<td class="cf-url-table__label">' . esc_html( $label ) . '</td>';
+		echo '<td><code class="cf-url-code">' . esc_html( $url ) . '</code></td>';
+		echo '<td>' . $badge . '</td>';
+		echo '</tr>';
+	}
 
-    private function renderHistoryTab(): void
-    {
-        $history = SyncLog::getAll();
-        $agg     = SyncLog::getAggregateStats();
+	private function renderHistoryTab(): void {
+		$history = SyncLog::getAll();
+		$agg     = SyncLog::getAggregateStats();
 
-        // Aggregate stats cards
-        echo '<div class="cf-stat-grid">';
-        $this->statCard(__('Wydarzenia dodane', 'campsflow'), $agg->totalEventsAdded, 'added');
-        $this->statCard(__('Wydarzenia zaktualizowane', 'campsflow'), $agg->totalEventsUpdated, 'updated');
-        $this->statCard(__('Wydarzenia nieaktywne', 'campsflow'), $agg->totalEventsInactivated, 'inactivated');
-        $this->statCard(__('Turnusy dodane', 'campsflow'), $agg->totalSessionsAdded, 'added');
-        $this->statCard(__('Turnusy zaktualizowane', 'campsflow'), $agg->totalSessionsUpdated, 'updated');
-        $this->statCard(__('Turnusy nieaktywne', 'campsflow'), $agg->totalSessionsInactivated, 'inactivated');
-        echo '</div>';
+		// Aggregate stats cards
+		echo '<div class="cf-stat-grid">';
+		$this->statCard( __( 'Wydarzenia dodane', 'campsflow' ), $agg->totalEventsAdded, 'added' );
+		$this->statCard( __( 'Wydarzenia zaktualizowane', 'campsflow' ), $agg->totalEventsUpdated, 'updated' );
+		$this->statCard( __( 'Wydarzenia nieaktywne', 'campsflow' ), $agg->totalEventsInactivated, 'inactivated' );
+		$this->statCard( __( 'Turnusy dodane', 'campsflow' ), $agg->totalSessionsAdded, 'added' );
+		$this->statCard( __( 'Turnusy zaktualizowane', 'campsflow' ), $agg->totalSessionsUpdated, 'updated' );
+		$this->statCard( __( 'Turnusy nieaktywne', 'campsflow' ), $agg->totalSessionsInactivated, 'inactivated' );
+		echo '</div>';
 
-        if (empty($history)) {
-            echo '<p class="cf-history__empty">' . esc_html__('Brak historii synchronizacji. Uruchom pierwszą synchronizację.', 'campsflow') . '</p>';
-            return;
-        }
+		if ( empty( $history ) ) {
+			echo '<p class="cf-history__empty">' . esc_html__( 'Brak historii synchronizacji. Uruchom pierwszą synchronizację.', 'campsflow' ) . '</p>';
+			return;
+		}
 
-        // History table
-        echo '<table class="widefat cf-history-table">';
-        echo '<thead><tr>';
-        echo '<th>' . esc_html__('Data', 'campsflow') . '</th>';
-        echo '<th>' . esc_html__('Status', 'campsflow') . '</th>';
-        echo '<th>' . esc_html__('Czas', 'campsflow') . '</th>';
-        echo '<th>' . esc_html__('Wydarzenia +/↻/×', 'campsflow') . '</th>';
-        echo '<th>' . esc_html__('Turnusy +/↻/×', 'campsflow') . '</th>';
-        echo '</tr></thead>';
-        echo '<tbody>';
+		// History table
+		echo '<table class="widefat cf-history-table">';
+		echo '<thead><tr>';
+		echo '<th>' . esc_html__( 'Data', 'campsflow' ) . '</th>';
+		echo '<th>' . esc_html__( 'Status', 'campsflow' ) . '</th>';
+		echo '<th>' . esc_html__( 'Czas', 'campsflow' ) . '</th>';
+		echo '<th>' . esc_html__( 'Wydarzenia +/↻/×', 'campsflow' ) . '</th>';
+		echo '<th>' . esc_html__( 'Turnusy +/↻/×', 'campsflow' ) . '</th>';
+		echo '</tr></thead>';
+		echo '<tbody>';
 
-        foreach ($history as $entry) {
-            if (! is_array($entry)) {
-                continue;
-            }
+		foreach ( $history as $entry ) {
+			if ( ! is_array( $entry ) ) {
+				continue;
+			}
 
-            $status     = (string) ($entry['status'] ?? 'ok');
-            $stats      = $entry['stats'] ?? [];
-            $ev         = $stats['events'] ?? [];
-            $se         = $stats['sessions'] ?? [];
-            $duration   = isset($entry['duration_ms']) ? round((int) $entry['duration_ms'] / 1000, 1) . ' s' : '—';
-            $error      = (string) ($entry['error'] ?? '');
-            $isFixture  = ! empty($entry['is_fixture']);
+			$status    = (string) ( $entry['status'] ?? 'ok' );
+			$stats     = $entry['stats'] ?? array();
+			$ev        = $stats['events'] ?? array();
+			$se        = $stats['sessions'] ?? array();
+			$duration  = isset( $entry['duration_ms'] ) ? round( (int) $entry['duration_ms'] / 1000, 1 ) . ' s' : '—';
+			$error     = (string) ( $entry['error'] ?? '' );
+			$isFixture = ! empty( $entry['is_fixture'] );
 
-            echo '<tr class="cf-history-row cf-history-row--' . esc_attr($status) . '">';
-            echo '<td><strong>' . esc_html((string) ($entry['synced_at'] ?? '')) . '</strong>';
-            if ($isFixture) {
-                echo ' <span class="cf-badge-fixture" title="' . esc_attr__('Dane testowe — brak konfiguracji API', 'campsflow') . '">FIXTURE</span>';
-            }
-            echo '</td>';
-            echo '<td>';
-            if ($status === 'ok') {
-                echo '<span class="cf-badge-status cf-badge-status--ok">✓ OK</span>';
-            } else {
-                echo '<span class="cf-badge-status cf-badge-status--error">✗ Błąd</span>';
-                if ($error) {
-                    echo '<br><small style="color:#991b1b">' . esc_html($error) . '</small>';
-                }
-            }
-            echo '</td>';
-            echo '<td>' . esc_html($duration) . '</td>';
-            echo '<td class="cf-history-stats">';
-            echo '<span class="cf-stat--added">+' . (int) ($ev['added'] ?? 0) . '</span> ';
-            echo '<span class="cf-stat--updated">↻' . (int) ($ev['updated'] ?? 0) . '</span> ';
-            echo '<span class="cf-stat--inactivated">×' . (int) ($ev['inactivated'] ?? 0) . '</span>';
-            echo '</td>';
-            echo '<td class="cf-history-stats">';
-            echo '<span class="cf-stat--added">+' . (int) ($se['added'] ?? 0) . '</span> ';
-            echo '<span class="cf-stat--updated">↻' . (int) ($se['updated'] ?? 0) . '</span> ';
-            echo '<span class="cf-stat--inactivated">×' . (int) ($se['inactivated'] ?? 0) . '</span>';
-            echo '</td>';
-            echo '</tr>';
-        }
+			echo '<tr class="cf-history-row cf-history-row--' . esc_attr( $status ) . '">';
+			echo '<td><strong>' . esc_html( (string) ( $entry['synced_at'] ?? '' ) ) . '</strong>';
+			if ( $isFixture ) {
+				echo ' <span class="cf-badge-fixture" title="' . esc_attr__( 'Dane testowe — brak konfiguracji API', 'campsflow' ) . '">FIXTURE</span>';
+			}
+			echo '</td>';
+			echo '<td>';
+			if ( $status === 'ok' ) {
+				echo '<span class="cf-badge-status cf-badge-status--ok">✓ OK</span>';
+			} else {
+				echo '<span class="cf-badge-status cf-badge-status--error">✗ Błąd</span>';
+				if ( $error ) {
+					echo '<br><small style="color:#991b1b">' . esc_html( $error ) . '</small>';
+				}
+			}
+			echo '</td>';
+			echo '<td>' . esc_html( $duration ) . '</td>';
+			echo '<td class="cf-history-stats">';
+			echo '<span class="cf-stat--added">+' . (int) ( $ev['added'] ?? 0 ) . '</span> ';
+			echo '<span class="cf-stat--updated">↻' . (int) ( $ev['updated'] ?? 0 ) . '</span> ';
+			echo '<span class="cf-stat--inactivated">×' . (int) ( $ev['inactivated'] ?? 0 ) . '</span>';
+			echo '</td>';
+			echo '<td class="cf-history-stats">';
+			echo '<span class="cf-stat--added">+' . (int) ( $se['added'] ?? 0 ) . '</span> ';
+			echo '<span class="cf-stat--updated">↻' . (int) ( $se['updated'] ?? 0 ) . '</span> ';
+			echo '<span class="cf-stat--inactivated">×' . (int) ( $se['inactivated'] ?? 0 ) . '</span>';
+			echo '</td>';
+			echo '</tr>';
+		}
 
-        echo '</tbody></table>';
-    }
+		echo '</tbody></table>';
+	}
 
-    private function statCard(string $label, int $value, string $type): void
-    {
-        echo '<div class="cf-stat-card cf-stat-card--' . esc_attr($type) . '">';
-        echo '<div class="cf-stat-card__value">' . esc_html((string) $value) . '</div>';
-        echo '<div class="cf-stat-card__label">' . esc_html($label) . '</div>';
-        echo '</div>';
-    }
+	private function statCard( string $label, int $value, string $type ): void {
+		echo '<div class="cf-stat-card cf-stat-card--' . esc_attr( $type ) . '">';
+		echo '<div class="cf-stat-card__value">' . esc_html( (string) $value ) . '</div>';
+		echo '<div class="cf-stat-card__label">' . esc_html( $label ) . '</div>';
+		echo '</div>';
+	}
 
-    private function renderStyles(): void
-    {
-        echo '<style>
+	private function renderStyles(): void {
+		echo '<style>
         .cf-tabs { margin-bottom: 0; }
         .cf-status-bar {
             background: #f0f6fc; border-left: 4px solid #2563eb;
@@ -450,12 +457,15 @@ define(\'CAMPSFLOW_ADMIN_URL\', \'http://localhost:3001\');</pre>';
         .cf-stat--updated     { color: #2563eb; font-weight: 600; }
         .cf-stat--inactivated { color: #9ca3af; font-weight: 600; }
         </style>';
-    }
+	}
 
-    private function humanDiff(int $seconds): string
-    {
-        if ($seconds < 60)   return $seconds . ' s';
-        if ($seconds < 3600) return (int) ($seconds / 60) . ' min';
-        return (int) ($seconds / 3600) . ' h ' . (int) (($seconds % 3600) / 60) . ' min';
-    }
+	private function humanDiff( int $seconds ): string {
+		if ( $seconds < 60 ) {
+			return $seconds . ' s';
+		}
+		if ( $seconds < 3600 ) {
+			return (int) ( $seconds / 60 ) . ' min';
+		}
+		return (int) ( $seconds / 3600 ) . ' h ' . (int) ( ( $seconds % 3600 ) / 60 ) . ' min';
+	}
 }

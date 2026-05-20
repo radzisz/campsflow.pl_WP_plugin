@@ -13,35 +13,32 @@ use Campsflow\PostType\SessionPostType;
  * Theme override: place archive-cf_event.php or single-cf_event.php
  * in the theme root to fully replace the plugin default.
  */
-final class TemplateLoader
-{
-    public function register(): void
-    {
-        add_filter('template_include', [$this, 'load']);
-    }
+final class TemplateLoader {
 
-    public function load(string $template): string
-    {
-        if (is_post_type_archive(EventPostType::SLUG)) {
-            return $this->resolve('archive-cf_event.php', $template);
-        }
+	public function register(): void {
+		add_filter( 'template_include', array( $this, 'load' ) );
+	}
 
-        if (is_singular(EventPostType::SLUG)) {
-            return $this->resolve('single-cf_event.php', $template);
-        }
+	public function load( string $template ): string {
+		if ( is_post_type_archive( EventPostType::SLUG ) ) {
+			return $this->resolve( 'archive-cf_event.php', $template );
+		}
 
-        return $template;
-    }
+		if ( is_singular( EventPostType::SLUG ) ) {
+			return $this->resolve( 'single-cf_event.php', $template );
+		}
 
-    private function resolve(string $filename, string $fallback): string
-    {
-        // Theme gets priority
-        $themeFile = locate_template($filename);
-        if ($themeFile) {
-            return $themeFile;
-        }
+		return $template;
+	}
 
-        $pluginFile = CAMPSFLOW_PLUGIN_DIR . 'templates/' . $filename;
-        return file_exists($pluginFile) ? $pluginFile : $fallback;
-    }
+	private function resolve( string $filename, string $fallback ): string {
+		// Theme gets priority
+		$themeFile = locate_template( $filename );
+		if ( $themeFile ) {
+			return $themeFile;
+		}
+
+		$pluginFile = CAMPSFLOW_PLUGIN_DIR . 'templates/' . $filename;
+		return file_exists( $pluginFile ) ? $pluginFile : $fallback;
+	}
 }
