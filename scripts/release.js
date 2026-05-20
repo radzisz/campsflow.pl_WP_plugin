@@ -28,7 +28,7 @@ function run(cmd, opts = {}) {
 
 function readVersion() {
     const src = fs.readFileSync(MAIN, 'utf8');
-    const m = src.match(/define\('CAMPSFLOW_VERSION',\s*'([^']+)'\)/);
+    const m = src.match(/define\s*\(\s*'CAMPSFLOW_VERSION',\s*'([^']+)'\s*\)/);
     if (!m) throw new Error('CAMPSFLOW_VERSION not found');
     return m[1];
 }
@@ -43,7 +43,7 @@ function bumpVersion(current, type) {
 function writeVersion(newVer) {
     let src = fs.readFileSync(MAIN, 'utf8');
     src = src.replace(/ \* Version:\s+[\d.]+/, ` * Version:     ${newVer}`);
-    src = src.replace(/define\('CAMPSFLOW_VERSION',\s*'[\d.]+'\)/, `define('CAMPSFLOW_VERSION', '${newVer}')`);
+    src = src.replace(/define\s*\(\s*'CAMPSFLOW_VERSION',\s*'[\d.]+'\s*\)/, `define( 'CAMPSFLOW_VERSION', '${newVer}' )`);
     fs.writeFileSync(MAIN, src);
 }
 
