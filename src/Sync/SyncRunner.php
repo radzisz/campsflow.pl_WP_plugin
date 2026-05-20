@@ -19,7 +19,7 @@ final class SyncRunner
 
         $usingFixture = ! $tenantSlug || ! $apiKey;
         $events = $usingFixture
-            ? $this->loadFixture()
+            ? $this->loadFixtureOrEmpty()
             : $this->fetchFromApi(Config::eventsEndpoint($tenantSlug), $apiKey);
 
         $transformer    = new Transformer();
@@ -254,27 +254,24 @@ final class SyncRunner
     // ── Data fetching ─────────────────────────────────────────────────────────
 
     /**
+     * Returns fixture data when available (dev environment), or empty array in production.
+     *
      * @return array<int, array<string, mixed>>
      */
-    private function loadFixture(): array
+    private function loadFixtureOrEmpty(): array
     {
         $path = CAMPSFLOW_PLUGIN_DIR . 'tests/fixtures/api-events.json';
-
         if (! file_exists($path)) {
-            throw new \RuntimeException('Fixture file not found: ' . $path);
+            return [];
         }
 
         $json = file_get_contents($path);
         if ($json === false) {
-            throw new \RuntimeException('Cannot read fixture file.');
+            return [];
         }
 
         $data = json_decode($json, true);
-        if (! is_array($data)) {
-            throw new \RuntimeException('Invalid JSON in fixture file.');
-        }
-
-        return $data;
+        return is_array($data) ? $data : [];
     }
 
     /**
