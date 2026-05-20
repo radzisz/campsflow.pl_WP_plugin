@@ -22,7 +22,9 @@
 
         "analyse": "npm run php -- vendor/bin/phpstan analyse --memory-limit=512M",
         "lint": "npm run php -- vendor/bin/phpcs",
-        "lint:fix": "npm run php -- vendor/bin/phpcbf"
+        "lint:fix": "npm run php -- vendor/bin/phpcbf",
+
+        "release": "node scripts/release.js"
     },
     "devDependencies": {
         "@wordpress/env": "^10.0"
