@@ -35,23 +35,14 @@ final class SettingsPage
 
     public function registerSettings(): void
     {
-        $defaults = [
-            'campsflow_tenant_slug'     => '',
-            'campsflow_api_key'         => '',
-            'campsflow_sync_interval'   => 'hourly',
-            'campsflow_few_left_pct'    => '25',
-            'campsflow_almost_full_pct' => '10',
-        ];
+        $san = 'sanitize_text_field';
 
-        foreach ($defaults as $key => $default) {
-            register_setting('campsflow_sync', $key, [
-                'sanitize_callback' => 'sanitize_text_field',
-                'default'           => $default,
-            ]);
-            register_setting('campsflow_settings', $key, [
-                'sanitize_callback' => 'sanitize_text_field',
-                'default'           => $default,
-            ]);
+        foreach (['campsflow_tenant_slug' => '', 'campsflow_api_key' => '', 'campsflow_sync_interval' => 'hourly'] as $key => $default) {
+            register_setting('campsflow_sync', $key, ['sanitize_callback' => $san, 'default' => $default]);
+        }
+
+        foreach (['campsflow_few_left_pct' => '25', 'campsflow_almost_full_pct' => '10'] as $key => $default) {
+            register_setting('campsflow_settings', $key, ['sanitize_callback' => $san, 'default' => $default]);
         }
     }
 

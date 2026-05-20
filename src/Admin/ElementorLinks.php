@@ -62,8 +62,8 @@ final class ElementorLinks
             );
         }
 
-        // Elementor Pro Theme Builder — single cf_event template
-        if ($this->hasElementorPro()) {
+        // Elementor Pro Theme Builder — single cf_event template (only if one exists)
+        if ($this->hasElementorPro() && $this->hasSingleEventTemplate()) {
             $themeBuilderUrl = admin_url(
                 'edit.php?post_type=elementor_library'
                 . '&tabs_group=theme'
@@ -140,6 +140,21 @@ final class ElementorLinks
     private function hasElementorPro(): bool
     {
         return defined('ELEMENTOR_PRO_VERSION');
+    }
+
+    private function hasSingleEventTemplate(): bool
+    {
+        $templates = get_posts([
+            'post_type'      => 'elementor_library',
+            'post_status'    => 'publish',
+            'posts_per_page' => 1,
+            'fields'         => 'ids',
+            'meta_query'     => [[
+                'key'   => '_elementor_template_type',
+                'value' => 'single-post',
+            ]],
+        ]);
+        return ! empty($templates);
     }
 
     private function hasWpBakery(): bool
