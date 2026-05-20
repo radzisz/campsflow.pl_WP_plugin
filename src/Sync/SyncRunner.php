@@ -254,24 +254,33 @@ final class SyncRunner
     // ── Data fetching ─────────────────────────────────────────────────────────
 
     /**
-     * Returns fixture data when available (dev environment), or empty array in production.
+     * Returns demo data when no credentials configured.
+     * Looks first in tests/fixtures/ (dev), then assets/ (production).
      *
      * @return array<int, array<string, mixed>>
      */
     private function loadFixtureOrEmpty(): array
     {
-        $path = CAMPSFLOW_PLUGIN_DIR . 'tests/fixtures/api-events.json';
-        if (! file_exists($path)) {
-            return [];
+        $candidates = [
+            CAMPSFLOW_PLUGIN_DIR . 'tests/fixtures/api-events.json',
+            CAMPSFLOW_PLUGIN_DIR . 'assets/demo-events.json',
+        ];
+
+        foreach ($candidates as $path) {
+            if (! file_exists($path)) {
+                continue;
+            }
+            $json = file_get_contents($path);
+            if ($json === false) {
+                continue;
+            }
+            $data = json_decode($json, true);
+            if (is_array($data)) {
+                return $data;
+            }
         }
 
-        $json = file_get_contents($path);
-        if ($json === false) {
-            return [];
-        }
-
-        $data = json_decode($json, true);
-        return is_array($data) ? $data : [];
+        return [];
     }
 
     /**
