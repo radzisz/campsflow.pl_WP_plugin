@@ -16,13 +16,4 @@
             <directory>tests/Integration</directory>
         </testsuite>
     </testsuites>
-    <coverage>
-        <include>
-            <directory>src</directory>
-        </include>
-        <report>
-            <html outputDirectory="coverage"/>
-            <text outputFile="php://stdout" showUncoveredFiles="false"/>
-        </report>
-    </coverage>
 </phpunit>
