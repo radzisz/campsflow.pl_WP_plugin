@@ -28,7 +28,7 @@ jobs:
         run: composer test:unit
 
       - name: PHPStan
-        run: composer analyse
+        run: vendor/bin/phpstan analyse --memory-limit=1G
 
       - name: PHPCS
         run: composer lint

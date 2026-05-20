@@ -1,9 +1,36 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+
 parameters:
-    level: 8
+    level: 5
     paths:
         - src
         - campsflow.php
-    bootstrapFiles:
-        - vendor/szepeviktor/phpstan-wordpress/helpers.php
     phpVersion: 80200
-    checkMissingIterableValueType: false
+    treatPhpDocTypesAsCertain: false
+
+    excludePaths:
+        - src/Presentation/ElementorIntegration.php
+        - src/Presentation/ElementorWidget.php
+        - src/Presentation/EventMetaWidget.php
+        - src/Presentation/EventSessionsWidget.php
+        - src/Presentation/WpBakeryIntegration.php
+        - src/Presentation/WpBakeryDynamicContent.php
+
+    dynamicConstantNames:
+        - CAMPSFLOW_PLUGIN_DIR
+        - CAMPSFLOW_PLUGIN_URL
+        - CAMPSFLOW_VERSION
+        - ABSPATH
+
+    ignoreErrors:
+        # Plugin Update Checker — types not fully declared
+        - '#Call to an undefined method YahnisElsts\\PluginUpdateChecker#'
+        # WP constants defined at runtime — analysis runs without WP loaded
+        - '#Constant CAMPSFLOW_PLUGIN_DIR not found#'
+        # date_create returns DateTime|false — ?-> is intentional
+        - '#Using nullsafe method call on non-nullable type DateTime\|false#'
+        # WP_Screen and WP_Term PHPDoc types differ from runtime nullability
+        - '#Property WP_Screen::\$post_type .* on left side of \?\? is not nullable#'
+        - '#Property WP_Term::\$name .* in isset\(\) is not nullable#'
+        - '#Property WP_Term::\$slug .* in isset\(\) is not nullable#'

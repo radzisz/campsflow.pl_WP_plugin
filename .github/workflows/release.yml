@@ -18,7 +18,7 @@ jobs:
           coverage: none
       - run: composer install --no-interaction --prefer-dist
       - run: composer test:unit
-      - run: composer analyse
+      - run: vendor/bin/phpstan analyse --memory-limit=1G
 
   release:
     name: Build & Release

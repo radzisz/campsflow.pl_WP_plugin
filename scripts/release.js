@@ -81,9 +81,18 @@ async function main() {
     writeVersion(newVer);
 
     console.log('\n=== Testy + analiza ===');
-    run(`docker run --rm -v "${ROOT}:/app" -w /app composer:2 install --quiet`);
-    run(`docker run --rm -v "${ROOT}:/app" -w /app php:8.2-cli vendor/bin/phpunit --testsuite unit`);
-    run(`docker run --rm -v "${ROOT}:/app" -w /app php:8.2-cli vendor/bin/phpstan analyse --memory-limit=512M --no-progress`);
+    const env = { ...process.env, MSYS_NO_PATHCONV: '1' };
+    run([
+        'docker run --rm',
+        `-v "${ROOT}:/src"`,
+        'php:8.2-cli bash -c "',
+        'apt-get update -q && apt-get install -q -y unzip > /dev/null 2>&1 &&',
+        'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer > /dev/null 2>&1 &&',
+        'cp -r /src /tmp/test-src && cd /tmp/test-src &&',
+        'composer install --no-interaction --prefer-dist --quiet &&',
+        'vendor/bin/phpunit --testsuite unit &&',
+        'vendor/bin/phpstan analyse --memory-limit=1G --no-progress"',
+    ].join(' '), { env });
 
     console.log('\n=== Budowanie ZIP ===');
     const zipName = `campsflow-v${newVer}.zip`;
@@ -91,7 +100,6 @@ async function main() {
     fs.mkdirSync(path.join(ROOT, 'dist'), { recursive: true });
     if (fs.existsSync(outPath)) fs.rmSync(outPath);
 
-    const env = { ...process.env, MSYS_NO_PATHCONV: '1' };
     const distDir = path.join(ROOT, 'dist');
     run([
         'docker run --rm',
