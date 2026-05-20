@@ -3,7 +3,7 @@
  * Plugin Name: Campsflow
  * Plugin URI:  https://campsflow.pl
  * Description: WordPress integration for Campsflow.pl reservation system. Synchronizes camps and sessions to local CPT, provides listing shortcodes, and embeds the Campsflow registration form via iframe.
- * Version:     0.1.3
+ * Version:     0.1.4
  * Author:      Campsflow
  * Author URI:  https://campsflow.pl
  * License:     GPL-2.0-or-later
@@ -22,7 +22,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define('CAMPSFLOW_VERSION', '0.1.3');
+define('CAMPSFLOW_VERSION', '0.1.4');
 define('CAMPSFLOW_PLUGIN_FILE', __FILE__);
 define('CAMPSFLOW_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CAMPSFLOW_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -30,9 +30,8 @@ define('CAMPSFLOW_PLUGIN_URL', plugin_dir_url(__FILE__));
 require_once CAMPSFLOW_PLUGIN_DIR . 'vendor/autoload.php';
 
 // Auto-updates via GitHub Releases
-// Replace with your actual GitHub repo URL before first release.
 $updateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
-    'https://github.com/campsflow/campsflow-wp/',
+    'https://github.com/campsflow/campsflow-pl-plugin-wp/',
     __FILE__,
     'campsflow'
 );
