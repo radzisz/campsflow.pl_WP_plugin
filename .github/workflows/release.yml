@@ -78,3 +78,6 @@ jobs:
           files: ${{ env.ZIP_PATH }}
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
+          # Release is created atomically with the ZIP attached.
+          # The puc filter in campsflow.php rejects /zipball/ source archives
+          # in case PUC runs before this job completes.
