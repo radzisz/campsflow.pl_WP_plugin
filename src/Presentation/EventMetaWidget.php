@@ -145,6 +145,16 @@ final class EventMetaWidget extends Widget_Base {
 				'label_off' => $no,
 			)
 		);
+		$this->add_control(
+			'show_custom_fields',
+			array(
+				'label'     => __( 'Pola własne', 'campsflow' ),
+				'type'      => $switcher,
+				'default'   => '',
+				'label_on'  => $yes,
+				'label_off' => $no,
+			)
+		);
 		$this->end_controls_section();
 	}
 
@@ -228,6 +238,9 @@ final class EventMetaWidget extends Widget_Base {
 		}
 		if ( $s['show_contact'] === 'yes' ) {
 			$this->echoContact( $postId );
+		}
+		if ( $s['show_custom_fields'] === 'yes' ) {
+			$this->echoCustomFields( $postId );
 		}
 		echo '</div>';
 	}
@@ -397,6 +410,41 @@ final class EventMetaWidget extends Widget_Base {
 			echo '<h4>' . esc_html__( 'Co zabrać', 'campsflow' ) . '</h4>' . wp_kses_post( $what );
 		}
 		echo '</div>';
+	}
+
+	private function echoCustomFields( int $postId ): void {
+		$fields = json_decode( (string) get_post_meta( $postId, 'cf_custom_fields', true ), true );
+		if ( ! is_array( $fields ) || empty( $fields ) ) {
+			return;
+		}
+		echo '<dl class="cf-custom-fields">';
+		foreach ( $fields as $field ) {
+			if ( ! is_array( $field ) || empty( $field['key'] ) ) {
+				continue;
+			}
+			echo '<dt class="cf-custom-fields__label">' . esc_html( (string) ( $field['label'] ?? $field['key'] ) ) . '</dt>';
+			echo '<dd class="cf-custom-fields__value">' . $this->renderCustomFieldValue( $field ) . '</dd>';
+		}
+		echo '</dl>';
+	}
+
+	/** @param array<string,mixed> $field */
+	private function renderCustomFieldValue( array $field ): string {
+		$type  = (string) ( $field['type'] ?? 'text' );
+		$value = $field['value'] ?? null;
+		switch ( $type ) {
+			case 'html':
+				return wp_kses_post( (string) $value );
+			case 'number':
+				return esc_html( is_numeric( $value ) ? number_format( (float) $value, 2, ',', ' ' ) : '' );
+			case 'date':
+				$d = $value ? date_create( (string) $value ) : null;
+				return esc_html( $d ? $d->format( 'd.m.Y' ) : (string) $value );
+			case 'boolean':
+				return esc_html( $value ? __( 'Tak', 'campsflow' ) : __( 'Nie', 'campsflow' ) );
+			default:
+				return esc_html( (string) $value );
+		}
 	}
 
 	private function echoContact( int $postId ): void {

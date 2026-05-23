@@ -68,6 +68,9 @@ final class EventShortcodes {
 		if ( in_array( 'contact', $show, true ) ) {
 			$this->echoContact( $postId );
 		}
+		if ( in_array( 'custom_fields', $show, true ) ) {
+			$this->echoCustomFields( $postId );
+		}
 		echo '</div>';
 		return (string) ob_get_clean();
 	}
@@ -81,6 +84,7 @@ final class EventShortcodes {
 				'title'               => __( 'Dostępne terminy', 'campsflow' ),
 				'button_label'        => __( 'Zapisz się', 'campsflow' ),
 				'show_meeting_points' => '0',
+				'show_custom_fields'  => '0',
 			),
 			is_array( $atts ) ? $atts : array(),
 			'campsflow_event_sessions'
@@ -89,6 +93,7 @@ final class EventShortcodes {
 		$buttonLabel       = sanitize_text_field( $atts['button_label'] );
 		$title             = sanitize_text_field( $atts['title'] );
 		$showMeetingPoints = $atts['show_meeting_points'] === '1';
+		$showCustomFields  = $atts['show_custom_fields'] === '1';
 		if ( ! $postId ) {
 			return '';
 		}
@@ -118,7 +123,7 @@ final class EventShortcodes {
 		echo '<ul class="cf-sessions-box__list">';
 		while ( $sessions->have_posts() ) {
 			$sessions->the_post();
-			$this->echoSessionItem( (int) get_the_ID(), $buttonLabel, $showMeetingPoints );
+			$this->echoSessionItem( (int) get_the_ID(), $buttonLabel, $showMeetingPoints, $showCustomFields );
 		}
 		wp_reset_postdata();
 		echo '</ul></div>';
@@ -330,7 +335,7 @@ final class EventShortcodes {
 
 	// ── Session helpers ───────────────────────────────────────────────────────
 
-	private function echoSessionItem( int $sId, string $buttonLabel, bool $showMeetingPoints ): void {
+	private function echoSessionItem( int $sId, string $buttonLabel, bool $showMeetingPoints, bool $showCustomFields = false ): void {
 		$dateFrom   = (string) get_post_meta( $sId, 'cf_date_from', true );
 		$dateTo     = (string) get_post_meta( $sId, 'cf_date_to', true );
 		$price      = (int) get_post_meta( $sId, 'cf_price_from', true );
@@ -363,6 +368,9 @@ final class EventShortcodes {
 		if ( $showMeetingPoints ) {
 			$this->echoMeetingPoints( $sId );
 		}
+		if ( $showCustomFields ) {
+			$this->echoCustomFields( $sId );
+		}
 		echo '<div class="cf-sessions-box__meta">';
 		if ( $priceLabel ) {
 			echo '<span class="cf-sessions-box__price">' . esc_html( $priceLabel ) . '</span>';
@@ -377,6 +385,41 @@ final class EventShortcodes {
 			echo '<a class="cf-btn" href="' . esc_url( $reservUrl ) . '" target="_blank" rel="noopener">' . esc_html( $buttonLabel ) . '</a>';
 		}
 		echo '</li>';
+	}
+
+	private function echoCustomFields( int $postId ): void {
+		$fields = json_decode( (string) get_post_meta( $postId, 'cf_custom_fields', true ), true );
+		if ( ! is_array( $fields ) || empty( $fields ) ) {
+			return;
+		}
+		echo '<dl class="cf-custom-fields">';
+		foreach ( $fields as $field ) {
+			if ( ! is_array( $field ) || empty( $field['key'] ) ) {
+				continue;
+			}
+			echo '<dt class="cf-custom-fields__label">' . esc_html( (string) ( $field['label'] ?? $field['key'] ) ) . '</dt>';
+			echo '<dd class="cf-custom-fields__value">' . $this->renderCustomFieldValue( $field ) . '</dd>';
+		}
+		echo '</dl>';
+	}
+
+	/** @param array<string,mixed> $field */
+	private function renderCustomFieldValue( array $field ): string {
+		$type  = (string) ( $field['type'] ?? 'text' );
+		$value = $field['value'] ?? null;
+		switch ( $type ) {
+			case 'html':
+				return wp_kses_post( (string) $value );
+			case 'number':
+				return esc_html( is_numeric( $value ) ? number_format( (float) $value, 2, ',', ' ' ) : '' );
+			case 'date':
+				$d = $value ? date_create( (string) $value ) : null;
+				return esc_html( $d ? $d->format( 'd.m.Y' ) : (string) $value );
+			case 'boolean':
+				return esc_html( $value ? __( 'Tak', 'campsflow' ) : __( 'Nie', 'campsflow' ) );
+			default:
+				return esc_html( (string) $value );
+		}
 	}
 
 	private function echoMeetingPoints( int $sId ): void {

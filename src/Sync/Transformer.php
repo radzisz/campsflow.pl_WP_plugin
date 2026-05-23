@@ -36,6 +36,10 @@ final class Transformer {
 			? (string) wp_json_encode( $apiTurnus['meetingPoints_return'], JSON_UNESCAPED_UNICODE )
 			: '[]';
 
+		$customFields = isset( $apiTurnus['customFields'] ) && is_array( $apiTurnus['customFields'] )
+			? (string) wp_json_encode( $apiTurnus['customFields'], JSON_UNESCAPED_UNICODE )
+			: '[]';
+
 		return new TransformedTurnus(
 			turnusId:             (string) $apiTurnus['id'],
 			name:                 (string) ( $apiTurnus['name'] ?? '' ),
@@ -53,6 +57,7 @@ final class Transformer {
 				(int) $apiTurnus['seatsAll'],
 				(int) $apiTurnus['seatsAvailable'],
 			),
+			customFields:         $customFields,
 		);
 	}
 

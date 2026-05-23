@@ -19,5 +19,6 @@ final class TransformedTurnus {
 		public int $seatsAll,
 		public string $reservationUrl,
 		public AvailabilityBucket $availabilityBucket,
+		public string $customFields = '[]', // JSON
 	) {}
 }

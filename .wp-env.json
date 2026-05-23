@@ -1,7 +1,10 @@
 {
     "core": null,
     "phpVersion": "8.2",
-    "plugins": ["."],
+    "plugins": [
+        ".",
+        "https://downloads.wordpress.org/plugin/elementor.latest-stable.zip"
+    ],
     "themes": [],
     "port": 8890,
     "env": {
