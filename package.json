@@ -20,7 +20,7 @@
         "test:integration": "npm run php -- vendor/bin/phpunit --testsuite integration",
         "test:coverage": "npm run php -- vendor/bin/phpunit --coverage-html coverage",
 
-        "analyse": "npm run php -- vendor/bin/phpstan analyse --memory-limit=512M",
+        "analyse": "npm run php -- vendor/bin/phpstan analyse --memory-limit=1G",
         "lint": "npm run php -- vendor/bin/phpcs",
         "lint:fix": "npm run php -- vendor/bin/phpcbf",
 

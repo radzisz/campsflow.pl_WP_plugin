@@ -2,7 +2,7 @@ includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 
 parameters:
-    level: 5
+    level: 8
     paths:
         - src
         - campsflow.php
@@ -28,8 +28,6 @@ parameters:
         - '#Call to an undefined method YahnisElsts\\PluginUpdateChecker#'
         # WP constants defined at runtime — analysis runs without WP loaded
         - '#Constant CAMPSFLOW_PLUGIN_DIR not found#'
-        # date_create returns DateTime|false — ?-> is intentional
-        - '#Using nullsafe method call on non-nullable type DateTime\|false#'
         # WP_Screen and WP_Term PHPDoc types differ from runtime nullability
         - '#Property WP_Screen::\$post_type .* on left side of \?\? is not nullable#'
         - '#Property WP_Term::\$name .* in isset\(\) is not nullable#'

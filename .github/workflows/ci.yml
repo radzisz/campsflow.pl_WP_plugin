@@ -32,3 +32,6 @@ jobs:
 
       - name: PHPCS
         run: composer lint
+
+      - name: Security audit
+        run: composer audit

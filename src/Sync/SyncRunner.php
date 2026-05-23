@@ -141,6 +141,10 @@ final class SyncRunner {
 		if ( isset( $event['contact'] ) && is_array( $event['contact'] ) ) {
 			update_post_meta( $postId, 'cf_contact', wp_json_encode( $event['contact'], JSON_UNESCAPED_UNICODE ) );
 		}
+
+		// Custom fields
+		$cfFields = is_array( $event['customFields'] ?? null ) ? $event['customFields'] : array();
+		update_post_meta( $postId, 'cf_custom_fields', (string) wp_json_encode( $cfFields, JSON_UNESCAPED_UNICODE ) );
 	}
 
 	/**
@@ -177,8 +181,10 @@ final class SyncRunner {
 	// ── Session ──────────────────────────────────────────────────────────────
 
 	private function upsertSession( TransformedTurnus $t, int $eventPostId, SyncStats $stats ): void {
-		$existing = $this->findByMeta( SessionPostType::SLUG, 'cf_session_id', $t->turnusId );
-		$title    = $t->name !== '' ? $t->name : ( $t->dateFrom ? ( date_create( $t->dateFrom )?->format( 'd.m.Y' ) ?? $t->dateFrom ) : $t->turnusId );
+		$existing      = $this->findByMeta( SessionPostType::SLUG, 'cf_session_id', $t->turnusId );
+		$dateObj       = $t->dateFrom !== '' ? date_create( $t->dateFrom ) : false;
+		$dateFormatted = $dateObj !== false ? $dateObj->format( 'd.m.Y' ) : null;
+		$title         = $t->name !== '' ? $t->name : ( $t->dateFrom ? ( $dateFormatted ?? $t->dateFrom ) : $t->turnusId );
 
 		$postData = array(
 			'post_type'   => SessionPostType::SLUG,
@@ -213,6 +219,7 @@ final class SyncRunner {
 		update_post_meta( $postId, 'cf_seats_all', $t->seatsAll );
 		update_post_meta( $postId, 'cf_availability', $t->availabilityBucket->value );
 		update_post_meta( $postId, 'cf_reservation_url', $t->reservationUrl );
+		update_post_meta( $postId, 'cf_custom_fields', $t->customFields );
 	}
 
 	// ── Inactivation ─────────────────────────────────────────────────────────
