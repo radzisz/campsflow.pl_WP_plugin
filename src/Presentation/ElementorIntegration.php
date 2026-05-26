@@ -22,6 +22,7 @@ final class ElementorIntegration {
 		$manager->register( new EventDocumentsWidget() );
 		$manager->register( new EventLeadImageWidget() );
 		$manager->register( new EventLeadVideoWidget() );
+		$manager->register( new EventGalleryWidget() );
 	}
 
 	public function registerCategory( \Elementor\Elements_Manager $manager ): void {

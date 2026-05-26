@@ -320,6 +320,22 @@
 .cf-gallery__img  { width: 100%; height: 100%; object-fit: cover; transition: transform .2s; display: block; }
 .cf-gallery__item:hover .cf-gallery__img { transform: scale(1.04); }
 
+/* ── Gallery slider ─────────────────────────────────────────────── */
+.cf-gallery__slider { position: relative; }
+.cf-slider__viewport { position: relative; overflow: hidden; }
+.cf-slider__track { display: flex; will-change: transform; }
+.cf-slider__slide { flex-shrink: 0; min-width: 0; overflow: hidden; }
+.cf-slider__slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cf-slider__prev,
+.cf-slider__next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,.5); color: #fff; border: none; cursor: pointer; padding: .35rem .65rem; font-size: 2.25rem; line-height: 1; z-index: 2; border-radius: 3px; transition: background .15s; }
+.cf-slider__prev:hover,
+.cf-slider__next:hover { background: rgba(0,0,0,.8); }
+.cf-slider__prev { left: 0; }
+.cf-slider__next { right: 0; }
+.cf-slider__dots { text-align: center; padding: .5rem 0; }
+.cf-slider__dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: rgba(0,0,0,.2); margin: 0 4px; cursor: pointer; transition: background .2s; }
+.cf-slider__dot.is-active { background: #222; }
+
 /* ── Video ─────────────────────────────────────────────────────── */
 .cf-video-wrap {
     position: relative; padding-bottom: 56.25%; height: 0;

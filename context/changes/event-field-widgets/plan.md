@@ -444,13 +444,13 @@ $manager->register( new EventAgeGroupWidget() );
 ### Phase 3: EventLeadImageWidget + EventLeadVideoWidget
 
 #### Automated
-- [x] 3.1 Create src/Presentation/EventLeadImageWidget.php
-- [x] 3.2 Create src/Presentation/EventLeadVideoWidget.php
-- [x] 3.3 Register both in ElementorIntegration
-- [x] 3.4 Update phpstan.neon (add both)
-- [x] 3.5 npm run test:unit passes
-- [x] 3.6 npm run lint passes
-- [x] 3.7 npm run analyse passes
+- [x] 3.1 Create src/Presentation/EventLeadImageWidget.php — af268c0
+- [x] 3.2 Create src/Presentation/EventLeadVideoWidget.php — af268c0
+- [x] 3.3 Register both in ElementorIntegration — af268c0
+- [x] 3.4 Update phpstan.neon (add both) — af268c0
+- [x] 3.5 npm run test:unit passes — af268c0
+- [x] 3.6 npm run lint passes — af268c0
+- [x] 3.7 npm run analyse passes — af268c0
 
 #### Manual
 - [ ] 3.8 EventLeadImageWidget renders <img loading="lazy"> with correct src
@@ -460,18 +460,18 @@ $manager->register( new EventAgeGroupWidget() );
 ### Phase 4: EventGalleryWidget
 
 #### Automated
-- [ ] 4.1 Create src/Presentation/EventGalleryWidget.php
-- [ ] 4.2 Register in ElementorIntegration
-- [ ] 4.3 Update phpstan.neon
-- [ ] 4.4 npm run test:unit passes
-- [ ] 4.5 npm run lint passes
-- [ ] 4.6 npm run analyse passes
+- [x] 4.1 Create src/Presentation/EventGalleryWidget.php
+- [x] 4.2 Register in ElementorIntegration
+- [x] 4.3 Update phpstan.neon
+- [x] 4.4 npm run test:unit passes
+- [x] 4.5 npm run lint passes
+- [x] 4.6 npm run analyse passes
 
 #### Manual
-- [ ] 4.7 Built-in gallery renders image grid from cf_multimedia_urls
-- [ ] 4.8 Clicking an image opens <dialog> with full-size image
-- [ ] 4.9 Clicking dialog backdrop closes the lightbox
-- [ ] 4.10 Custom mode outputs data-{attr}='[json]' on wrapper div
+- [x] 4.7 Built-in gallery renders image grid from cf_multimedia_urls
+- [x] 4.8 Clicking an image opens <dialog> with full-size image
+- [x] 4.9 Clicking dialog backdrop closes the lightbox
+- [x] 4.10 Custom mode outputs data-{attr}='[json]' on wrapper div
 
 ### Phase 5: EventTagsWidget + EventAgeGroupWidget + CI gate
 
