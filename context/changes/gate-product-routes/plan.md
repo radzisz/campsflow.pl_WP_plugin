@@ -105,11 +105,11 @@ Run the three gate commands that can be executed locally via npm (`lint`, `analy
 
 #### Automated
 
-- [x] 1.1 `npm run lint` exits 0, reports 0 errors
-- [x] 1.2 `npm run analyse` exits 0, reports 0 errors
-- [x] 1.3 `npm run test:unit` exits 0, all 6 tests pass
+- [x] 1.1 `npm run lint` exits 0, reports 0 errors — af15428
+- [x] 1.2 `npm run analyse` exits 0, reports 0 errors — af15428
+- [x] 1.3 `npm run test:unit` exits 0, all 6 tests pass — af15428
 
 #### Manual
 
-- [x] 1.4 `tests/Integration/Sync/WpWriterTest.php` exists and extends `WP_UnitTestCase`
-- [x] 1.5 `.github/workflows/ci.yml` contains all four gate steps
+- [x] 1.4 `tests/Integration/Sync/WpWriterTest.php` exists and extends `WP_UnitTestCase` — af15428
+- [x] 1.5 `.github/workflows/ci.yml` contains all four gate steps — af15428
