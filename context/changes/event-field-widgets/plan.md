@@ -428,13 +428,13 @@ $manager->register( new EventAgeGroupWidget() );
 ### Phase 2: EventContactWidget + EventDocumentsWidget
 
 #### Automated
-- [x] 2.1 Create src/Presentation/EventContactWidget.php
-- [x] 2.2 Create src/Presentation/EventDocumentsWidget.php
-- [x] 2.3 Register both in ElementorIntegration
-- [x] 2.4 Update phpstan.neon (add both)
-- [x] 2.5 npm run test:unit passes
-- [x] 2.6 npm run lint passes
-- [x] 2.7 npm run analyse passes
+- [x] 2.1 Create src/Presentation/EventContactWidget.php — 333ffbc
+- [x] 2.2 Create src/Presentation/EventDocumentsWidget.php — 333ffbc
+- [x] 2.3 Register both in ElementorIntegration — 333ffbc
+- [x] 2.4 Update phpstan.neon (add both) — 333ffbc
+- [x] 2.5 npm run test:unit passes — 333ffbc
+- [x] 2.6 npm run lint passes — 333ffbc
+- [x] 2.7 npm run analyse passes — 333ffbc
 
 #### Manual
 - [ ] 2.8 Both widgets appear in Elementor panel
@@ -444,13 +444,13 @@ $manager->register( new EventAgeGroupWidget() );
 ### Phase 3: EventLeadImageWidget + EventLeadVideoWidget
 
 #### Automated
-- [ ] 3.1 Create src/Presentation/EventLeadImageWidget.php
-- [ ] 3.2 Create src/Presentation/EventLeadVideoWidget.php
-- [ ] 3.3 Register both in ElementorIntegration
-- [ ] 3.4 Update phpstan.neon (add both)
-- [ ] 3.5 npm run test:unit passes
-- [ ] 3.6 npm run lint passes
-- [ ] 3.7 npm run analyse passes
+- [x] 3.1 Create src/Presentation/EventLeadImageWidget.php
+- [x] 3.2 Create src/Presentation/EventLeadVideoWidget.php
+- [x] 3.3 Register both in ElementorIntegration
+- [x] 3.4 Update phpstan.neon (add both)
+- [x] 3.5 npm run test:unit passes
+- [x] 3.6 npm run lint passes
+- [x] 3.7 npm run analyse passes
 
 #### Manual
 - [ ] 3.8 EventLeadImageWidget renders <img loading="lazy"> with correct src
