@@ -12,7 +12,7 @@ parameters:
     excludePaths:
         - src/Presentation/ElementorIntegration.php
         - src/Presentation/ElementorWidget.php
-        - src/Presentation/EventMetaWidget.php
+        - src/Presentation/EventFieldWidget.php
         - src/Presentation/EventSessionsWidget.php
         - src/Presentation/WpBakeryIntegration.php
         - src/Presentation/WpBakeryDynamicContent.php
