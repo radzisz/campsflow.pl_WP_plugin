@@ -24,10 +24,6 @@ final class TemplateLoader {
 			return $this->resolve( 'archive-cf_event.php', $template );
 		}
 
-		if ( is_singular( EventPostType::SLUG ) ) {
-			return $this->resolve( 'single-cf_event.php', $template );
-		}
-
 		return $template;
 	}
 

@@ -161,8 +161,7 @@ Add private method `registerConfigSection()` that:
    - `add_control("field_heading_{$id}", ['type' => Controls_Manager::HEADING, 'label' => $label, 'separator' => 'before'])`
    - `add_control("show_{$id}", ['type' => SWITCHER, 'label' => __('Widoczny', 'campsflow'), 'default' => $default_visible, 'label_on' => $yes, 'label_off' => $no])`
    - `add_control("{$id}_priority", ['type' => Controls_Manager::NUMBER, 'label' => __('Kolejność', 'campsflow'), 'min' => 1, 'max' => 999, 'step' => 1, 'default' => $default_priority])`
-   - `add_control("{$id}_locked", ['type' => Controls_Manager::TEXT, 'label' => __('Zablokuj wartość', 'campsflow'), 'default' => ''])`
-   - `add_control("{$id}_default", ['type' => Controls_Manager::TEXT, 'label' => __('Wartość domyślna', 'campsflow'), 'default' => ''])`
+   - ~~`{id}_locked` / `{id}_default`~~ — pominięte w EventMetaWidget; `FieldConfig` obsługuje te pola, ale ich kontrolki mają sens tylko w panelu wyszukiwania (R-003)
 3. Closes the section.
 
 Remove the old `registerContentSection()` method entirely.
@@ -221,20 +220,20 @@ None required for R-002 — no CPT writes, no WP_Query, no output change.
 
 #### Automated
 
-- [x] 1.1 `npm run analyse` exits 0 — FieldConfig.php and FieldSorter.php PHPStan level-8 clean
-- [x] 1.2 `npm run lint` exits 0 — PHPCS clean for new files
-- [x] 1.3 `npm run test:unit` exits 0 — all 4 FieldSorterTest cases pass
+- [x] 1.1 `npm run analyse` exits 0 — FieldConfig.php and FieldSorter.php PHPStan level-8 clean — 194d9d0
+- [x] 1.2 `npm run lint` exits 0 — PHPCS clean for new files — 194d9d0
+- [x] 1.3 `npm run test:unit` exits 0 — all 4 FieldSorterTest cases pass — 194d9d0
 
 #### Manual
 
-- [x] 1.4 Read FieldConfig.php and FieldSorter.php — confirm strict_types, correct namespace, no WP/Elementor dependencies
+- [x] 1.4 Read FieldConfig.php and FieldSorter.php — confirm strict_types, correct namespace, no WP/Elementor dependencies — 194d9d0
 
 ### Phase 2: EventMetaWidget Config Section
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` exits 0 — no PHPCS regressions in EventMetaWidget.php
-- [ ] 2.2 `npm run test:unit` exits 0 — no regressions in existing 6 tests
+- [x] 2.1 `npm run lint` exits 0 — no PHPCS regressions in EventMetaWidget.php
+- [x] 2.2 `npm run test:unit` exits 0 — no regressions in existing 6 tests
 
 #### Manual
 

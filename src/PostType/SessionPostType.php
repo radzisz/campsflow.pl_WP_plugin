@@ -19,6 +19,7 @@ final class SessionPostType {
 				'labels'            => array(
 					'name'          => __( 'Turnusy', 'campsflow' ),
 					'singular_name' => __( 'Turnus', 'campsflow' ),
+					'menu_name'     => __( 'Turnusy', 'campsflow' ),
 					'all_items'     => __( 'Turnusy', 'campsflow' ),
 					'search_items'  => __( 'Szukaj turnusów', 'campsflow' ),
 					'not_found'     => __( 'Nie znaleziono turnusów.', 'campsflow' ),

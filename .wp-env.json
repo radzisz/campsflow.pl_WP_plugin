@@ -3,9 +3,11 @@
     "phpVersion": "8.2",
     "plugins": [
         ".",
-        "https://downloads.wordpress.org/plugin/elementor.latest-stable.zip"
+        "https://downloads.wordpress.org/plugin/elementor.zip"
     ],
-    "themes": [],
+    "themes": [
+        "https://downloads.wordpress.org/theme/hello-elementor.zip"
+    ],
     "port": 8890,
     "env": {
         "development": {
@@ -15,7 +17,15 @@
                 "WP_DEBUG_DISPLAY": false,
                 "SCRIPT_DEBUG": true,
                 "PERMALINK_STRUCTURE": "/%postname%/",
-                "CAMPSFLOW_API_URL": "http://host.docker.internal:3501"
+                "CAMPSFLOW_API_URL": "http://host.docker.internal:3501",
+                "AUTH_KEY":         "dev-auth-key-campsflow-local",
+                "SECURE_AUTH_KEY":  "dev-secure-auth-key-campsflow-local",
+                "LOGGED_IN_KEY":    "dev-logged-in-key-campsflow-local",
+                "NONCE_KEY":        "dev-nonce-key-campsflow-local",
+                "AUTH_SALT":        "dev-auth-salt-campsflow-local",
+                "SECURE_AUTH_SALT": "dev-secure-auth-salt-campsflow-local",
+                "LOGGED_IN_SALT":   "dev-logged-in-salt-campsflow-local",
+                "NONCE_SALT":       "dev-nonce-salt-campsflow-local"
             }
         },
         "tests": {

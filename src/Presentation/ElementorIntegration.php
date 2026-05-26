@@ -16,7 +16,6 @@ final class ElementorIntegration {
 
 	public function registerWidget( \Elementor\Widgets_Manager $manager ): void {
 		$manager->register( new ElementorWidget() );
-		$manager->register( new EventMetaWidget() );
 		$manager->register( new EventSessionsWidget() );
 	}
 
