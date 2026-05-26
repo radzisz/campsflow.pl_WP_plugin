@@ -13,6 +13,8 @@ parameters:
         - src/Presentation/ElementorIntegration.php
         - src/Presentation/ElementorWidget.php
         - src/Presentation/EventFieldWidget.php
+        - src/Presentation/EventContactWidget.php
+        - src/Presentation/EventDocumentsWidget.php
         - src/Presentation/EventSessionsWidget.php
         - src/Presentation/WpBakeryIntegration.php
         - src/Presentation/WpBakeryDynamicContent.php

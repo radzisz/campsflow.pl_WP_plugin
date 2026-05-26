@@ -411,30 +411,30 @@ $manager->register( new EventAgeGroupWidget() );
 ### Phase 1: EventFieldWidget
 
 #### Automated
-- [x] 1.1 Create src/Widget/FieldValueRenderer.php
-- [x] 1.2 Create tests/Unit/Widget/FieldValueRendererTest.php
-- [x] 1.3 Create src/Presentation/EventFieldWidget.php
-- [x] 1.4 Register EventFieldWidget in ElementorIntegration
-- [x] 1.5 Update phpstan.neon (add EventFieldWidget, remove dead EventMetaWidget entry)
-- [x] 1.6 npm run test:unit passes
-- [x] 1.7 npm run lint passes
-- [x] 1.8 npm run analyse passes
+- [x] 1.1 Create src/Widget/FieldValueRenderer.php — 7cf0496
+- [x] 1.2 Create tests/Unit/Widget/FieldValueRendererTest.php — 7cf0496
+- [x] 1.3 Create src/Presentation/EventFieldWidget.php — 7cf0496
+- [x] 1.4 Register EventFieldWidget in ElementorIntegration — 7cf0496
+- [x] 1.5 Update phpstan.neon (add EventFieldWidget, remove dead EventMetaWidget entry) — 7cf0496
+- [x] 1.6 npm run test:unit passes — 7cf0496
+- [x] 1.7 npm run lint passes — 7cf0496
+- [x] 1.8 npm run analyse passes — 7cf0496
 
 #### Manual
-- [x] 1.9 Widget appears in Elementor panel under CampsFlow
-- [x] 1.10 Selecting cf_desc_general renders HTML description with auto mode
-- [x] 1.11 Editor placeholder shows on a non-event page
+- [x] 1.9 Widget appears in Elementor panel under CampsFlow — 7cf0496
+- [x] 1.10 Selecting cf_desc_general renders HTML description with auto mode — 7cf0496
+- [x] 1.11 Editor placeholder shows on a non-event page — 7cf0496
 
 ### Phase 2: EventContactWidget + EventDocumentsWidget
 
 #### Automated
-- [ ] 2.1 Create src/Presentation/EventContactWidget.php
-- [ ] 2.2 Create src/Presentation/EventDocumentsWidget.php
-- [ ] 2.3 Register both in ElementorIntegration
-- [ ] 2.4 Update phpstan.neon (add both)
-- [ ] 2.5 npm run test:unit passes
-- [ ] 2.6 npm run lint passes
-- [ ] 2.7 npm run analyse passes
+- [x] 2.1 Create src/Presentation/EventContactWidget.php
+- [x] 2.2 Create src/Presentation/EventDocumentsWidget.php
+- [x] 2.3 Register both in ElementorIntegration
+- [x] 2.4 Update phpstan.neon (add both)
+- [x] 2.5 npm run test:unit passes
+- [x] 2.6 npm run lint passes
+- [x] 2.7 npm run analyse passes
 
 #### Manual
 - [ ] 2.8 Both widgets appear in Elementor panel
