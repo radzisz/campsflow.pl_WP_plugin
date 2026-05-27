@@ -3,7 +3,7 @@
  * Plugin Name: Campsflow
  * Plugin URI:  https://campsflow.pl
  * Description: WordPress integration for Campsflow.pl reservation system. Synchronizes camps and sessions to local CPT, provides listing shortcodes, and embeds the Campsflow registration form via iframe.
- * Version:     0.1.20
+ * Version:     0.1.21
  * Author:      Campsflow
  * Author URI:  https://campsflow.pl
  * License:     GPL-2.0-or-later
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CAMPSFLOW_VERSION', '0.1.20' );
+define( 'CAMPSFLOW_VERSION', '0.1.21' );
 define( 'CAMPSFLOW_PLUGIN_FILE', __FILE__ );
 define( 'CAMPSFLOW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CAMPSFLOW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -79,6 +79,7 @@ add_action(
 		( new Taxonomy\AgeGroupTaxonomy() )->register();
 		( new Taxonomy\DestinationTaxonomy() )->register();
 		( new Taxonomy\TransportTypeTaxonomy() )->register();
+		( new Taxonomy\SeasonTaxonomy() )->register();
 		( new Presentation\ListingShortcode() )->register();
 		( new Presentation\EventShortcodes() )->register();
 		( new Presentation\SearchFilterShortcode() )->register();
@@ -86,6 +87,8 @@ add_action(
 		( new Presentation\SearchSortShortcode() )->register();
 		( new Presentation\SearchResultsShortcode() )->register();
 		( new Presentation\EventMapShortcode() )->register();
+		( new Presentation\EventMultimediaShortcodes() )->register();
+		( new Presentation\EventFieldShortcode() )->register();
 		( new Presentation\TemplateLoader() )->register();
 		( new Presentation\ElementorIntegration() )->register();
 		( new Presentation\WpBakeryIntegration() )->register();
