@@ -437,9 +437,9 @@ $manager->register( new EventAgeGroupWidget() );
 - [x] 2.7 npm run analyse passes — 333ffbc
 
 #### Manual
-- [ ] 2.8 Both widgets appear in Elementor panel
-- [ ] 2.9 EventContactWidget renders name + clickable email + phone links
-- [ ] 2.10 EventDocumentsWidget renders clickable document list
+- [x] 2.8 Both widgets appear in Elementor panel — 333ffbc
+- [x] 2.9 EventContactWidget renders name + clickable email + phone links — 333ffbc
+- [x] 2.10 EventDocumentsWidget renders clickable document list — 333ffbc
 
 ### Phase 3: EventLeadImageWidget + EventLeadVideoWidget
 
