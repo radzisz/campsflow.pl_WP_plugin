@@ -110,7 +110,7 @@ $transportIcons = [
 
       <!-- Tags -->
       <?php
-      $tags = get_the_terms($eventId, 'cf_tag');
+      $tags = get_the_terms($eventId, 'cf_event_category');
       $ages = get_the_terms($eventId, 'cf_age_group');
       if (($tags && ! is_wp_error($tags)) || ($ages && ! is_wp_error($ages))):
       ?>

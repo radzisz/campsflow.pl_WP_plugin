@@ -1,15 +1,13 @@
 [
   {
     "id": "c7d3f8a2-4b1e-4c6d-9e7f-8a2b3c4d5e6f",
+    "eventClass": "YOUTH_CAMP",
+    "eventProcess": { "id": "f1a2b3c4-0000-0000-0000-000000000001", "name": "Obóz przygodowy" },
     "name": "Fabryka Adrenaliny — Bieszczady 2026",
     "minAge": 10,
     "maxAge": 16,
-    "tags": [
-      { "name": "active", "isPublic": true },
-      { "name": "przygoda", "isPublic": true },
-      { "name": "obóz letni", "isPublic": true },
-      { "name": "hit-sezonu", "isPublic": false }
-    ],
+    "eventTags": ["hit sezonu"],
+    "eventProfile": ["active", "przygoda", "góry"],
     "localization": {
       "destination": "Bieszczady",
       "name": "Ośrodek Sportów Wodnych Myczkowce",
@@ -67,6 +65,12 @@
       "email": "katarzyna.bieszczanska@oaza-test.pl",
       "phone": "+48 601 111 222"
     },
+    "customFields": [
+      { "key": "poziom_trudnosci", "label": "Poziom trudności", "value": "Średniozaawansowany" },
+      { "key": "jezyk_zajec", "label": "Język zajęć", "value": "Polski" },
+      { "key": "wymagane_plywanie", "label": "Wymagana umiejętność pływania", "value": "Tak — podstawowy poziom" },
+      { "key": "max_grupa", "label": "Wielkość grupy", "value": "Max 18 osób" }
+    ],
     "turnusy": [
       {
         "id": "a1b2c3d4-e5f6-4789-8abc-def012345678",
@@ -100,7 +104,11 @@
         ],
         "seatsAvailable": 5,
         "seatsAll": 18,
-        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=a1b2c3d4-e5f6-4789-8abc-def012345678"
+        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=a1b2c3d4-e5f6-4789-8abc-def012345678",
+        "customFields": [
+          { "key": "znizka_wczesna", "label": "Zniżka za wczesną rezerwację", "value": "5% przy rezerwacji do 1 marca 2026" },
+          { "key": "typ_zakwaterowania", "label": "Typ zakwaterowania", "value": "Pokoje 4-osobowe z łazienką" }
+        ]
       },
       {
         "id": "b2c3d4e5-f607-4890-9bcd-ef0123456789",
@@ -134,21 +142,23 @@
         ],
         "seatsAvailable": 14,
         "seatsAll": 18,
-        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=b2c3d4e5-f607-4890-9bcd-ef0123456789"
+        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=b2c3d4e5-f607-4890-9bcd-ef0123456789",
+        "customFields": [
+          { "key": "znizka_wczesna", "label": "Zniżka za wczesną rezerwację", "value": "Brak — termin promocji minął" },
+          { "key": "typ_zakwaterowania", "label": "Typ zakwaterowania", "value": "Pokoje 4-osobowe z łazienką" }
+        ]
       }
     ]
   },
   {
     "id": "d8e4a9b3-5c2f-4d7e-af80-9b3c4d5e6f70",
+    "eventClass": "YOUTH_CAMP",
+    "eventProcess": { "id": "f1a2b3c4-0000-0000-0000-000000000002", "name": "Obóz sportowy" },
     "name": "Surf Camp — Dźwirzyno 2026",
     "minAge": 13,
     "maxAge": 17,
-    "tags": [
-      { "name": "active", "isPublic": true },
-      { "name": "windsurfing", "isPublic": true },
-      { "name": "morze", "isPublic": true },
-      { "name": "obóz letni", "isPublic": true }
-    ],
+    "eventTags": ["nowość"],
+    "eventProfile": ["active", "kite", "morze"],
     "localization": {
       "destination": "Wybrzeże Zachodniopomorskie",
       "name": "Ośrodek Wodny Dźwirzyno",
@@ -206,6 +216,12 @@
       "email": "marek.wiatrowski@oaza-test.pl",
       "phone": "+48 602 222 333"
     },
+    "customFields": [
+      { "key": "certyfikat", "label": "Certyfikat", "value": "PKWW (Polski Klub Windsurfingu i Kitesurfingu)" },
+      { "key": "poziom_trudnosci", "label": "Poziom trudności", "value": "Od podstaw — grupy wg zaawansowania" },
+      { "key": "jezyk_zajec", "label": "Język zajęć", "value": "Polski" },
+      { "key": "wymagane_plywanie", "label": "Wymagana umiejętność pływania", "value": "Tak — warunek uczestnictwa" }
+    ],
     "turnusy": [
       {
         "id": "c3d4e5f6-0718-4901-acde-f01234567890",
@@ -254,21 +270,23 @@
         ],
         "seatsAvailable": 22,
         "seatsAll": 30,
-        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=c3d4e5f6-0718-4901-acde-f01234567890"
+        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=c3d4e5f6-0718-4901-acde-f01234567890",
+        "customFields": [
+          { "key": "poziom_grupy", "label": "Poziom grupy", "value": "Dobieramy od beginner do advanced" },
+          { "key": "typ_zakwaterowania", "label": "Typ zakwaterowania", "value": "Domki campingowe 4-osobowe z łazienką" }
+        ]
       }
     ]
   },
   {
     "id": "e9f5b0c4-6d30-4e8f-b091-ac4d5e6f7081",
+    "eventClass": "YOUTH_CAMP",
+    "eventProcess": { "id": "f1a2b3c4-0000-0000-0000-000000000003", "name": "Obóz tematyczny" },
     "name": "FutureLab Camp — Bukowina Tatrzańska 2026",
     "minAge": 10,
     "maxAge": 15,
-    "tags": [
-      { "name": "nowe technologie", "isPublic": true },
-      { "name": "active", "isPublic": true },
-      { "name": "obóz letni", "isPublic": true },
-      { "name": "nowość", "isPublic": false }
-    ],
+    "eventTags": ["nowość", "promocja"],
+    "eventProfile": ["active", "technologia", "góry"],
     "localization": {
       "destination": "Tatry",
       "name": "Centrum Wypoczynku Bukowina",
@@ -325,6 +343,12 @@
       "email": "agnieszka.kowalska@oaza-test.pl",
       "phone": "+48 603 333 444"
     },
+    "customFields": [
+      { "key": "technologie", "label": "Technologie", "value": "Python, Tinkercad, Arduino, LEGO Mindstorms" },
+      { "key": "certyfikat", "label": "Certyfikat", "value": "Certyfikat ukończenia obozu technologicznego" },
+      { "key": "poziom_trudnosci", "label": "Poziom trudności", "value": "Dla każdego — grupy od podstaw" },
+      { "key": "jezyk_zajec", "label": "Język zajęć", "value": "Polski" }
+    ],
     "turnusy": [
       {
         "id": "d4e5f607-1829-4a12-bdea-012345678901",
@@ -358,7 +382,11 @@
         ],
         "seatsAvailable": 3,
         "seatsAll": 25,
-        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=d4e5f607-1829-4a12-bdea-012345678901"
+        "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=d4e5f607-1829-4a12-bdea-012345678901",
+        "customFields": [
+          { "key": "znizka_rodzenstwo", "label": "Zniżka dla rodzeństwa", "value": "200 zł przy zapisie 2 lub więcej dzieci" },
+          { "key": "typ_zakwaterowania", "label": "Typ zakwaterowania", "value": "Pokoje 3-osobowe z łazienką" }
+        ]
       }
     ]
   }

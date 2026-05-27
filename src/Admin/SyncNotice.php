@@ -6,7 +6,10 @@ namespace Campsflow\Admin;
 use Campsflow\PostType\EventPostType;
 use Campsflow\PostType\SessionPostType;
 use Campsflow\Taxonomy\AgeGroupTaxonomy;
-use Campsflow\Taxonomy\CampTagTaxonomy;
+use Campsflow\Taxonomy\DestinationTaxonomy;
+use Campsflow\Taxonomy\EventCategoryTaxonomy;
+use Campsflow\Taxonomy\EventTagTaxonomy;
+use Campsflow\Taxonomy\TransportTypeTaxonomy;
 
 /**
  * Displays a read-only notice on all CPT and taxonomy screens.
@@ -15,7 +18,7 @@ use Campsflow\Taxonomy\CampTagTaxonomy;
 final class SyncNotice {
 
 	private const MANAGED_POST_TYPES = array( EventPostType::SLUG, SessionPostType::SLUG );
-	private const MANAGED_TAXONOMIES = array( CampTagTaxonomy::SLUG, AgeGroupTaxonomy::SLUG );
+	private const MANAGED_TAXONOMIES = array( EventCategoryTaxonomy::SLUG, EventTagTaxonomy::SLUG, AgeGroupTaxonomy::SLUG, DestinationTaxonomy::SLUG, TransportTypeTaxonomy::SLUG );
 
 	public function register(): void {
 		add_action( 'current_screen', array( $this, 'maybeEnqueue' ) );
@@ -94,18 +97,33 @@ final class SyncNotice {
         .post-type-cf_session .row-actions .trash { display: none !important; }
 
         /* Taxonomy: hide add-new form and edit/delete row actions */
-        .taxonomy-cf_tag #col-left,
-        .taxonomy-cf_age_group #col-left { display: none !important; }
+        .taxonomy-cf_event_category #col-left,
+        .taxonomy-cf_event_tag #col-left,
+        .taxonomy-cf_age_group #col-left,
+        .taxonomy-cf_destination #col-left,
+        .taxonomy-cf_transport_type #col-left { display: none !important; }
 
-        .taxonomy-cf_tag #col-right,
-        .taxonomy-cf_age_group #col-right { float: none; width: 100%; }
+        .taxonomy-cf_event_category #col-right,
+        .taxonomy-cf_event_tag #col-right,
+        .taxonomy-cf_age_group #col-right,
+        .taxonomy-cf_destination #col-right,
+        .taxonomy-cf_transport_type #col-right { float: none; width: 100%; }
 
-        .taxonomy-cf_tag .row-actions .edit,
-        .taxonomy-cf_tag .row-actions .delete,
-        .taxonomy-cf_tag .row-actions .inline,
+        .taxonomy-cf_event_category .row-actions .edit,
+        .taxonomy-cf_event_category .row-actions .delete,
+        .taxonomy-cf_event_category .row-actions .inline,
+        .taxonomy-cf_event_tag .row-actions .edit,
+        .taxonomy-cf_event_tag .row-actions .delete,
+        .taxonomy-cf_event_tag .row-actions .inline,
         .taxonomy-cf_age_group .row-actions .edit,
         .taxonomy-cf_age_group .row-actions .delete,
-        .taxonomy-cf_age_group .row-actions .inline { display: none !important; }
+        .taxonomy-cf_age_group .row-actions .inline,
+        .taxonomy-cf_destination .row-actions .edit,
+        .taxonomy-cf_destination .row-actions .delete,
+        .taxonomy-cf_destination .row-actions .inline,
+        .taxonomy-cf_transport_type .row-actions .edit,
+        .taxonomy-cf_transport_type .row-actions .delete,
+        .taxonomy-cf_transport_type .row-actions .inline { display: none !important; }
         </style>';
 	}
 }

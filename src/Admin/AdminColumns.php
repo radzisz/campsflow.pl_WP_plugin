@@ -6,6 +6,7 @@ namespace Campsflow\Admin;
 use Campsflow\Config;
 use Campsflow\PostType\EventPostType;
 use Campsflow\PostType\SessionPostType;
+use Campsflow\Taxonomy\DestinationTaxonomy;
 
 /**
  * Adds "Otwórz w CampsFlow" action column to cf_event and cf_session list tables.
@@ -25,11 +26,26 @@ final class AdminColumns {
 	 * @return array<string, string>
 	 */
 	public function addEventColumn( array $columns ): array {
-		$columns['cf_open'] = '<span class="dashicons dashicons-external" title="' . esc_attr__( 'Otwórz w CampsFlow', 'campsflow' ) . '"></span>';
-		return $columns;
+		// Remove auto-generated taxonomy column; insert custom one right after 'title'.
+		unset( $columns[ 'taxonomy-' . DestinationTaxonomy::SLUG ] );
+
+		$result = array();
+		foreach ( $columns as $key => $label ) {
+			$result[ $key ] = $label;
+			if ( $key === 'title' ) {
+				$result['cf_destination_path'] = __( 'Kierunek', 'campsflow' );
+			}
+		}
+		$result['cf_open'] = '<span class="dashicons dashicons-external" title="' . esc_attr__( 'Otwórz w CampsFlow', 'campsflow' ) . '"></span>';
+		return $result;
 	}
 
 	public function renderEventColumn( string $column, int $postId ): void {
+		if ( $column === 'cf_destination_path' ) {
+			$this->renderDestinationPath( $postId );
+			return;
+		}
+
 		if ( $column !== 'cf_open' ) {
 			return;
 		}
@@ -51,11 +67,21 @@ final class AdminColumns {
 	 * @return array<string, string>
 	 */
 	public function addSessionColumn( array $columns ): array {
-		$columns['cf_open'] = '<span class="dashicons dashicons-external" title="' . esc_attr__( 'Otwórz w CampsFlow', 'campsflow' ) . '"></span>';
+		$columns['cf_sess_transport'] = __( 'Transport', 'campsflow' );
+		$columns['cf_sess_start']     = __( 'Zbiórka', 'campsflow' );
+		$columns['cf_sess_price']     = __( 'Cena', 'campsflow' );
+		$columns['cf_open']           = '<span class="dashicons dashicons-external" title="' . esc_attr__( 'Otwórz w CampsFlow', 'campsflow' ) . '"></span>';
 		return $columns;
 	}
 
 	public function renderSessionColumn( string $column, int $postId ): void {
+		match ( $column ) {
+			'cf_sess_transport' => $this->renderSessionTransport( $postId ),
+			'cf_sess_start'     => $this->renderSessionStart( $postId ),
+			'cf_sess_price'     => $this->renderSessionPrice( $postId ),
+			default             => null,
+		};
+
 		if ( $column !== 'cf_open' ) {
 			return;
 		}
@@ -79,6 +105,83 @@ final class AdminColumns {
 			: Config::adminUrl() . '/' . $tenantSlug;
 
 		$this->renderLink( $url, $cfSessionId );
+	}
+
+	private function renderSessionTransport( int $postId ): void {
+		$raw       = (string) get_post_meta( $postId, 'cf_transport', true );
+		$transport = json_decode( $raw, true );
+		$type      = is_array( $transport ) ? (string) ( $transport['type'] ?? '' ) : '';
+
+		if ( $type === '' ) {
+			echo '<span style="color:#d1d5db">—</span>';
+			return;
+		}
+
+		echo esc_html( $type );
+	}
+
+	private function renderSessionStart( int $postId ): void {
+		$raw    = (string) get_post_meta( $postId, 'cf_meeting_points_start', true );
+		$points = json_decode( $raw, true );
+
+		if ( ! is_array( $points ) || $points === array() ) {
+			echo '<span style="color:#d1d5db">—</span>';
+			return;
+		}
+
+		$first = $points[0];
+		$name  = is_array( $first ) ? (string) ( $first['name'] ?? '' ) : '';
+
+		if ( $name === '' ) {
+			echo '<span style="color:#d1d5db">—</span>';
+			return;
+		}
+
+		echo esc_html( $name );
+	}
+
+	private function renderSessionPrice( int $postId ): void {
+		$grosze = (int) get_post_meta( $postId, 'cf_price_from', true );
+
+		if ( $grosze <= 0 ) {
+			echo '<span style="color:#d1d5db">—</span>';
+			return;
+		}
+
+		$pln = number_format( $grosze / 100, 0, ',', ' ' );
+		echo esc_html( $pln . ' zł' );
+	}
+
+	private function renderDestinationPath( int $postId ): void {
+		$terms = get_the_terms( $postId, DestinationTaxonomy::SLUG );
+
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
+			echo '<span style="color:#d1d5db">—</span>';
+			return;
+		}
+
+		$parts = array();
+		foreach ( $terms as $term ) {
+			$filterUrl = add_query_arg(
+				array(
+					'post_type'               => EventPostType::SLUG,
+					DestinationTaxonomy::SLUG => $term->slug,
+				),
+				admin_url( 'edit.php' )
+			);
+
+			$label = $term->name;
+			if ( $term->parent > 0 ) {
+				$parent = get_term( $term->parent, DestinationTaxonomy::SLUG );
+				if ( $parent instanceof \WP_Term ) {
+					$label = $parent->name . ' → ' . $term->name;
+				}
+			}
+
+			$parts[] = '<a href="' . esc_url( $filterUrl ) . '">' . esc_html( $label ) . '</a>';
+		}
+
+		echo implode( ', ', $parts );
 	}
 
 	private function renderLink( string $url, string $cfId ): void {

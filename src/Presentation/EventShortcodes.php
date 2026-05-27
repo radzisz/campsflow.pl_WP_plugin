@@ -138,7 +138,7 @@ final class EventShortcodes {
 	public function renderTags( array|string $atts ): string {
 		return $this->renderTermPills(
 			$atts,
-			'cf_tag',
+			'cf_event_category',
 			'campsflow_event_tags',
 			'cf-tag'
 		);
@@ -266,7 +266,7 @@ final class EventShortcodes {
 	}
 
 	private function echoTags( int $postId ): void {
-		$tags = get_the_terms( $postId, 'cf_tag' );
+		$tags = get_the_terms( $postId, 'cf_event_category' );
 		$ages = get_the_terms( $postId, 'cf_age_group' );
 		if ( ( ! $tags || is_wp_error( $tags ) ) && ( ! $ages || is_wp_error( $ages ) ) ) {
 			return;

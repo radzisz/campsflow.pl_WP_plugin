@@ -73,6 +73,8 @@ final class EventFieldWidget extends Widget_Base {
 					'cf_terms_drug'         => __( 'Warunki: zamawianie leków', 'campsflow' ),
 					'cf_terms_diet'         => __( 'Warunki: dieta specjalna', 'campsflow' ),
 					'cf_terms_deadlines'    => __( 'Warunki: terminy i dokumenty', 'campsflow' ),
+					'cf_event_class'        => __( 'Klasa wydarzenia', 'campsflow' ),
+					'cf_event_process'      => __( 'Proces imprezy', 'campsflow' ),
 					'custom'                => __( 'Pole własne', 'campsflow' ),
 				),
 			)
@@ -258,8 +260,11 @@ final class EventFieldWidget extends Widget_Base {
 		if ( 'post_title' === $field ) {
 			return (string) get_the_title( $postId );
 		}
-		if ( in_array( $field, array( 'cf_reservation_url', 'cf_lead_image_url', 'cf_lead_video_url' ), true ) ) {
+		if ( in_array( $field, array( 'cf_reservation_url', 'cf_lead_image_url', 'cf_lead_video_url', 'cf_event_class' ), true ) ) {
 			return (string) get_post_meta( $postId, $field, true );
+		}
+		if ( 'cf_event_process' === $field ) {
+			return (string) get_post_meta( $postId, 'cf_event_process_name', true );
 		}
 		if ( str_starts_with( $field, 'cf_desc_' ) ) {
 			return $this->resolveDescriptionSubfield( $postId, $field );

@@ -104,7 +104,7 @@ final class WpBakeryDynamicContent {
 			'cf_price_min'            => $this->resolveMinPrice( $postId ),
 			'cf_date_first'           => $this->resolveFirstDate( $postId ),
 			'cf_availability_label'   => $this->resolveAvailabilityLabel( $postId ),
-			'cf_tags'                 => $this->resolveTermNames( $postId, 'cf_tag' ),
+			'cf_tags'                 => $this->resolveTermNames( $postId, 'cf_event_category' ),
 			'cf_age_groups'           => $this->resolveTermNames( $postId, 'cf_age_group' ),
 			default                   => $value,
 		};

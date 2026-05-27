@@ -159,7 +159,7 @@ final class EventTagsWidget extends Widget_Base {
 		$maxTerms    = max( 0, (int) ( $s['max_terms'] ?? 0 ) );
 		$gap         = max( 0, (int) ( $s['pill_gap']['size'] ?? 6 ) );
 
-		$terms = $postId ? get_the_terms( $postId, 'cf_tag' ) : false;
+		$terms = $postId ? get_the_terms( $postId, 'cf_event_category' ) : false;
 		$terms = is_array( $terms ) ? $terms : array();
 
 		if ( 'name_asc' === $sortOrder ) {

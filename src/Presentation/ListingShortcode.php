@@ -47,7 +47,7 @@ final class ListingShortcode {
 	private function renderFilters(): void {
 		$tags      = get_terms(
 			array(
-				'taxonomy'   => 'cf_tag',
+				'taxonomy'   => 'cf_event_category',
 				'hide_empty' => true,
 			)
 		);
@@ -62,13 +62,13 @@ final class ListingShortcode {
 			return;
 		}
 
-		$currentTag = sanitize_text_field( $_GET['cf_tag'] ?? '' );
+		$currentTag = sanitize_text_field( $_GET['cf_category'] ?? '' );
 		$currentAge = sanitize_text_field( $_GET['cf_age'] ?? '' );
 
 		echo '<form class="cf-filters" method="get" action="">';
 
 		if ( ! empty( $tags ) ) {
-			echo '<select class="cf-filter" name="cf_tag" onchange="this.form.submit()">';
+			echo '<select class="cf-filter" name="cf_category" onchange="this.form.submit()">';
 			echo '<option value="">' . esc_html__( 'Wszystkie kategorie', 'campsflow' ) . '</option>';
 			foreach ( $tags as $tag ) {
 				assert( is_object( $tag ) && isset( $tag->slug, $tag->name ) );
@@ -256,10 +256,10 @@ final class ListingShortcode {
 	private function buildTaxQuery(): array {
 		$query = array();
 
-		$tag = sanitize_text_field( $_GET['cf_tag'] ?? '' );
+		$tag = sanitize_text_field( $_GET['cf_category'] ?? '' );
 		if ( $tag ) {
 			$query[] = array(
-				'taxonomy' => 'cf_tag',
+				'taxonomy' => 'cf_event_category',
 				'field'    => 'slug',
 				'terms'    => $tag,
 			);

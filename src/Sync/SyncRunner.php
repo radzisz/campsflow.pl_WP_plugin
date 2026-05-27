@@ -8,7 +8,10 @@ use Campsflow\PostType\EventPostType;
 use Campsflow\PostType\PostStatus;
 use Campsflow\PostType\SessionPostType;
 use Campsflow\Taxonomy\AgeGroupTaxonomy;
-use Campsflow\Taxonomy\CampTagTaxonomy;
+use Campsflow\Taxonomy\DestinationTaxonomy;
+use Campsflow\Taxonomy\EventCategoryTaxonomy;
+use Campsflow\Taxonomy\EventTagTaxonomy;
+use Campsflow\Taxonomy\TransportTypeTaxonomy;
 
 final class SyncRunner {
 
@@ -91,8 +94,11 @@ final class SyncRunner {
 
 		update_post_meta( $postId, 'cf_event_id', $cfId );
 		$this->saveEventMeta( $postId, $event );
-		$this->setPublicTags( $postId, $event );
+		$this->setEventTags( $postId, $event );
+		$this->setEventProfiles( $postId, $event );
 		$this->setAgeGroupTerms( $postId, $event );
+		$this->setDestinationTerms( $postId, $event );
+		$this->setTransportTypeTerms( $postId, $event );
 
 		return array( $postId, ! $existing );
 	}
@@ -142,26 +148,50 @@ final class SyncRunner {
 			update_post_meta( $postId, 'cf_contact', wp_json_encode( $event['contact'], JSON_UNESCAPED_UNICODE ) );
 		}
 
+		// Event class & process
+		update_post_meta( $postId, 'cf_event_class', (string) ( $event['eventClass'] ?? '' ) );
+		$process = $event['eventProcess'] ?? null;
+		update_post_meta( $postId, 'cf_event_process_id', (string) ( is_array( $process ) ? ( $process['id'] ?? '' ) : '' ) );
+		update_post_meta( $postId, 'cf_event_process_name', (string) ( is_array( $process ) ? ( $process['name'] ?? '' ) : '' ) );
+
 		// Custom fields
 		$cfFields = is_array( $event['customFields'] ?? null ) ? $event['customFields'] : array();
 		update_post_meta( $postId, 'cf_custom_fields', (string) wp_json_encode( $cfFields, JSON_UNESCAPED_UNICODE ) );
+
+		// Age + date filter meta
+		if ( isset( $event['minAge'] ) ) {
+			update_post_meta( $postId, 'cf_min_age', (int) $event['minAge'] );
+		}
+		if ( isset( $event['maxAge'] ) ) {
+			update_post_meta( $postId, 'cf_max_age', (int) $event['maxAge'] );
+		}
+		$turnusy = is_array( $event['turnusy'] ?? null ) ? $event['turnusy'] : array();
+		$dates   = array_filter( array_map( fn( mixed $t ) => is_array( $t ) ? (string) ( $t['dateFrom'] ?? '' ) : '', $turnusy ) );
+		update_post_meta( $postId, 'cf_date_earliest', $dates ? min( $dates ) : '' );
 	}
 
 	/**
 	 * @param array<string, mixed> $event
 	 */
-	private function setPublicTags( int $postId, array $event ): void {
-		$tags = $event['tags'] ?? array();
-		if ( ! is_array( $tags ) ) {
+	private function setEventTags( int $postId, array $event ): void {
+		$raw = $event['eventTags'] ?? array();
+		if ( ! is_array( $raw ) ) {
 			return;
 		}
+		$names = array_values( array_filter( array_map( 'strval', $raw ) ) );
+		wp_set_object_terms( $postId, $names, EventTagTaxonomy::SLUG );
+	}
 
-		$publicNames = array_map(
-			static fn( array $t ) => (string) $t['name'],
-			array_filter( $tags, static fn( $t ) => is_array( $t ) && ( $t['isPublic'] ?? false ) === true )
-		);
-
-		wp_set_object_terms( $postId, array_values( $publicNames ), CampTagTaxonomy::SLUG );
+	/**
+	 * @param array<string, mixed> $event
+	 */
+	private function setEventProfiles( int $postId, array $event ): void {
+		$raw = $event['eventProfile'] ?? array();
+		if ( ! is_array( $raw ) ) {
+			return;
+		}
+		$names = array_values( array_filter( array_map( 'strval', $raw ) ) );
+		wp_set_object_terms( $postId, $names, EventCategoryTaxonomy::SLUG );
 	}
 
 	/**
@@ -175,7 +205,78 @@ final class SyncRunner {
 			return;
 		}
 
-		wp_set_object_terms( $postId, array( $minAge . '–' . $maxAge . ' lat' ), AgeGroupTaxonomy::SLUG );
+		$childMax = (int) get_option( 'campsflow_age_child_max', 12 );
+		$youthMax = (int) get_option( 'campsflow_age_youth_max', 17 );
+		$groups   = array();
+
+		if ( $minAge <= $childMax && $maxAge >= 4 ) {
+			$groups[] = __( 'Dzieci', 'campsflow' );
+		}
+		if ( $minAge <= $youthMax && $maxAge >= ( $childMax + 1 ) ) {
+			$groups[] = __( 'Młodzież', 'campsflow' );
+		}
+		if ( $maxAge > $youthMax ) {
+			$groups[] = __( 'Dorośli', 'campsflow' );
+		}
+
+		wp_set_object_terms( $postId, $groups, AgeGroupTaxonomy::SLUG );
+	}
+
+	/**
+	 * @param array<string, mixed> $event
+	 */
+	private function setDestinationTerms( int $postId, array $event ): void {
+		$localization = is_array( $event['localization'] ?? null ) ? $event['localization'] : array();
+		$country      = (string) ( ( is_array( $localization['address'] ?? null ) ? $localization['address'] : array() )['country'] ?? '' );
+		$destination  = (string) ( $localization['destination'] ?? '' );
+
+		if ( $destination === '' ) {
+			wp_set_object_terms( $postId, array(), DestinationTaxonomy::SLUG );
+			return;
+		}
+
+		$termId = static function ( mixed $r ): int {
+			return is_wp_error( $r ) ? 0 : (int) ( is_array( $r ) ? $r['term_id'] : $r );
+		};
+
+		$slug = DestinationTaxonomy::SLUG;
+
+		$parentId = 0;
+		if ( $country !== '' ) {
+			$existing = term_exists( $country, $slug );
+			$parentId = $termId( $existing ?? wp_insert_term( $country, $slug ) );
+		}
+
+		$childArgs     = $parentId > 0 ? array( 'parent' => $parentId ) : array();
+		$existingChild = term_exists( $destination, $slug, $parentId > 0 ? $parentId : null );
+		$childId       = $termId( $existingChild ?? wp_insert_term( $destination, $slug, $childArgs ) );
+
+		if ( $childId === 0 ) {
+			return;
+		}
+
+		wp_set_object_terms( $postId, array( $childId ), DestinationTaxonomy::SLUG );
+	}
+
+	/**
+	 * @param array<string, mixed> $event
+	 */
+	private function setTransportTypeTerms( int $postId, array $event ): void {
+		$turnusy = is_array( $event['turnusy'] ?? null ) ? $event['turnusy'] : array();
+		$types   = array();
+
+		foreach ( $turnusy as $turnus ) {
+			if ( ! is_array( $turnus ) ) {
+				continue;
+			}
+			$transport = $turnus['transport'] ?? null;
+			$type      = is_array( $transport ) ? (string) ( $transport['type'] ?? '' ) : '';
+			if ( $type !== '' && ! in_array( $type, $types, true ) ) {
+				$types[] = $type;
+			}
+		}
+
+		wp_set_object_terms( $postId, $types, TransportTypeTaxonomy::SLUG );
 	}
 
 	// ── Session ──────────────────────────────────────────────────────────────

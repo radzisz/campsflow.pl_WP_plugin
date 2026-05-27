@@ -74,8 +74,11 @@ add_action(
 		( new PostType\PostStatus() )->register();
 		( new PostType\EventPostType() )->register();
 		( new PostType\SessionPostType() )->register();
-		( new Taxonomy\CampTagTaxonomy() )->register();
+		( new Taxonomy\EventTagTaxonomy() )->register();
+		( new Taxonomy\EventCategoryTaxonomy() )->register();
 		( new Taxonomy\AgeGroupTaxonomy() )->register();
+		( new Taxonomy\DestinationTaxonomy() )->register();
+		( new Taxonomy\TransportTypeTaxonomy() )->register();
 		( new Presentation\ListingShortcode() )->register();
 		( new Presentation\EventShortcodes() )->register();
 		( new Presentation\TemplateLoader() )->register();
