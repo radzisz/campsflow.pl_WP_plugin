@@ -64,9 +64,7 @@ trait FilterRenderMethods {
 				echo '<optgroup label="' . esc_attr( $parent->name ) . '">';
 				echo '<option value="' . esc_attr( $parent->slug ) . '"'
 					. selected( $current, $parent->slug, false ) . '>'
-					// translators: %s: region or country name
-					. esc_html( sprintf( __( '%s — wszystkie', 'campsflow' ), $parent->name ) )
-					. '</option>';
+					. esc_html( $parent->name ) . '</option>';
 				foreach ( $kids as $child ) {
 					assert( $child instanceof \WP_Term );
 					echo '<option value="' . esc_attr( $child->slug ) . '"'
