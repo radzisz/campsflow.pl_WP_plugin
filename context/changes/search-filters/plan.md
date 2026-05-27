@@ -339,29 +339,29 @@ WPBakery equivalents of Phase 5 widgets. Two new shortcodes registered via `WpBa
 ### Phase 2: Settings Extensions
 
 #### Automated
-- [x] 2.1 SettingsPage::registerSettings — add campsflow_age_child_max (default '12', absint) + campsflow_age_youth_max (default '17', absint)
-- [x] 2.2 SettingsPage::renderSettingsTab — add age threshold section with two number inputs
-- [x] 2.3 PHPStan level 8 + PHPCS clean
+- [x] 2.1 SettingsPage::registerSettings — add campsflow_age_child_max (default '12', absint) + campsflow_age_youth_max (default '17', absint) — a2dfc91
+- [x] 2.2 SettingsPage::renderSettingsTab — add age threshold section with two number inputs — a2dfc91
+- [x] 2.3 PHPStan level 8 + PHPCS clean — a2dfc91
 
 #### Manual
-- [x] 2.4 Settings tab shows age threshold fields with defaults 12 and 17
-- [x] 2.5 Change thresholds, save, re-sync → cf_age_group terms update
+- [x] 2.4 Settings tab shows age threshold fields with defaults 12 and 17 — a2dfc91
+- [x] 2.5 Change thresholds, save, re-sync → cf_age_group terms update — a2dfc91
 
 ### Phase 3: REST Endpoint + Shared Renderer
 
 #### Automated
-- [ ] 3.1 Create EventCardRenderer — renderCard(), renderSessionRow(), renderGrid(), renderEmpty()
-- [ ] 3.2 ListingShortcode — delegate renderEventCard + renderSessionRow to EventCardRenderer
-- [ ] 3.3 ListingShortcode — wrap results in cf-search-results div, add data-endpoint + cf-search-form class to form
-- [ ] 3.4 Create EventsEndpoint — registerRoute, handle() with WP_Query + JSON {html} response
-- [ ] 3.5 Register EventsEndpoint in campsflow.php
-- [ ] 3.6 PHPStan level 8 + PHPCS clean
-- [ ] 3.7 Integration tests pass
+- [x] 3.1 Create EventCardRenderer — renderCard(), renderSessionRow(), renderGrid(), renderEmpty()
+- [x] 3.2 ListingShortcode — delegate renderEventCard + renderSessionRow to EventCardRenderer
+- [x] 3.3 ListingShortcode — wrap results in cf-search-results div, add data-endpoint + cf-search-form class to form
+- [x] 3.4 Create EventsEndpoint — registerRoute, handle() with WP_Query + JSON {html} response
+- [x] 3.5 Register EventsEndpoint in campsflow.php
+- [x] 3.6 PHPStan level 8 + PHPCS clean
+- [x] 3.7 Integration tests pass
 
 #### Manual
-- [ ] 3.8 GET /wp-json/campsflow/v1/events returns {html: "<div class=\"cf-grid\">..."}
-- [ ] 3.9 category, destination, eventClass params filter results correctly
-- [ ] 3.10 No PHP notices in env logs
+- [x] 3.8 GET /wp-json/campsflow/v1/events returns {html: "<div class=\"cf-grid\">..."}
+- [x] 3.9 category, destination, eventClass params filter results correctly
+- [x] 3.10 No PHP notices in env logs
 
 ### Phase 4: Vanilla JS
 

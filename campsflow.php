@@ -85,6 +85,7 @@ add_action(
 		( new Presentation\ElementorIntegration() )->register();
 		( new Presentation\WpBakeryIntegration() )->register();
 		( new Presentation\WpBakeryDynamicContent() )->register();
+		( new Api\EventsEndpoint() )->register();
 		( new Admin\SyncNotice() )->register();
 		( new Admin\AdminColumns() )->register();
 		( new Admin\SettingsPage() )->register();

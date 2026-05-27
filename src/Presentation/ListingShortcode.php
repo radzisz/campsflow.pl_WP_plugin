@@ -5,7 +5,6 @@ namespace Campsflow\Presentation;
 
 use Campsflow\PostType\EventPostType;
 use Campsflow\PostType\SessionPostType;
-use Campsflow\Sync\AvailabilityBucket;
 use WP_Query;
 
 final class ListingShortcode {
@@ -33,6 +32,7 @@ final class ListingShortcode {
 		ob_start();
 		echo '<div class="cf-listing" style="--cf-columns:' . esc_attr( (string) $columns ) . '">';
 		$this->renderFilters();
+		echo '<div class="cf-search-results">';
 
 		if ( $view === 'events' ) {
 			$this->renderEventsView();
@@ -40,6 +40,7 @@ final class ListingShortcode {
 			$this->renderSessionsView();
 		}
 
+		echo '</div>';
 		echo '</div>';
 		return (string) ob_get_clean();
 	}
@@ -65,7 +66,7 @@ final class ListingShortcode {
 		$currentTag = sanitize_text_field( $_GET['cf_category'] ?? '' );
 		$currentAge = sanitize_text_field( $_GET['cf_age'] ?? '' );
 
-		echo '<form class="cf-filters" method="get" action="">';
+		echo '<form class="cf-search-form cf-filters" method="get" action="" data-endpoint="' . esc_url( rest_url( 'campsflow/v1/events' ) ) . '">';
 
 		if ( ! empty( $tags ) ) {
 			echo '<select class="cf-filter" name="cf_category" onchange="this.form.submit()">';
@@ -104,76 +105,14 @@ final class ListingShortcode {
 				'orderby'        => 'title',
 				'order'          => 'ASC',
 				'tax_query'      => $taxQuery,
+				'fields'         => 'ids',
 			)
 		);
 
-		if ( ! $query->have_posts() ) {
-			echo '<p class="cf-empty">' . esc_html__( 'Brak wydarzeń spełniających kryteria.', 'campsflow' ) . '</p>';
-			return;
-		}
+		$postIds  = array_map( static fn( $p ) => (int) ( $p instanceof \WP_Post ? $p->ID : $p ), (array) $query->posts );
+		$renderer = new EventCardRenderer();
 
-		echo '<div class="cf-grid">';
-		while ( $query->have_posts() ) {
-			$query->the_post();
-			$this->renderEventCard( (int) get_the_ID() );
-		}
-		echo '</div>';
-		wp_reset_postdata();
-	}
-
-	private function renderEventCard( int $eventId ): void {
-		$locRaw  = (string) get_post_meta( $eventId, 'cf_localization', true );
-		$loc     = $locRaw ? ( json_decode( $locRaw, true ) ?? array() ) : array();
-		$city    = is_array( $loc['address'] ?? null ) ? ( $loc['address']['city'] ?? '' ) : '';
-		$dest    = (string) ( $loc['destination'] ?? '' );
-		$leadImg = (string) get_post_meta( $eventId, 'cf_lead_image_url', true );
-
-		$sessions = new WP_Query(
-			array(
-				'post_type'      => SessionPostType::SLUG,
-				'post_status'    => 'publish',
-				'post_parent'    => $eventId,
-				'posts_per_page' => -1,
-				'orderby'        => 'meta_value',
-				'meta_key'       => 'cf_date_from',
-				'order'          => 'ASC',
-			)
-		);
-
-		echo '<article class="cf-card">';
-
-		if ( $leadImg ) {
-			echo '<img class="cf-card__image" src="' . esc_url( $leadImg ) . '" alt="' . esc_attr( get_the_title() ) . '" loading="lazy">';
-		}
-
-		echo '<div class="cf-card__body">';
-		echo '<h3 class="cf-card__title">' . esc_html( get_the_title() ) . '</h3>';
-
-		if ( $city || $dest ) {
-			echo '<p class="cf-card__location">';
-			if ( $dest ) {
-				echo esc_html( $dest );
-			}
-			if ( $dest && $city ) {
-				echo ' · ';
-			}
-			if ( $city ) {
-				echo esc_html( $city );
-			}
-			echo '</p>';
-		}
-
-		if ( $sessions->have_posts() ) {
-			echo '<ul class="cf-sessions">';
-			while ( $sessions->have_posts() ) {
-				$sessions->the_post();
-				$this->renderSessionRow( (int) get_the_ID() );
-			}
-			echo '</ul>';
-			wp_reset_postdata();
-		}
-
-		echo '</div></article>';
+		echo $postIds ? $renderer->renderGrid( $postIds ) : $renderer->renderEmpty(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	private function renderSessionsView(): void {
@@ -218,36 +157,7 @@ final class ListingShortcode {
 	}
 
 	private function renderSessionRow( int $sessionId ): void {
-		$dateFrom   = (string) get_post_meta( $sessionId, 'cf_date_from', true );
-		$dateTo     = (string) get_post_meta( $sessionId, 'cf_date_to', true );
-		$price      = (int) get_post_meta( $sessionId, 'cf_price_from', true );
-		$turnusName = (string) get_post_meta( $sessionId, 'cf_turnus_name', true );
-		$bucket     = AvailabilityBucket::tryFrom(
-			(string) get_post_meta( $sessionId, 'cf_availability', true )
-		) ?? AvailabilityBucket::Available;
-
-		$reservUrl = (string) get_post_meta( $sessionId, 'cf_reservation_url', true );
-		$isFull    = $bucket === AvailabilityBucket::Full;
-
-		echo '<li class="cf-session">';
-		if ( $turnusName ) {
-			echo '<span class="cf-session__name">' . esc_html( $turnusName ) . '</span>';
-		}
-		echo '<span class="cf-session__dates">' . esc_html( $this->formatDateRange( $dateFrom, $dateTo ) ) . '</span>';
-		echo '<span class="cf-session__price">' . esc_html( $this->formatPrice( $price ) ) . '</span>';
-
-		if ( $bucket !== AvailabilityBucket::Available && $bucket->label() ) {
-			echo '<span class="cf-badge cf-badge--' . esc_attr( $bucket->value ) . '">'
-				. esc_html( $bucket->label() ) . '</span>';
-		}
-
-		if ( $isFull ) {
-			echo '<span class="cf-btn cf-btn--disabled">' . esc_html__( 'Brak miejsc', 'campsflow' ) . '</span>';
-		} elseif ( $reservUrl ) {
-			echo '<a class="cf-btn" href="' . esc_url( $reservUrl ) . '" target="_blank" rel="noopener">' . esc_html__( 'Zapisz się', 'campsflow' ) . '</a>';
-		}
-
-		echo '</li>';
+		echo ( new EventCardRenderer() )->renderSessionRow( $sessionId ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -275,28 +185,5 @@ final class ListingShortcode {
 		}
 
 		return $query;
-	}
-
-	private function formatDateRange( string $from, string $to ): string {
-		if ( ! $from ) {
-			return '';
-		}
-		$f = date_create( $from );
-		$t = $to ? date_create( $to ) : null;
-		if ( ! $f ) {
-			return $from;
-		}
-
-		$fmt = 'j M Y';
-		return $t
-			? $f->format( 'j M' ) . '–' . $t->format( 'j M Y' )
-			: $f->format( $fmt );
-	}
-
-	private function formatPrice( int $grosze ): string {
-		if ( $grosze <= 0 ) {
-			return '';
-		}
-		return number_format( $grosze / 100, 0, ',', ' ' ) . ' zł';
 	}
 }
