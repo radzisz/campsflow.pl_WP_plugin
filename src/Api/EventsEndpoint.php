@@ -35,15 +35,18 @@ final class EventsEndpoint {
 	}
 
 	public function handle( WP_REST_Request $request ): WP_REST_Response {
-		$category    = sanitize_text_field( (string) $request->get_param( 'category' ) );
-		$age         = sanitize_text_field( (string) $request->get_param( 'age' ) );
-		$childAge    = absint( $request->get_param( 'childAge' ) );
-		$destination = sanitize_text_field( (string) $request->get_param( 'destination' ) );
-		$transport   = sanitize_text_field( (string) $request->get_param( 'transport' ) );
-		$eventClass  = sanitize_text_field( (string) $request->get_param( 'eventClass' ) );
-		$dateFrom    = sanitize_text_field( (string) $request->get_param( 'dateFrom' ) );
-		$dateTo      = sanitize_text_field( (string) $request->get_param( 'dateTo' ) );
-		$sort        = sanitize_text_field( (string) $request->get_param( 'sort' ) );
+		$category     = sanitize_text_field( (string) $request->get_param( 'category' ) );
+		$age          = sanitize_text_field( (string) $request->get_param( 'age' ) );
+		$childAge     = absint( $request->get_param( 'childAge' ) );
+		$destination  = sanitize_text_field( (string) $request->get_param( 'destination' ) );
+		$transport    = sanitize_text_field( (string) $request->get_param( 'transport' ) );
+		$eventClass   = sanitize_text_field( (string) $request->get_param( 'eventClass' ) );
+		$dateFrom     = sanitize_text_field( (string) $request->get_param( 'dateFrom' ) );
+		$dateTo       = sanitize_text_field( (string) $request->get_param( 'dateTo' ) );
+		$sort         = sanitize_text_field( (string) $request->get_param( 'sort' ) );
+		$locationMode = in_array( $request->get_param( 'locationMode' ), array( 'country_dest', 'country_dest_city' ), true )
+			? (string) $request->get_param( 'locationMode' )
+			: 'country_dest';
 
 		$taxQuery = array( 'relation' => 'AND' );
 		if ( $category ) {
@@ -136,7 +139,7 @@ final class EventsEndpoint {
 
 		$query    = new WP_Query( $args );
 		$postIds  = array_map( static fn( $p ) => (int) ( $p instanceof \WP_Post ? $p->ID : $p ), (array) $query->posts );
-		$renderer = new EventCardRenderer();
+		$renderer = new EventCardRenderer( $locationMode );
 		$html     = $postIds ? $renderer->renderGrid( $postIds ) : $renderer->renderEmpty();
 
 		return new WP_REST_Response( array( 'html' => $html ), 200 );

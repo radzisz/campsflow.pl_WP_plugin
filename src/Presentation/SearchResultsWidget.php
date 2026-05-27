@@ -54,14 +54,32 @@ final class SearchResultsWidget extends Widget_Base {
 				'step'    => 1,
 			)
 		);
+
+		$this->add_control(
+			'location_mode',
+			array(
+				'label'   => __( 'Format lokalizacji', 'campsflow' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'country_dest',
+				'options' => array(
+					'country_dest'      => __( 'Kraj / Destynacja', 'campsflow' ),
+					'country_dest_city' => __( 'Kraj / Destynacja / Miasto', 'campsflow' ),
+				),
+			)
+		);
+
 		$this->end_controls_section();
 	}
 
 	protected function render(): void {
-		$columns  = max( 1, min( 4, (int) ( $this->get_settings_for_display()['columns'] ?? 3 ) ) );
-		$endpoint = rest_url( 'campsflow/v1/events' );
-		$postIds  = $this->queryEventIds();
-		$renderer = new EventCardRenderer();
+		$s            = $this->get_settings_for_display();
+		$columns      = max( 1, min( 4, (int) ( $s['columns'] ?? 3 ) ) );
+		$locationMode = in_array( $s['location_mode'] ?? '', array( 'country_dest', 'country_dest_city' ), true )
+			? (string) $s['location_mode']
+			: 'country_dest';
+		$endpoint     = add_query_arg( 'locationMode', $locationMode, rest_url( 'campsflow/v1/events' ) );
+		$postIds      = $this->queryEventIds();
+		$renderer     = new EventCardRenderer( $locationMode );
 
 		echo '<div class="cf-search-results" data-endpoint="' . esc_url( $endpoint ) . '" style="--cf-columns:' . esc_attr( (string) $columns ) . '">';
 		echo $postIds ? $renderer->renderGrid( $postIds ) : $renderer->renderEmpty(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

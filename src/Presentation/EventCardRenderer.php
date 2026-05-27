@@ -9,6 +9,8 @@ use WP_Query;
 
 final class EventCardRenderer {
 
+	public function __construct( private readonly string $locationMode = 'country_dest' ) {}
+
 	public function renderCard( int $eventId ): string {
 		$leadImg   = (string) get_post_meta( $eventId, 'cf_lead_image_url', true );
 		$titleRaw  = get_the_title( $eventId );
@@ -211,10 +213,15 @@ final class EventCardRenderer {
 		}
 
 		$address = is_array( $loc['address'] ?? null ) ? $loc['address'] : array();
+		$country = (string) ( $address['country'] ?? '' );
 		$dest    = (string) ( $loc['destination'] ?? '' );
 		$city    = (string) ( $address['city'] ?? '' );
 
-		$parts = array_values( array_filter( array( $dest, $city ) ) );
+		$raw = array( $country, $dest );
+		if ( $this->locationMode === 'country_dest_city' ) {
+			$raw[] = $city;
+		}
+		$parts = array_values( array_filter( $raw ) );
 		if ( empty( $parts ) ) {
 			return;
 		}
