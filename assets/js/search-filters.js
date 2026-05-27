@@ -32,19 +32,42 @@
 		return clean;
 	}
 
+	/* ── Shared serializer ─────────────────────────────────────────
+	   Reads a NodeList/Array of .cf-filter elements and returns a
+	   URLSearchParams where multi-selects are joined with commas.
+	   ──────────────────────────────────────────────────────────── */
+	function collectFilters( elements ) {
+		var params = new URLSearchParams();
+		var seen   = {};
+		elements.forEach( function ( el ) {
+			var name = el.getAttribute( 'name' );
+			if ( ! name || seen[ name ] ) {
+				return;
+			}
+			if ( el.tagName === 'SELECT' && el.multiple ) {
+				seen[ name ] = true;
+				var vals = Array.from( el.selectedOptions )
+					.map( function ( o ) { return o.value; } )
+					.filter( Boolean );
+				if ( vals.length ) {
+					params.append( name, vals.join( ',' ) );
+				}
+			} else if ( el.tagName === 'SELECT' || el.tagName === 'INPUT' ) {
+				if ( el.value !== '' ) {
+					params.append( name, el.value );
+				}
+			}
+		} );
+		return params;
+	}
+
 	/* ── Filter widget ─────────────────────────────────────────────
 	   Intercepts form changes → updates URL → emits CF_EVENT.
 	   Does NOT touch the results container directly.
 	   ──────────────────────────────────────────────────────────── */
 	function initFilterForm( form ) {
 		function pushUrl() {
-			var data  = new URLSearchParams( new FormData( form ) );
-			var clean = new URLSearchParams();
-			data.forEach( function ( v, k ) {
-				if ( v !== '' ) {
-					clean.append( k, v );
-				}
-			} );
+			var clean  = collectFilters( form.querySelectorAll( '.cf-filter[name]' ) );
 			var qs     = clean.toString();
 			var newUrl = window.location.pathname + ( qs ? '?' + qs : '' );
 			window.history.pushState( {}, '', newUrl );
@@ -140,19 +163,7 @@
 		}
 
 		function pushFromAll() {
-			var params = new URLSearchParams();
-			document.querySelectorAll( '.cf-filter[name]' ).forEach( function ( el ) {
-				var name  = el.getAttribute( 'name' );
-				var value = '';
-				if ( el.tagName === 'SELECT' ) {
-					value = el.value;
-				} else if ( el.tagName === 'INPUT' ) {
-					value = el.value;
-				}
-				if ( name && value !== '' ) {
-					params.append( name, value );
-				}
-			} );
+			var params = collectFilters( document.querySelectorAll( '.cf-filter[name]' ) );
 			var qs     = params.toString();
 			var newUrl = window.location.pathname + ( qs ? '?' + qs : '' );
 			window.history.pushState( {}, '', newUrl );

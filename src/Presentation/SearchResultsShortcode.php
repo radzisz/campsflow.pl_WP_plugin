@@ -37,45 +37,60 @@ final class SearchResultsShortcode {
 	}
 
 	/**
+	 * @return string[]
+	 */
+	private static function parseSlugs( string $raw ): array {
+		if ( $raw === '' ) {
+			return array();
+		}
+		return array_values( array_filter( array_map( 'sanitize_text_field', explode( ',', $raw ) ) ) );
+	}
+
+	/**
 	 * @return int[]
 	 */
 	private function queryEventIds(): array {
-		$dateFrom  = sanitize_text_field( $_GET['dateFrom'] ?? '' );
-		$dateTo    = sanitize_text_field( $_GET['dateTo'] ?? '' );
-		$category  = sanitize_text_field( $_GET['category'] ?? '' );
-		$age       = sanitize_text_field( $_GET['age'] ?? '' );
-		$dest      = sanitize_text_field( $_GET['destination'] ?? '' );
-		$transport = sanitize_text_field( $_GET['transport'] ?? '' );
-		$childAge  = absint( $_GET['childAge'] ?? 0 );
-		$sort      = sanitize_text_field( $_GET['sort'] ?? '' );
+		$dateFrom   = sanitize_text_field( $_GET['dateFrom'] ?? '' );
+		$dateTo     = sanitize_text_field( $_GET['dateTo'] ?? '' );
+		$categories = self::parseSlugs( (string) ( $_GET['category'] ?? '' ) );
+		$ages       = self::parseSlugs( (string) ( $_GET['age'] ?? '' ) );
+		$dests      = self::parseSlugs( (string) ( $_GET['destination'] ?? '' ) );
+		$transports = self::parseSlugs( (string) ( $_GET['transport'] ?? '' ) );
+		$childAge   = absint( $_GET['childAge'] ?? 0 );
+		$sort       = sanitize_text_field( $_GET['sort'] ?? '' );
 
 		$taxQuery = array();
-		if ( $category ) {
+		if ( ! empty( $categories ) ) {
 			$taxQuery[] = array(
 				'taxonomy' => 'cf_event_category',
 				'field'    => 'slug',
-				'terms'    => $category,
+				'terms'    => $categories,
+				'operator' => 'IN',
 			);
 		}
-		if ( $age ) {
+		if ( ! empty( $ages ) ) {
 			$taxQuery[] = array(
 				'taxonomy' => 'cf_age_group',
 				'field'    => 'slug',
-				'terms'    => $age,
+				'terms'    => $ages,
+				'operator' => 'IN',
 			);
 		}
-		if ( $dest ) {
+		if ( ! empty( $dests ) ) {
 			$taxQuery[] = array(
-				'taxonomy' => 'cf_destination',
-				'field'    => 'slug',
-				'terms'    => $dest,
+				'taxonomy'         => 'cf_destination',
+				'field'            => 'slug',
+				'terms'            => $dests,
+				'operator'         => 'IN',
+				'include_children' => true,
 			);
 		}
-		if ( $transport ) {
+		if ( ! empty( $transports ) ) {
 			$taxQuery[] = array(
 				'taxonomy' => 'cf_transport_type',
 				'field'    => 'slug',
-				'terms'    => $transport,
+				'terms'    => $transports,
+				'operator' => 'IN',
 			);
 		}
 

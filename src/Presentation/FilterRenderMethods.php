@@ -10,27 +10,37 @@ namespace Campsflow\Presentation;
 trait FilterRenderMethods {
 
 	private function renderTaxFilterSelect( string $taxonomy, string $paramName, string $emptyLabel ): void {
-		$terms   = get_terms(
+		$terms    = get_terms(
 			array(
 				'taxonomy'   => $taxonomy,
 				'hide_empty' => true,
 			)
 		);
-		$current = sanitize_text_field( $_GET[ $paramName ] ?? '' );
+		$selected = self::parseMultiParam( $paramName );
 
 		if ( is_wp_error( $terms ) || empty( $terms ) ) {
 			return;
 		}
 
-		echo '<select class="cf-filter" name="' . esc_attr( $paramName ) . '">';
-		echo '<option value="">' . esc_html( $emptyLabel ) . '</option>';
+		echo '<select class="cf-filter" name="' . esc_attr( $paramName ) . '" multiple>';
 		foreach ( $terms as $term ) {
 			assert( is_object( $term ) && isset( $term->slug, $term->name ) );
-			$selected = selected( $current, $term->slug, false );
-			echo '<option value="' . esc_attr( $term->slug ) . '"' . $selected . '>'
+			$isSel = in_array( $term->slug, $selected, true ) ? ' selected="selected"' : '';
+			echo '<option value="' . esc_attr( $term->slug ) . '"' . $isSel . '>'
 				. esc_html( $term->name ) . '</option>';
 		}
 		echo '</select>';
+	}
+
+	/**
+	 * @return string[]
+	 */
+	private static function parseMultiParam( string $paramName ): array {
+		$raw = sanitize_text_field( (string) ( $_GET[ $paramName ] ?? '' ) );
+		if ( $raw === '' ) {
+			return array();
+		}
+		return array_values( array_filter( array_map( 'trim', explode( ',', $raw ) ) ) );
 	}
 
 	private function renderDestinationFilterSelect( string $emptyLabel ): void {
@@ -40,7 +50,7 @@ trait FilterRenderMethods {
 				'hide_empty' => true,
 			)
 		);
-		$current  = sanitize_text_field( $_GET['destination'] ?? '' );
+		$selected = self::parseMultiParam( 'destination' );
 
 		if ( is_wp_error( $rawTerms ) || empty( $rawTerms ) ) {
 			return;
@@ -54,27 +64,26 @@ trait FilterRenderMethods {
 			return;
 		}
 
-		echo '<select class="cf-filter" name="destination">';
-		echo '<option value="">' . esc_html( $emptyLabel ) . '</option>';
+		echo '<select class="cf-filter" name="destination" multiple>';
 
 		foreach ( $parents as $pid => $parent ) {
 			assert( $parent instanceof \WP_Term );
 			$kids = $byParent[ (int) $pid ] ?? array();
 			if ( ! empty( $kids ) ) {
 				echo '<optgroup label="' . esc_attr( $parent->name ) . '">';
-				echo '<option value="' . esc_attr( $parent->slug ) . '"'
-					. selected( $current, $parent->slug, false ) . '>'
+				$isSel = in_array( $parent->slug, $selected, true ) ? ' selected="selected"' : '';
+				echo '<option value="' . esc_attr( $parent->slug ) . '"' . $isSel . '>'
 					. esc_html( $parent->name ) . '</option>';
 				foreach ( $kids as $child ) {
 					assert( $child instanceof \WP_Term );
-					echo '<option value="' . esc_attr( $child->slug ) . '"'
-						. selected( $current, $child->slug, false ) . '>'
+					$isSel = in_array( $child->slug, $selected, true ) ? ' selected="selected"' : '';
+					echo '<option value="' . esc_attr( $child->slug ) . '"' . $isSel . '>'
 						. esc_html( $child->name ) . '</option>';
 				}
 				echo '</optgroup>';
 			} else {
-				echo '<option value="' . esc_attr( $parent->slug ) . '"'
-					. selected( $current, $parent->slug, false ) . '>'
+				$isSel = in_array( $parent->slug, $selected, true ) ? ' selected="selected"' : '';
+				echo '<option value="' . esc_attr( $parent->slug ) . '"' . $isSel . '>'
 					. esc_html( $parent->name ) . '</option>';
 			}
 		}

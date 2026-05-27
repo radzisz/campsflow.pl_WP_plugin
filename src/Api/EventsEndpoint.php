@@ -35,17 +35,17 @@ final class EventsEndpoint {
 	}
 
 	public function handle( WP_REST_Request $request ): WP_REST_Response {
-		$category    = sanitize_text_field( (string) $request->get_param( 'category' ) );
-		$age         = sanitize_text_field( (string) $request->get_param( 'age' ) );
-		$childAge    = absint( $request->get_param( 'childAge' ) );
-		$destination = sanitize_text_field( (string) $request->get_param( 'destination' ) );
-		$transport   = sanitize_text_field( (string) $request->get_param( 'transport' ) );
-		$eventClass  = sanitize_text_field( (string) $request->get_param( 'eventClass' ) );
-		$dateFrom    = sanitize_text_field( (string) $request->get_param( 'dateFrom' ) );
-		$dateTo      = sanitize_text_field( (string) $request->get_param( 'dateTo' ) );
-		$sort        = sanitize_text_field( (string) $request->get_param( 'sort' ) );
-		$lm          = sanitize_text_field( (string) $request->get_param( 'locationMode' ) );
-		$config      = array(
+		$categories = self::parseSlugs( (string) $request->get_param( 'category' ) );
+		$ages       = self::parseSlugs( (string) $request->get_param( 'age' ) );
+		$childAge   = absint( $request->get_param( 'childAge' ) );
+		$dests      = self::parseSlugs( (string) $request->get_param( 'destination' ) );
+		$transports = self::parseSlugs( (string) $request->get_param( 'transport' ) );
+		$eventClass = sanitize_text_field( (string) $request->get_param( 'eventClass' ) );
+		$dateFrom   = sanitize_text_field( (string) $request->get_param( 'dateFrom' ) );
+		$dateTo     = sanitize_text_field( (string) $request->get_param( 'dateTo' ) );
+		$sort       = sanitize_text_field( (string) $request->get_param( 'sort' ) );
+		$lm         = sanitize_text_field( (string) $request->get_param( 'locationMode' ) );
+		$config     = array(
 			'location_mode'      => $lm === 'country_dest_city' ? 'country_dest_city' : 'country_dest',
 			'show_profile_tags'  => $request->get_param( 'showProfileTags' ) !== '0',
 			'profile_tags_label' => sanitize_text_field( (string) $request->get_param( 'profileTagsLabel' ) ),
@@ -61,32 +61,37 @@ final class EventsEndpoint {
 		);
 
 		$taxQuery = array( 'relation' => 'AND' );
-		if ( $category ) {
+		if ( ! empty( $categories ) ) {
 			$taxQuery[] = array(
 				'taxonomy' => EventCategoryTaxonomy::SLUG,
 				'field'    => 'slug',
-				'terms'    => $category,
+				'terms'    => $categories,
+				'operator' => 'IN',
 			);
 		}
-		if ( $age ) {
+		if ( ! empty( $ages ) ) {
 			$taxQuery[] = array(
 				'taxonomy' => AgeGroupTaxonomy::SLUG,
 				'field'    => 'slug',
-				'terms'    => $age,
+				'terms'    => $ages,
+				'operator' => 'IN',
 			);
 		}
-		if ( $destination ) {
+		if ( ! empty( $dests ) ) {
 			$taxQuery[] = array(
-				'taxonomy' => DestinationTaxonomy::SLUG,
-				'field'    => 'slug',
-				'terms'    => $destination,
+				'taxonomy'         => DestinationTaxonomy::SLUG,
+				'field'            => 'slug',
+				'terms'            => $dests,
+				'operator'         => 'IN',
+				'include_children' => true,
 			);
 		}
-		if ( $transport ) {
+		if ( ! empty( $transports ) ) {
 			$taxQuery[] = array(
 				'taxonomy' => TransportTypeTaxonomy::SLUG,
 				'field'    => 'slug',
-				'terms'    => $transport,
+				'terms'    => $transports,
+				'operator' => 'IN',
 			);
 		}
 
@@ -155,6 +160,16 @@ final class EventsEndpoint {
 		$html     = $postIds ? $renderer->renderGrid( $postIds ) : $renderer->renderEmpty();
 
 		return new WP_REST_Response( array( 'html' => $html ), 200 );
+	}
+
+	/**
+	 * @return string[]
+	 */
+	private static function parseSlugs( string $raw ): array {
+		if ( $raw === '' ) {
+			return array();
+		}
+		return array_values( array_filter( array_map( 'sanitize_text_field', explode( ',', $raw ) ) ) );
 	}
 
 	/**
