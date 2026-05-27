@@ -460,29 +460,29 @@ $manager->register( new EventAgeGroupWidget() );
 ### Phase 4: EventGalleryWidget
 
 #### Automated
-- [x] 4.1 Create src/Presentation/EventGalleryWidget.php
-- [x] 4.2 Register in ElementorIntegration
-- [x] 4.3 Update phpstan.neon
-- [x] 4.4 npm run test:unit passes
-- [x] 4.5 npm run lint passes
-- [x] 4.6 npm run analyse passes
+- [x] 4.1 Create src/Presentation/EventGalleryWidget.php — 7fb092b
+- [x] 4.2 Register in ElementorIntegration — 7fb092b
+- [x] 4.3 Update phpstan.neon — 7fb092b
+- [x] 4.4 npm run test:unit passes — 7fb092b
+- [x] 4.5 npm run lint passes — 7fb092b
+- [x] 4.6 npm run analyse passes — 7fb092b
 
 #### Manual
-- [x] 4.7 Built-in gallery renders image grid from cf_multimedia_urls
-- [x] 4.8 Clicking an image opens <dialog> with full-size image
-- [x] 4.9 Clicking dialog backdrop closes the lightbox
-- [x] 4.10 Custom mode outputs data-{attr}='[json]' on wrapper div
+- [x] 4.7 Built-in gallery renders image grid from cf_multimedia_urls — 7fb092b
+- [x] 4.8 Clicking an image opens <dialog> with full-size image — 7fb092b
+- [x] 4.9 Clicking dialog backdrop closes the lightbox — 7fb092b
+- [x] 4.10 Custom mode outputs data-{attr}='[json]' on wrapper div — 7fb092b
 
 ### Phase 5: EventTagsWidget + EventAgeGroupWidget + CI gate
 
 #### Automated
-- [ ] 5.1 Create src/Presentation/EventTagsWidget.php
-- [ ] 5.2 Create src/Presentation/EventAgeGroupWidget.php
-- [ ] 5.3 Register both in ElementorIntegration (10 total)
-- [ ] 5.4 Update phpstan.neon (add both, verify EventMetaWidget entry absent)
-- [ ] 5.5 npm run test:unit passes
-- [ ] 5.6 npm run lint passes
-- [ ] 5.7 npm run analyse passes
+- [x] 5.1 Create src/Presentation/EventTagsWidget.php
+- [x] 5.2 Create src/Presentation/EventAgeGroupWidget.php
+- [x] 5.3 Register both in ElementorIntegration (10 total)
+- [x] 5.4 Update phpstan.neon (add both, verify EventMetaWidget entry absent)
+- [x] 5.5 npm run test:unit passes
+- [x] 5.6 npm run lint passes
+- [x] 5.7 npm run analyse passes
 
 #### Manual
 - [ ] 5.8 EventTagsWidget renders cf_tag terms as pills

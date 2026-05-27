@@ -18,6 +18,8 @@ final class WpBakeryIntegration {
 		$this->mapListing();
 		$this->mapEventMeta();
 		$this->mapEventSessions();
+		$this->mapEventTags();
+		$this->mapEventAgeGroups();
 	}
 
 	private function mapListing(): void {
@@ -83,6 +85,82 @@ final class WpBakeryIntegration {
 							__( 'Pola własne', 'campsflow' ) => 'custom_fields',
 						),
 						'std'        => 'location,tags,description',
+					),
+				),
+			)
+		);
+	}
+
+	private function mapEventTags(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Tagi', 'campsflow' ),
+				'base'        => 'campsflow_event_tags',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-tag',
+				'description' => __( 'Tagi taksonomiczne imprezy jako pillsy', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Sortowanie', 'campsflow' ),
+						'param_name' => 'sort',
+						'value'      => array(
+							__( 'Nazwa A→Z', 'campsflow' ) => 'name_asc',
+							__( 'Nazwa Z→A', 'campsflow' ) => 'name_desc',
+							__( 'Kolejność domyślna', 'campsflow' ) => 'default',
+						),
+						'std'        => 'name_asc',
+					),
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Maksymalna liczba tagów', 'campsflow' ),
+						'param_name'  => 'max',
+						'value'       => '0',
+						'description' => __( '0 = pokaż wszystkie', 'campsflow' ),
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Odstęp między tagami (px)', 'campsflow' ),
+						'param_name' => 'gap',
+						'value'      => '6',
+					),
+				),
+			)
+		);
+	}
+
+	private function mapEventAgeGroups(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Grupy wiekowe', 'campsflow' ),
+				'base'        => 'campsflow_event_age_groups',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-groups',
+				'description' => __( 'Grupy wiekowe imprezy jako pillsy', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Sortowanie', 'campsflow' ),
+						'param_name' => 'sort',
+						'value'      => array(
+							__( 'Nazwa A→Z', 'campsflow' ) => 'name_asc',
+							__( 'Nazwa Z→A', 'campsflow' ) => 'name_desc',
+							__( 'Kolejność domyślna', 'campsflow' ) => 'default',
+						),
+						'std'        => 'name_asc',
+					),
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Maksymalna liczba grup', 'campsflow' ),
+						'param_name'  => 'max',
+						'value'       => '0',
+						'description' => __( '0 = pokaż wszystkie', 'campsflow' ),
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Odstęp między pillsami (px)', 'campsflow' ),
+						'param_name' => 'gap',
+						'value'      => '6',
 					),
 				),
 			)

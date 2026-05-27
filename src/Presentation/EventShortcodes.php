@@ -16,6 +16,8 @@ final class EventShortcodes {
 	public function register(): void {
 		add_shortcode( 'campsflow_event_meta', array( $this, 'renderMeta' ) );
 		add_shortcode( 'campsflow_event_sessions', array( $this, 'renderSessions' ) );
+		add_shortcode( 'campsflow_event_tags', array( $this, 'renderTags' ) );
+		add_shortcode( 'campsflow_event_age_groups', array( $this, 'renderAgeGroups' ) );
 	}
 
 	// ── Shortcode: event meta ─────────────────────────────────────────────────
@@ -128,6 +130,78 @@ final class EventShortcodes {
 		wp_reset_postdata();
 		echo '</ul></div>';
 		return (string) ob_get_clean();
+	}
+
+	// ── Shortcode: tags ──────────────────────────────────────────────────────
+
+	/** @param array<string,string>|string $atts */
+	public function renderTags( array|string $atts ): string {
+		return $this->renderTermPills(
+			$atts,
+			'cf_tag',
+			'campsflow_event_tags',
+			'cf-tag'
+		);
+	}
+
+	// ── Shortcode: age groups ─────────────────────────────────────────────────
+
+	/** @param array<string,string>|string $atts */
+	public function renderAgeGroups( array|string $atts ): string {
+		return $this->renderTermPills(
+			$atts,
+			'cf_age_group',
+			'campsflow_event_age_groups',
+			'cf-tag cf-tag--age'
+		);
+	}
+
+	/**
+	 * @param array<string,string>|string $atts
+	 */
+	private function renderTermPills( array|string $atts, string $taxonomy, string $shortcode, string $pillClass ): string {
+		$atts   = shortcode_atts(
+			array(
+				'sort' => 'name_asc',
+				'max'  => '0',
+				'gap'  => '6',
+			),
+			is_array( $atts ) ? $atts : array(),
+			$shortcode
+		);
+		$postId = (int) get_the_ID();
+		if ( ! $postId ) {
+			return '';
+		}
+
+		$sortOrder = sanitize_key( $atts['sort'] );
+		$maxTerms  = max( 0, (int) $atts['max'] );
+		$gap       = max( 0, (int) $atts['gap'] );
+
+		$terms = get_the_terms( $postId, $taxonomy );
+		$terms = is_array( $terms ) ? $terms : array();
+
+		if ( 'name_asc' === $sortOrder ) {
+			usort( $terms, fn( $a, $b ) => strcmp( $a->name, $b->name ) );
+		} elseif ( 'name_desc' === $sortOrder ) {
+			usort( $terms, fn( $a, $b ) => strcmp( $b->name, $a->name ) );
+		}
+
+		if ( $maxTerms > 0 ) {
+			$terms = array_slice( $terms, 0, $maxTerms );
+		}
+
+		if ( empty( $terms ) ) {
+			return '';
+		}
+
+		$wrapStyle = 'display:flex;flex-wrap:wrap;gap:' . $gap . 'px';
+		$out       = '<div class="cf-tags" style="' . esc_attr( $wrapStyle ) . '">';
+		foreach ( $terms as $term ) {
+			$out .= '<span class="' . esc_attr( $pillClass ) . '">' . esc_html( $term->name ) . '</span>';
+		}
+		$out .= '</div>';
+		return $out;
 	}
 
 	// ── Event meta helpers ────────────────────────────────────────────────────

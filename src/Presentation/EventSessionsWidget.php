@@ -58,7 +58,7 @@ final class EventSessionsWidget extends Widget_Base {
 			array(
 				'label'   => __( 'Tekst przycisku', 'campsflow' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Zapisz się', 'campsflow' ),
+				'default' => __( 'Rezerwuj', 'campsflow' ),
 			)
 		);
 		$this->add_control(
@@ -169,7 +169,7 @@ final class EventSessionsWidget extends Widget_Base {
 	protected function render(): void {
 		$s                 = $this->get_settings_for_display();
 		$postId            = (int) get_the_ID();
-		$buttonLabel       = sanitize_text_field( $s['button_label'] ?? __( 'Zapisz się', 'campsflow' ) );
+		$buttonLabel       = sanitize_text_field( $s['button_label'] ?? __( 'Rezerwuj', 'campsflow' ) );
 		$title             = sanitize_text_field( $s['title'] ?? __( 'Dostępne terminy', 'campsflow' ) );
 		$showMeetingPoints = ( $s['show_meeting_points'] ?? '' ) === 'yes';
 		$showCustomFields  = ( $s['show_custom_fields'] ?? '' ) === 'yes';
@@ -218,30 +218,30 @@ final class EventSessionsWidget extends Widget_Base {
 		$dateTo     = (string) get_post_meta( $sId, 'cf_date_to', true );
 		$price      = (int) get_post_meta( $sId, 'cf_price_from', true );
 		$days       = (int) get_post_meta( $sId, 'cf_number_of_days', true );
-		$name       = (string) get_post_meta( $sId, 'cf_turnus_name', true );
 		$reservUrl  = (string) get_post_meta( $sId, 'cf_reservation_url', true );
 		$transport  = json_decode( (string) get_post_meta( $sId, 'cf_transport', true ), true );
 		$bucket     = AvailabilityBucket::tryFrom( (string) get_post_meta( $sId, 'cf_availability', true ) )
 						?? AvailabilityBucket::Available;
 		$isFull     = $bucket === AvailabilityBucket::Full;
-		$f          = $dateFrom ? date_create( $dateFrom ) : null;
-		$t          = $dateTo ? date_create( $dateTo ) : null;
-		$dateLabel  = $f ? ( $f->format( 'j M' ) . ( $t ? '–' . $t->format( 'j M Y' ) : '' ) ) : '';
+		$tsFrom     = $dateFrom ? strtotime( $dateFrom ) : 0;
+		$tsTo       = $dateTo ? strtotime( $dateTo ) : 0;
+		$dateLabel  = $tsFrom ? ( date_i18n( 'j F', $tsFrom ) . ( $tsTo ? '–' . date_i18n( 'j F Y', $tsTo ) : '' ) ) : '';
 		$priceLabel = $price ? 'od ' . number_format( $price / 100, 0, ',', ' ' ) . ' zł' : '';
-		$tDesc      = is_array( $transport ) ? (string) ( $transport['description'] ?? '' ) : '';
 		$tType      = is_array( $transport ) ? (string) ( $transport['type'] ?? 'own' ) : 'own';
 
 		echo '<li class="cf-sessions-box__item' . ( $isFull ? ' cf-sessions-box__item--full' : '' ) . '">';
-		if ( $name ) {
-			echo '<div class="cf-sessions-box__name">' . esc_html( $name ) . '</div>';
+		if ( $dateLabel ) {
+			echo '<div class="cf-sessions-box__dates"><span class="dashicons dashicons-calendar-alt"></span> ' . esc_html( $dateLabel );
+			if ( $days > 0 ) {
+				echo ' <span class="cf-sessions-box__days">(' . esc_html( (string) $days ) . ' ' . esc_html__( 'dni', 'campsflow' ) . ')</span>';
+			}
+			echo '</div>';
 		}
-		echo '<div class="cf-sessions-box__dates">' . esc_html( $dateLabel );
-		if ( $days > 0 ) {
-			echo ' <span class="cf-sessions-box__days">(' . esc_html( (string) $days ) . ' ' . esc_html__( 'dni', 'campsflow' ) . ')</span>';
-		}
-		echo '</div>';
-		if ( $tType !== 'own' && $tDesc ) {
-			echo '<div class="cf-sessions-box__transport"><span class="dashicons dashicons-car"></span> ' . esc_html( $tDesc ) . '</div>';
+		if ( $tType !== 'own' ) {
+			$departureCity = $this->getDepartureCity( $sId );
+			if ( $departureCity ) {
+				echo '<div class="cf-sessions-box__transport">🚌 ' . esc_html( $departureCity ) . '</div>';
+			}
 		}
 		if ( $showMeetingPoints ) {
 			$this->echoMeetingPoints( $sId );
@@ -298,6 +298,18 @@ final class EventSessionsWidget extends Widget_Base {
 			default:
 				return esc_html( (string) $value );
 		}
+	}
+
+	private function getDepartureCity( int $sId ): string {
+		$start = json_decode( (string) get_post_meta( $sId, 'cf_meeting_points_start', true ), true );
+		if ( ! is_array( $start ) || empty( $start ) ) {
+			return '';
+		}
+		$first = reset( $start );
+		if ( ! is_array( $first ) ) {
+			return '';
+		}
+		return (string) ( $first['name'] ?? '' );
 	}
 
 	private function echoMeetingPoints( int $sId ): void {

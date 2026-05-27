@@ -18,6 +18,8 @@ parameters:
         - src/Presentation/EventLeadImageWidget.php
         - src/Presentation/EventLeadVideoWidget.php
         - src/Presentation/EventGalleryWidget.php
+        - src/Presentation/EventTagsWidget.php
+        - src/Presentation/EventAgeGroupWidget.php
         - src/Presentation/EventSessionsWidget.php
         - src/Presentation/WpBakeryIntegration.php
         - src/Presentation/WpBakeryDynamicContent.php
