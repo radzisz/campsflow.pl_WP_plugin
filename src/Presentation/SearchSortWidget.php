@@ -36,6 +36,7 @@ final class SearchSortWidget extends Widget_Base {
 
 	protected function register_controls(): void {
 		$this->registerContentSection();
+		$this->registerStyleLayoutSection();
 		$this->registerStyleLabelSection();
 		$this->registerStyleInputSection();
 	}
@@ -132,6 +133,54 @@ final class SearchSortWidget extends Widget_Base {
 				'condition' => array( 'show_' . $key => 'yes' ),
 			)
 		);
+	}
+
+	private function registerStyleLayoutSection(): void {
+		$this->start_controls_section(
+			'section_style_layout',
+			array(
+				'label' => __( 'Układ', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'layout',
+			array(
+				'label'     => __( 'Kierunek', 'campsflow' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'column',
+				'options'   => array(
+					'column' => __( 'Pionowy (nagłówek nad polem)', 'campsflow' ),
+					'row'    => __( 'Poziomy (nagłówek obok pola)', 'campsflow' ),
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .cf-sort-wrap' => 'display:flex; flex-direction:{{VALUE}}; align-items:center;',
+				),
+			)
+		);
+
+		$this->add_control(
+			'layout_gap',
+			array(
+				'label'     => __( 'Odstęp między nagłówkiem a polem', 'campsflow' ),
+				'type'      => Controls_Manager::SLIDER,
+				'default'   => array( 'size' => 8 ),
+				'range'     => array(
+					'px' => array(
+						'min'  => 0,
+						'max'  => 60,
+						'step' => 1,
+					),
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .cf-sort-wrap' => 'gap: {{SIZE}}px;',
+				),
+				'condition' => array( 'layout' => 'row' ),
+			)
+		);
+
+		$this->end_controls_section();
 	}
 
 	private function registerStyleLabelSection(): void {
@@ -338,6 +387,8 @@ final class SearchSortWidget extends Widget_Base {
 			return;
 		}
 
+		echo '<div class="cf-sort-wrap">';
+
 		if ( $header !== '' ) {
 			echo '<label class="cf-filter-label">' . esc_html( $header ) . '</label>';
 		}
@@ -350,5 +401,7 @@ final class SearchSortWidget extends Widget_Base {
 			echo '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_html( $label ) . '</option>';
 		}
 		echo '</select>';
+
+		echo '</div>';
 	}
 }
