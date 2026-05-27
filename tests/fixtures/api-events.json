@@ -6,8 +6,14 @@
     "name": "Fabryka Adrenaliny — Bieszczady 2026",
     "minAge": 10,
     "maxAge": 16,
-    "eventTags": ["hit sezonu"],
-    "eventProfile": ["active", "przygoda", "góry"],
+    "eventTags": [
+      {"name": "hit sezonu", "color": "#f97316", "visible": true}
+    ],
+    "eventCategories": [
+      {"name": "active",   "color": "#3b82f6", "visible": true},
+      {"name": "przygoda", "color": "#10b981", "visible": true},
+      {"name": "góry",     "color": "#6b7280", "visible": true}
+    ],
     "localization": {
       "destination": "Bieszczady",
       "name": "Ośrodek Sportów Wodnych Myczkowce",
@@ -157,10 +163,16 @@
     "name": "Surf Camp — Dźwirzyno 2026",
     "minAge": 13,
     "maxAge": 17,
-    "eventTags": ["nowość"],
-    "eventProfile": ["active", "kite", "morze"],
+    "eventTags": [
+      {"name": "nowość", "color": "#8b5cf6", "visible": true}
+    ],
+    "eventCategories": [
+      {"name": "active", "color": "#3b82f6", "visible": true},
+      {"name": "kite",   "color": "#0ea5e9", "visible": true},
+      {"name": "morze",  "color": "#06b6d4", "visible": true}
+    ],
     "localization": {
-      "destination": "Wybrzeże Zachodniopomorskie",
+      "destination": "Bałtyk",
       "name": "Ośrodek Wodny Dźwirzyno",
       "address": {
         "address": "ul. Słoneczna 22",
@@ -285,8 +297,15 @@
     "name": "FutureLab Camp — Bukowina Tatrzańska 2026",
     "minAge": 10,
     "maxAge": 15,
-    "eventTags": ["nowość", "promocja"],
-    "eventProfile": ["active", "technologia", "góry"],
+    "eventTags": [
+      {"name": "nowość",  "color": "#8b5cf6", "visible": true},
+      {"name": "promocja","color": "#ef4444", "visible": true}
+    ],
+    "eventCategories": [
+      {"name": "active",     "color": "#3b82f6", "visible": true},
+      {"name": "technologia","color": "#6366f1", "visible": true},
+      {"name": "góry",      "color": "#6b7280", "visible": true}
+    ],
     "localization": {
       "destination": "Tatry",
       "name": "Centrum Wypoczynku Bukowina",
