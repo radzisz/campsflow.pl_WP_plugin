@@ -27,7 +27,7 @@ final class AgeGroupTaxonomy {
 				'public'            => true,
 				'show_ui'           => true,
 				'show_in_rest'      => true,
-				'hierarchical'      => true,
+				'hierarchical'      => false,
 				'rewrite'           => array( 'slug' => 'wiek' ),
 				'show_admin_column' => true,
 				'capabilities'      => array(
