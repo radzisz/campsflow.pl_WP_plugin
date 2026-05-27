@@ -1,10 +1,10 @@
 ---
 change_id: event-field-widgets
 title: Atomowe widgety Elementora dla pól cf_event
-status: implemented
+status: archived
 created: 2026-05-26
 updated: 2026-05-27
-archived_at: null
+archived_at: 2026-05-27T00:27:05Z
 ---
 
 ## Notes
