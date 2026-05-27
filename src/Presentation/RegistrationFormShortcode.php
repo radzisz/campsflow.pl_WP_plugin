@@ -19,7 +19,8 @@ final class RegistrationFormShortcode {
 		$tenantSlug = (string) get_option( 'campsflow_tenant_slug', '' );
 
 		if ( ! $this->isValidUuid( $sessionId ) || $tenantSlug === '' ) {
-			return '';
+			wp_safe_redirect( home_url( '/' ) );
+			exit;
 		}
 
 		$iframeUrl = Config::embedRegistrationUrl( $tenantSlug, $sessionId );
