@@ -37,11 +37,13 @@ final class EventsEndpoint {
 	public function handle( WP_REST_Request $request ): WP_REST_Response {
 		$category    = sanitize_text_field( (string) $request->get_param( 'category' ) );
 		$age         = sanitize_text_field( (string) $request->get_param( 'age' ) );
+		$childAge    = absint( $request->get_param( 'childAge' ) );
 		$destination = sanitize_text_field( (string) $request->get_param( 'destination' ) );
 		$transport   = sanitize_text_field( (string) $request->get_param( 'transport' ) );
 		$eventClass  = sanitize_text_field( (string) $request->get_param( 'eventClass' ) );
 		$dateFrom    = sanitize_text_field( (string) $request->get_param( 'dateFrom' ) );
 		$dateTo      = sanitize_text_field( (string) $request->get_param( 'dateTo' ) );
+		$sort        = sanitize_text_field( (string) $request->get_param( 'sort' ) );
 
 		$taxQuery = array( 'relation' => 'AND' );
 		if ( $category ) {
@@ -74,6 +76,20 @@ final class EventsEndpoint {
 		}
 
 		$metaQuery = array();
+		if ( $childAge >= 1 && $childAge <= 99 ) {
+			$metaQuery[] = array(
+				'key'     => 'cf_min_age',
+				'value'   => $childAge,
+				'compare' => '<=',
+				'type'    => 'NUMERIC',
+			);
+			$metaQuery[] = array(
+				'key'     => 'cf_max_age',
+				'value'   => $childAge,
+				'compare' => '>=',
+				'type'    => 'NUMERIC',
+			);
+		}
 		if ( $eventClass ) {
 			$metaQuery[] = array(
 				'key'     => 'cf_event_class',
@@ -98,14 +114,18 @@ final class EventsEndpoint {
 			);
 		}
 
-		$args = array(
+		$orderArgs = $this->buildOrderArgs( $sort );
+		$args      = array(
 			'post_type'      => EventPostType::SLUG,
 			'post_status'    => 'publish',
 			'posts_per_page' => 50,
-			'orderby'        => 'title',
-			'order'          => 'ASC',
+			'orderby'        => $orderArgs['orderby'],
+			'order'          => $orderArgs['order'],
 			'fields'         => 'ids',
 		);
+		if ( isset( $orderArgs['meta_key'] ) ) {
+			$args['meta_key'] = $orderArgs['meta_key'];
+		}
 
 		if ( count( $taxQuery ) > 1 ) {
 			$args['tax_query'] = $taxQuery;
@@ -120,5 +140,49 @@ final class EventsEndpoint {
 		$html     = $postIds ? $renderer->renderGrid( $postIds ) : $renderer->renderEmpty();
 
 		return new WP_REST_Response( array( 'html' => $html ), 200 );
+	}
+
+	/**
+	 * @return array{orderby: string, order: string, meta_key?: string}
+	 */
+	private function buildOrderArgs( string $sort ): array {
+		if ( $sort === 'title_desc' ) {
+			return array(
+				'orderby' => 'title',
+				'order'   => 'DESC',
+			);
+		}
+		if ( $sort === 'date_asc' ) {
+			return array(
+				'orderby'  => 'meta_value',
+				'meta_key' => 'cf_date_earliest',
+				'order'    => 'ASC',
+			);
+		}
+		if ( $sort === 'date_desc' ) {
+			return array(
+				'orderby'  => 'meta_value',
+				'meta_key' => 'cf_date_earliest',
+				'order'    => 'DESC',
+			);
+		}
+		if ( $sort === 'price_asc' ) {
+			return array(
+				'orderby'  => 'meta_value_num',
+				'meta_key' => 'cf_event_min_price',
+				'order'    => 'ASC',
+			);
+		}
+		if ( $sort === 'price_desc' ) {
+			return array(
+				'orderby'  => 'meta_value_num',
+				'meta_key' => 'cf_event_min_price',
+				'order'    => 'DESC',
+			);
+		}
+		return array(
+			'orderby' => 'title',
+			'order'   => 'ASC',
+		);
 	}
 }

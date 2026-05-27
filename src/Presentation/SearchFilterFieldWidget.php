@@ -1,0 +1,326 @@
+<?php
+declare(strict_types=1);
+
+namespace Campsflow\Presentation;
+
+use Elementor\Controls_Manager;
+use Elementor\Widget_Base;
+
+final class SearchFilterFieldWidget extends Widget_Base {
+	use FilterRenderMethods;
+
+	public function get_name(): string {
+		return 'campsflow_search_filter_field';
+	}
+
+	public function get_title(): string {
+		return __( 'CampsFlow — Pole filtru', 'campsflow' );
+	}
+
+	public function get_icon(): string {
+		return 'eicon-filter';
+	}
+
+	public function get_categories(): array {
+		return array( 'campsflow' );
+	}
+
+	protected function register_controls(): void {
+		$this->registerContentSection();
+		$this->registerStyleLabelSection();
+		$this->registerStyleInputSection();
+	}
+
+	private function registerContentSection(): void {
+		$this->start_controls_section(
+			'section_field',
+			array(
+				'label' => __( 'Pole', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_CONTENT,
+			)
+		);
+
+		$this->add_control(
+			'cf_field_tip',
+			array(
+				'type'            => Controls_Manager::RAW_HTML,
+				'raw'             => __( 'Umieść ten widget wielokrotnie na stronie — każde pole zmienia URL, a widget <strong>Wyniki wyszukiwania</strong> reaguje automatycznie. Nie potrzebujesz wspólnego kontenera ani formularza.', 'campsflow' ),
+				'content_classes' => 'elementor-descriptor',
+			)
+		);
+
+		$this->add_control(
+			'field_type',
+			array(
+				'label'   => __( 'Typ pola', 'campsflow' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'category',
+				'options' => array(
+					'category'    => __( 'Profil', 'campsflow' ),
+					'age'         => __( 'Grupa wiekowa', 'campsflow' ),
+					'child_age'   => __( 'Wiek', 'campsflow' ),
+					'destination' => __( 'Kierunek', 'campsflow' ),
+					'transport'   => __( 'Transport', 'campsflow' ),
+					'date_from'   => __( 'Data od', 'campsflow' ),
+					'date_to'     => __( 'Data do', 'campsflow' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'header',
+			array(
+				'label'       => __( 'Nagłówek', 'campsflow' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => '',
+				'placeholder' => __( 'np. Wybierz profil', 'campsflow' ),
+			)
+		);
+
+		$this->add_control(
+			'placeholder',
+			array(
+				'label'     => __( 'Label (opcja pusta)', 'campsflow' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => '',
+				'condition' => array(
+					'field_type!' => array( 'date_from', 'date_to' ),
+				),
+			)
+		);
+
+		$this->end_controls_section();
+	}
+
+	private function registerStyleLabelSection(): void {
+		$this->start_controls_section(
+			'section_style_label',
+			array(
+				'label' => __( 'Nagłówek', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'label_color',
+			array(
+				'label'     => __( 'Kolor', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-filter-label' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'label_font_size',
+			array(
+				'label'      => __( 'Rozmiar czcionki', 'campsflow' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', 'em', 'rem' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 10,
+						'max' => 48,
+					),
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-filter-label' => 'font-size: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'label_font_weight',
+			array(
+				'label'     => __( 'Grubość czcionki', 'campsflow' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => '',
+				'options'   => array(
+					''    => __( 'Domyślna', 'campsflow' ),
+					'400' => __( 'Normalna (400)', 'campsflow' ),
+					'600' => __( 'Półgruba (600)', 'campsflow' ),
+					'700' => __( 'Gruba (700)', 'campsflow' ),
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .cf-filter-label' => 'font-weight: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'label_margin_bottom',
+			array(
+				'label'      => __( 'Odstęp pod nagłówkiem', 'campsflow' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 40,
+					),
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-filter-label' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->end_controls_section();
+	}
+
+	private function registerStyleInputSection(): void {
+		$this->start_controls_section(
+			'section_style_input',
+			array(
+				'label' => __( 'Pole wyboru', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'input_width',
+			array(
+				'label'      => __( 'Szerokość', 'campsflow' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', '%' ),
+				'range'      => array(
+					'%'  => array(
+						'min' => 10,
+						'max' => 100,
+					),
+					'px' => array(
+						'min' => 50,
+						'max' => 600,
+					),
+				),
+				'default'    => array(
+					'unit' => '%',
+					'size' => 100,
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-filter' => 'width: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'input_bg',
+			array(
+				'label'     => __( 'Tło', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-filter' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'input_color',
+			array(
+				'label'     => __( 'Kolor tekstu', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-filter' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'input_border_color',
+			array(
+				'label'     => __( 'Kolor obramowania', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-filter' => 'border-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'input_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie', 'campsflow' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', '%' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 50,
+					),
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-filter' => 'border-radius: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'input_font_size',
+			array(
+				'label'      => __( 'Rozmiar czcionki', 'campsflow' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', 'em', 'rem' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 10,
+						'max' => 28,
+					),
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-filter' => 'font-size: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->end_controls_section();
+	}
+
+	protected function render(): void {
+		$s           = $this->get_settings_for_display();
+		$field_type  = (string) ( $s['field_type'] ?? 'category' );
+		$placeholder = (string) ( $s['placeholder'] ?? '' );
+		$header      = (string) ( $s['header'] ?? '' );
+
+		if ( $header !== '' ) {
+			echo '<label class="cf-filter-label">' . esc_html( $header ) . '</label>';
+		}
+
+		switch ( $field_type ) {
+			case 'category':
+				$label = $placeholder !== '' ? $placeholder : __( 'Wszystkie profile', 'campsflow' );
+				$this->renderTaxFilterSelect( 'cf_event_category', 'category', $label );
+				break;
+
+			case 'age':
+				$label = $placeholder !== '' ? $placeholder : __( 'Wszystkie grupy wiekowe', 'campsflow' );
+				$this->renderTaxFilterSelect( 'cf_age_group', 'age', $label );
+				break;
+
+			case 'child_age':
+				$label = $placeholder !== '' ? $placeholder : __( 'Wiek', 'campsflow' );
+				$this->renderChildAgeFilterSelect( $label );
+				break;
+
+			case 'destination':
+				$label = $placeholder !== '' ? $placeholder : __( 'Wszystkie kierunki', 'campsflow' );
+				$this->renderDestinationFilterSelect( $label );
+				break;
+
+			case 'transport':
+				$label = $placeholder !== '' ? $placeholder : __( 'Transport', 'campsflow' );
+				$this->renderTaxFilterSelect( 'cf_transport_type', 'transport', $label );
+				break;
+
+			case 'date_from':
+				$current = sanitize_text_field( $_GET['dateFrom'] ?? '' );
+				echo '<input class="cf-filter" type="date" name="dateFrom" value="' . esc_attr( $current ) . '">';
+				break;
+
+			case 'date_to':
+				$current = sanitize_text_field( $_GET['dateTo'] ?? '' );
+				echo '<input class="cf-filter" type="date" name="dateTo" value="' . esc_attr( $current ) . '">';
+				break;
+		}
+	}
+}

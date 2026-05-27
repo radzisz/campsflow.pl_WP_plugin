@@ -10,11 +10,11 @@ use WP_Query;
 final class EventCardRenderer {
 
 	public function renderCard( int $eventId ): string {
-		$locRaw  = (string) get_post_meta( $eventId, 'cf_localization', true );
-		$loc     = $locRaw ? ( json_decode( $locRaw, true ) ?? array() ) : array();
-		$city    = is_array( $loc['address'] ?? null ) ? ( $loc['address']['city'] ?? '' ) : '';
-		$dest    = (string) ( $loc['destination'] ?? '' );
-		$leadImg = (string) get_post_meta( $eventId, 'cf_lead_image_url', true );
+		$locRaw   = (string) get_post_meta( $eventId, 'cf_localization', true );
+		$loc      = $locRaw ? ( json_decode( $locRaw, true ) ?? array() ) : array();
+		$city     = is_array( $loc['address'] ?? null ) ? ( $loc['address']['city'] ?? '' ) : '';
+		$dest     = (string) ( $loc['destination'] ?? '' );
+		$leadImg  = (string) get_post_meta( $eventId, 'cf_lead_image_url', true );
 		$titleRaw = get_the_title( $eventId );
 		$title    = $titleRaw ? (string) $titleRaw : '';
 

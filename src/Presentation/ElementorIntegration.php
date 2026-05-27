@@ -15,7 +15,6 @@ final class ElementorIntegration {
 	}
 
 	public function registerWidget( \Elementor\Widgets_Manager $manager ): void {
-		$manager->register( new ElementorWidget() );
 		$manager->register( new EventSessionsWidget() );
 		$manager->register( new EventFieldWidget() );
 		$manager->register( new EventContactWidget() );
@@ -25,6 +24,10 @@ final class ElementorIntegration {
 		$manager->register( new EventGalleryWidget() );
 		$manager->register( new EventTagsWidget() );
 		$manager->register( new EventAgeGroupWidget() );
+		$manager->register( new SearchFilterWidget() );
+		$manager->register( new SearchFilterFieldWidget() );
+		$manager->register( new SearchSortWidget() );
+		$manager->register( new SearchResultsWidget() );
 	}
 
 	public function registerCategory( \Elementor\Elements_Manager $manager ): void {

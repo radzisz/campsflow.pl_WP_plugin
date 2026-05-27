@@ -19,10 +19,10 @@ final class EventCategoryTaxonomy {
 			array( EventPostType::SLUG ),
 			array(
 				'labels'            => array(
-					'name'          => __( 'Kategorie wydarzeń', 'campsflow' ),
-					'singular_name' => __( 'Kategoria wydarzenia', 'campsflow' ),
-					'all_items'     => __( 'Wszystkie kategorie', 'campsflow' ),
-					'add_new_item'  => __( 'Dodaj kategorię', 'campsflow' ),
+					'name'          => __( 'Profile wydarzeń', 'campsflow' ),
+					'singular_name' => __( 'Profil wydarzenia', 'campsflow' ),
+					'all_items'     => __( 'Wszystkie profile', 'campsflow' ),
+					'add_new_item'  => __( 'Dodaj profil', 'campsflow' ),
 				),
 				'public'            => true,
 				'show_ui'           => true,

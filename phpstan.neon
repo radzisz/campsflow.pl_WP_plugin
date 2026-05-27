@@ -21,6 +21,10 @@ parameters:
         - src/Presentation/EventTagsWidget.php
         - src/Presentation/EventAgeGroupWidget.php
         - src/Presentation/EventSessionsWidget.php
+        - src/Presentation/SearchFilterWidget.php
+        - src/Presentation/SearchFilterFieldWidget.php
+        - src/Presentation/SearchSortWidget.php
+        - src/Presentation/SearchResultsWidget.php
         - src/Presentation/WpBakeryIntegration.php
         - src/Presentation/WpBakeryDynamicContent.php
 

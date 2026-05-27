@@ -168,6 +168,14 @@ final class SyncRunner {
 		$turnusy = is_array( $event['turnusy'] ?? null ) ? $event['turnusy'] : array();
 		$dates   = array_filter( array_map( fn( mixed $t ) => is_array( $t ) ? (string) ( $t['dateFrom'] ?? '' ) : '', $turnusy ) );
 		update_post_meta( $postId, 'cf_date_earliest', $dates ? min( $dates ) : '' );
+
+		$prices = array_values(
+			array_filter(
+				array_map( fn( mixed $t ) => is_array( $t ) ? (int) ( $t['priceFrom'] ?? 0 ) : 0, $turnusy ),
+				fn( int $p ) => $p > 0
+			)
+		);
+		update_post_meta( $postId, 'cf_event_min_price', $prices ? min( $prices ) : 0 );
 	}
 
 	/**
