@@ -317,35 +317,35 @@ WPBakery equivalents of Phase 5 widgets. Two new shortcodes registered via `WpBa
 ### Phase 1: Sync Extensions
 
 #### Automated
-- [x] 1.1 Create DestinationTaxonomy — SLUG=cf_destination, hierarchical, read-only caps, rewrite slug=kierunek
-- [x] 1.2 Create TransportTypeTaxonomy — SLUG=cf_transport_type, non-hierarchical, read-only caps, rewrite slug=transport
-- [x] 1.3 Register both in campsflow.php
-- [x] 1.4 SyncRunner::saveEventMeta — save cf_min_age, cf_max_age, cf_date_earliest
-- [x] 1.5 SyncRunner::setAgeGroupTerms — configurable threshold logic (Dzieci/Młodzież/Dorośli)
-- [x] 1.6 SyncRunner::setDestinationTerms — parent=country ISO, child=destination name, wp_insert_term guard
-- [x] 1.7 SyncRunner::setTransportTypeTerms — collect unique transport.type strings from turnusy
-- [x] 1.8 SyncRunner::upsertEvent — call setDestinationTerms + setTransportTypeTerms
-- [x] 1.9 SyncNotice — add DestinationTaxonomy::SLUG + TransportTypeTaxonomy::SLUG to MANAGED_TAXONOMIES
-- [x] 1.10 PHPStan level 8 + PHPCS clean
-- [x] 1.11 Integration tests pass
+- [x] 1.1 Create DestinationTaxonomy — SLUG=cf_destination, hierarchical, read-only caps, rewrite slug=kierunek — 4a9d832
+- [x] 1.2 Create TransportTypeTaxonomy — SLUG=cf_transport_type, non-hierarchical, read-only caps, rewrite slug=transport — 4a9d832
+- [x] 1.3 Register both in campsflow.php — 4a9d832
+- [x] 1.4 SyncRunner::saveEventMeta — save cf_min_age, cf_max_age, cf_date_earliest — 4a9d832
+- [x] 1.5 SyncRunner::setAgeGroupTerms — configurable threshold logic (Dzieci/Młodzież/Dorośli) — 4a9d832
+- [x] 1.6 SyncRunner::setDestinationTerms — parent=country ISO, child=destination name, wp_insert_term guard — 4a9d832
+- [x] 1.7 SyncRunner::setTransportTypeTerms — collect unique transport.type strings from turnusy — 4a9d832
+- [x] 1.8 SyncRunner::upsertEvent — call setDestinationTerms + setTransportTypeTerms — 4a9d832
+- [x] 1.9 SyncNotice — add DestinationTaxonomy::SLUG + TransportTypeTaxonomy::SLUG to MANAGED_TAXONOMIES — 4a9d832
+- [x] 1.10 PHPStan level 8 + PHPCS clean — 4a9d832
+- [x] 1.11 Integration tests pass — 4a9d832
 
 #### Manual
-- [x] 1.12 Sync fixtures → cf_destination admin column shows Bieszczady, Wybrzeże Zachodniopomorskie, Tatry
-- [x] 1.13 cf_transport_type = "bus" for all three fixture events
-- [x] 1.14 cf_age_group = "Dzieci, Młodzież" for Bieszczady (10–16, defaults child_max=12 youth_max=17)
-- [x] 1.15 cf_age_group = "Młodzież" only for Surf Camp (13–17)
-- [x] 1.16 cf_date_earliest = "2026-06-27" for Bieszczady
+- [x] 1.12 Sync fixtures → cf_destination admin column shows Bieszczady, Wybrzeże Zachodniopomorskie, Tatry — 4a9d832
+- [x] 1.13 cf_transport_type = "bus" for all three fixture events — 4a9d832
+- [x] 1.14 cf_age_group = "Dzieci, Młodzież" for Bieszczady (10–16, defaults child_max=12 youth_max=17) — 4a9d832
+- [x] 1.15 cf_age_group = "Młodzież" only for Surf Camp (13–17) — 4a9d832
+- [x] 1.16 cf_date_earliest = "2026-06-27" for Bieszczady — 4a9d832
 
 ### Phase 2: Settings Extensions
 
 #### Automated
-- [ ] 2.1 SettingsPage::registerSettings — add campsflow_age_child_max (default '12', absint) + campsflow_age_youth_max (default '17', absint)
-- [ ] 2.2 SettingsPage::renderSettingsTab — add age threshold section with two number inputs
-- [ ] 2.3 PHPStan level 8 + PHPCS clean
+- [x] 2.1 SettingsPage::registerSettings — add campsflow_age_child_max (default '12', absint) + campsflow_age_youth_max (default '17', absint)
+- [x] 2.2 SettingsPage::renderSettingsTab — add age threshold section with two number inputs
+- [x] 2.3 PHPStan level 8 + PHPCS clean
 
 #### Manual
-- [ ] 2.4 Settings tab shows age threshold fields with defaults 12 and 17
-- [ ] 2.5 Change thresholds, save, re-sync → cf_age_group terms update
+- [x] 2.4 Settings tab shows age threshold fields with defaults 12 and 17
+- [x] 2.5 Change thresholds, save, re-sync → cf_age_group terms update
 
 ### Phase 3: REST Endpoint + Shared Renderer
 

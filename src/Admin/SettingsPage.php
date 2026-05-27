@@ -62,6 +62,20 @@ final class SettingsPage {
 				)
 			);
 		}
+
+		foreach ( array(
+			'campsflow_age_child_max' => '12',
+			'campsflow_age_youth_max' => '17',
+		) as $key => $default ) {
+			register_setting(
+				'campsflow_settings',
+				$key,
+				array(
+					'sanitize_callback' => 'absint',
+					'default'           => $default,
+				)
+			);
+		}
 	}
 
 	public function onIntervalChange(): void {
@@ -222,7 +236,7 @@ final class SettingsPage {
 	}
 
 	private function renderSettingsTab(): void {
-		$fewLeft    = (string) get_option( 'campsflow_few_left_pct', '30' );
+		$fewLeft    = (string) get_option( 'campsflow_few_left_pct', '25' );
 		$almostFull = (string) get_option( 'campsflow_almost_full_pct', '10' );
 
 		echo '<form method="post" action="options.php" class="cf-form">';
@@ -249,6 +263,28 @@ final class SettingsPage {
 		echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_almost_full_pct" name="campsflow_almost_full_pct" value="' . esc_attr( $almostFull ) . '" min="1" max="99"> %';
 		echo '</div>';
 		echo '<p class="cf-form__desc">' . esc_html__( 'Domyślnie: 10% — pokazuj gdy zostało mniej niż 10% miejsc.', 'campsflow' ) . '</p>';
+		echo '</div>';
+
+		echo '<h3>' . esc_html__( 'Grupy wiekowe — progi wiekowe', 'campsflow' ) . '</h3>';
+		echo '<p class="cf-form__desc">' . esc_html__( 'Określ progi wiekowe dla grup Dzieci / Młodzież / Dorośli.', 'campsflow' ) . '</p>';
+
+		$childMax = (string) get_option( 'campsflow_age_child_max', '12' );
+		$youthMax = (string) get_option( 'campsflow_age_youth_max', '17' );
+
+		echo '<div class="cf-form__group">';
+		echo '<label class="cf-form__label" for="campsflow_age_child_max">' . esc_html__( 'Dzieci: do X lat', 'campsflow' ) . '</label>';
+		echo '<div class="cf-form__inline">';
+		echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_age_child_max" name="campsflow_age_child_max" value="' . esc_attr( $childMax ) . '" min="1" max="99">';
+		echo '</div>';
+		echo '<p class="cf-form__desc">' . esc_html__( 'Domyślnie: 12 — wiek max dla grupy Dzieci.', 'campsflow' ) . '</p>';
+		echo '</div>';
+
+		echo '<div class="cf-form__group">';
+		echo '<label class="cf-form__label" for="campsflow_age_youth_max">' . esc_html__( 'Młodzież: X+1 – Y lat, Dorośli: powyżej Y lat', 'campsflow' ) . '</label>';
+		echo '<div class="cf-form__inline">';
+		echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_age_youth_max" name="campsflow_age_youth_max" value="' . esc_attr( $youthMax ) . '" min="1" max="99">';
+		echo '</div>';
+		echo '<p class="cf-form__desc">' . esc_html__( 'Domyślnie: 17 — wiek max dla grupy Młodzież (powyżej = Dorośli).', 'campsflow' ) . '</p>';
 		echo '</div>';
 
 		submit_button( __( 'Zapisz', 'campsflow' ), 'primary cf-form__submit' );
