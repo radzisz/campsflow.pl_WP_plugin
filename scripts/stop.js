@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 const { execSync } = require('child_process');
-const path = require('path');
-const md5 = require('../node_modules/@wordpress/env/lib/md5');
 
 function run(cmd) {
     try {
@@ -11,16 +9,21 @@ function run(cmd) {
     }
 }
 
-const configFile = path.join(path.resolve(__dirname, '..'), '.wp-env.json');
-const hash = md5(configFile);
+function findWpEnvContainers() {
+    return run('docker ps -aq')
+        .split('\n')
+        .filter(id => {
+            if (!id) return false;
+            const name = run(`docker inspect --format {{.Name}} ${id}`).replace(/^\//, '');
+            return /^[a-f0-9]{32}-(mysql|wordpress|cli|tests)/.test(name);
+        });
+}
 
-execSync('npx wp-env stop', { stdio: 'inherit' });
-
-const toRemove = run(`docker ps -aq --filter name=${hash}`).split('\n').filter(Boolean);
-if (toRemove.length === 0) {
-    console.log('✓ No containers to remove');
+const toStop = findWpEnvContainers();
+if (toStop.length === 0) {
+    console.log('✓ No wp-env containers running');
     process.exit(0);
 }
 
-execSync(`docker rm -f ${toRemove.join(' ')}`, { stdio: 'inherit' });
-console.log(`✓ Removed ${toRemove.length} container(s)`);
+execSync(`docker rm -f ${toStop.join(' ')}`, { stdio: 'inherit' });
+console.log(`✓ Removed ${toStop.length} container(s)`);

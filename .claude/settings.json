@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git status *)",
+      "Bash(git branch *)",
+      "Bash(git checkout *)",
+      "Bash(git stash *)",
+      "Bash(docker exec *)",
+      "Bash(docker ps *)",
+      "Bash(docker logs *)",
+      "Bash(docker inspect *)",
+      "Bash(docker run *)",
+      "Bash(docker rm *)",
+      "PowerShell(docker *)",
+      "Read",
+      "Edit",
+      "Write",
+      "PowerShell(if (Test-Path \"context\\\foundation\") { \"EXISTS\" } else { \"MISSING\" })",
+      "PowerShell(Set-Clipboard \"/10x-prd\")\""
+    ],
+    "ask": [
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(git push *)",
+      "Bash(git push)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)"
+    ]
+  }
+}
