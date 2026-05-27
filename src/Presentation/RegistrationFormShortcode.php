@@ -50,6 +50,37 @@ final class RegistrationFormShortcode {
 		);
 	}
 
+	public static function createPageIfMissing(): void {
+		$existing = get_posts(
+			array(
+				'post_type'      => 'page',
+				'post_status'    => array( 'publish', 'draft' ),
+				'posts_per_page' => 1,
+				'meta_key'       => '_campsflow_registration_page',
+				'meta_value'     => '1',
+				'fields'         => 'ids',
+			)
+		);
+
+		if ( ! empty( $existing ) ) {
+			return;
+		}
+
+		$postId = wp_insert_post(
+			array(
+				'post_type'    => 'page',
+				'post_status'  => 'publish',
+				'post_title'   => __( 'Rejestracja', 'campsflow' ),
+				'post_name'    => 'rejestracja',
+				'post_content' => '[campsflow_registration_form]',
+			)
+		);
+
+		if ( is_int( $postId ) && $postId > 0 ) {
+			update_post_meta( $postId, '_campsflow_registration_page', '1' );
+		}
+	}
+
 	private function isValidUuid( string $value ): bool {
 		return (bool) preg_match(
 			'/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/',

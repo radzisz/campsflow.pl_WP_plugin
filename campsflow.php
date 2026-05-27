@@ -56,6 +56,7 @@ register_activation_hook(
 		( new PostType\SessionPostType() )->registerPostType();
 		flush_rewrite_rules();
 		Sync\SyncScheduler::activate();
+		Presentation\RegistrationFormShortcode::createPageIfMissing();
 	}
 );
 
@@ -89,6 +90,7 @@ add_action(
 		( new Presentation\EventMapShortcode() )->register();
 		( new Presentation\EventMultimediaShortcodes() )->register();
 		( new Presentation\EventFieldShortcode() )->register();
+		( new Presentation\RegistrationFormShortcode() )->register();
 		( new Presentation\TemplateLoader() )->register();
 		( new Presentation\ElementorIntegration() )->register();
 		( new Presentation\WpBakeryIntegration() )->register();

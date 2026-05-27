@@ -40,6 +40,7 @@ parameters:
         - '#Call to an undefined method YahnisElsts\\PluginUpdateChecker#'
         # WP constants defined at runtime — analysis runs without WP loaded
         - '#Constant CAMPSFLOW_PLUGIN_DIR not found#'
+        - '#Constant CAMPSFLOW_PLUGIN_URL not found#'
         # WP_Screen and WP_Term PHPDoc types differ from runtime nullability
         - '#Property WP_Screen::\$post_type .* on left side of \?\? is not nullable#'
         - '#Property WP_Term::\$name .* in isset\(\) is not nullable#'
