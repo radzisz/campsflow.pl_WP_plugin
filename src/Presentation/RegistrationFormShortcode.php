@@ -81,6 +81,34 @@ final class RegistrationFormShortcode {
 		}
 	}
 
+	public static function registrationUrl( int $sessionPostId ): string {
+		$cfSessionId = (string) get_post_meta( $sessionPostId, 'cf_session_id', true );
+		if ( $cfSessionId === '' ) {
+			return '';
+		}
+		return add_query_arg( 'session', $cfSessionId, self::pageUrl() );
+	}
+
+	private static function pageUrl(): string {
+		static $cached = null;
+		if ( $cached !== null ) {
+			return $cached;
+		}
+		$pages = get_posts(
+			array(
+				'post_type'      => 'page',
+				'post_status'    => array( 'publish', 'draft' ),
+				'posts_per_page' => 1,
+				'meta_key'       => '_campsflow_registration_page',
+				'meta_value'     => '1',
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+			)
+		);
+		$cached = ! empty( $pages ) ? (string) get_permalink( $pages[0] ) : home_url( '/rejestracja/' );
+		return $cached;
+	}
+
 	private function isValidUuid( string $value ): bool {
 		return (bool) preg_match(
 			'/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/',

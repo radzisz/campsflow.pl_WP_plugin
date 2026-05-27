@@ -89,7 +89,7 @@ final class EventCardRenderer {
 		$bucket     = AvailabilityBucket::tryFrom(
 			(string) get_post_meta( $sessionId, 'cf_availability', true )
 		) ?? AvailabilityBucket::Available;
-		$reservUrl  = (string) get_post_meta( $sessionId, 'cf_reservation_url', true );
+		$reservUrl  = RegistrationFormShortcode::registrationUrl( $sessionId );
 		$isFull     = $bucket === AvailabilityBucket::Full;
 
 		ob_start();
@@ -109,7 +109,7 @@ final class EventCardRenderer {
 		if ( $isFull ) {
 			echo '<span class="cf-btn cf-btn--disabled">' . esc_html__( 'Brak miejsc', 'campsflow' ) . '</span>';
 		} elseif ( $reservUrl ) {
-			echo '<a class="cf-btn" href="' . esc_url( $reservUrl ) . '" target="_blank" rel="noopener">' . esc_html__( 'Zapisz się', 'campsflow' ) . '</a>';
+			echo '<a class="cf-btn" href="' . esc_url( $reservUrl ) . '">' . esc_html__( 'Zapisz się', 'campsflow' ) . '</a>';
 		}
 
 		echo '</li>';

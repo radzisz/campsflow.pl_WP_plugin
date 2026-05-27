@@ -415,7 +415,7 @@ final class EventShortcodes {
 		$price      = (int) get_post_meta( $sId, 'cf_price_from', true );
 		$days       = (int) get_post_meta( $sId, 'cf_number_of_days', true );
 		$name       = (string) get_post_meta( $sId, 'cf_turnus_name', true );
-		$reservUrl  = (string) get_post_meta( $sId, 'cf_reservation_url', true );
+		$reservUrl  = RegistrationFormShortcode::registrationUrl( $sId );
 		$transport  = json_decode( (string) get_post_meta( $sId, 'cf_transport', true ), true );
 		$bucket     = AvailabilityBucket::tryFrom( (string) get_post_meta( $sId, 'cf_availability', true ) )
 						?? AvailabilityBucket::Available;
@@ -456,7 +456,7 @@ final class EventShortcodes {
 		if ( $isFull ) {
 			echo '<span class="cf-btn cf-btn--disabled">' . esc_html__( 'Brak miejsc', 'campsflow' ) . '</span>';
 		} elseif ( $reservUrl ) {
-			echo '<a class="cf-btn" href="' . esc_url( $reservUrl ) . '" target="_blank" rel="noopener">' . esc_html( $buttonLabel ) . '</a>';
+			echo '<a class="cf-btn" href="' . esc_url( $reservUrl ) . '">' . esc_html( $buttonLabel ) . '</a>';
 		}
 		echo '</li>';
 	}
