@@ -453,9 +453,9 @@ $manager->register( new EventAgeGroupWidget() );
 - [x] 3.7 npm run analyse passes — af268c0
 
 #### Manual
-- [ ] 3.8 EventLeadImageWidget renders <img loading="lazy"> with correct src
-- [ ] 3.9 EventLeadVideoWidget renders iframe inside .cf-video-wrap for YouTube URL
-- [ ] 3.10 Aspect ratio control changes video container proportions
+- [x] 3.8 EventLeadImageWidget renders <img loading="lazy"> with correct src — af268c0
+- [x] 3.9 EventLeadVideoWidget renders iframe inside .cf-video-wrap for YouTube URL — af268c0
+- [x] 3.10 Aspect ratio control changes video container proportions — af268c0
 
 ### Phase 4: EventGalleryWidget
 
@@ -476,16 +476,16 @@ $manager->register( new EventAgeGroupWidget() );
 ### Phase 5: EventTagsWidget + EventAgeGroupWidget + CI gate
 
 #### Automated
-- [x] 5.1 Create src/Presentation/EventTagsWidget.php
-- [x] 5.2 Create src/Presentation/EventAgeGroupWidget.php
-- [x] 5.3 Register both in ElementorIntegration (10 total)
-- [x] 5.4 Update phpstan.neon (add both, verify EventMetaWidget entry absent)
-- [x] 5.5 npm run test:unit passes
-- [x] 5.6 npm run lint passes
-- [x] 5.7 npm run analyse passes
+- [x] 5.1 Create src/Presentation/EventTagsWidget.php — 0a3a816
+- [x] 5.2 Create src/Presentation/EventAgeGroupWidget.php — 0a3a816
+- [x] 5.3 Register both in ElementorIntegration (10 total) — 0a3a816
+- [x] 5.4 Update phpstan.neon (add both, verify EventMetaWidget entry absent) — 0a3a816
+- [x] 5.5 npm run test:unit passes — 0a3a816
+- [x] 5.6 npm run lint passes — 0a3a816
+- [x] 5.7 npm run analyse passes — 0a3a816
 
 #### Manual
-- [ ] 5.8 EventTagsWidget renders cf_tag terms as pills
-- [ ] 5.9 EventAgeGroupWidget renders cf_age_group terms as pills
-- [ ] 5.10 All 8 CampsFlow widgets visible in Elementor panel
-- [ ] 5.11 Complete cf_event template with all 8 widgets renders without errors
+- [x] 5.8 EventTagsWidget renders cf_tag terms as pills — 0a3a816
+- [x] 5.9 EventAgeGroupWidget renders cf_age_group terms as pills — 0a3a816
+- [x] 5.10 All 8 CampsFlow widgets visible in Elementor panel — 0a3a816
+- [x] 5.11 Complete cf_event template with all 8 widgets renders without errors — 0a3a816
