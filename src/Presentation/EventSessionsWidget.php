@@ -12,7 +12,7 @@ use Elementor\Widget_Base;
 use WP_Query;
 
 /**
- * Elementor widget: sessions list with "Zapisz się" buttons and optional meeting points.
+ * Elementor widget: sessions list with availability badges and booking buttons.
  */
 final class EventSessionsWidget extends Widget_Base {
 
@@ -62,21 +62,11 @@ final class EventSessionsWidget extends Widget_Base {
 			)
 		);
 		$this->add_control(
-			'show_meeting_points',
+			'show_name',
 			array(
-				'label'     => __( 'Punkty zbiórki', 'campsflow' ),
+				'label'     => __( 'Pokaż nazwę turnusu', 'campsflow' ),
 				'type'      => Controls_Manager::SWITCHER,
-				'default'   => '',
-				'label_on'  => __( 'Tak', 'campsflow' ),
-				'label_off' => __( 'Nie', 'campsflow' ),
-			)
-		);
-		$this->add_control(
-			'show_custom_fields',
-			array(
-				'label'     => __( 'Pola własne', 'campsflow' ),
-				'type'      => Controls_Manager::SWITCHER,
-				'default'   => '',
+				'default'   => 'yes',
 				'label_on'  => __( 'Tak', 'campsflow' ),
 				'label_off' => __( 'Nie', 'campsflow' ),
 			)
@@ -167,12 +157,11 @@ final class EventSessionsWidget extends Widget_Base {
 	}
 
 	protected function render(): void {
-		$s                 = $this->get_settings_for_display();
-		$postId            = (int) get_the_ID();
-		$buttonLabel       = sanitize_text_field( $s['button_label'] ?? __( 'Rezerwuj', 'campsflow' ) );
-		$title             = sanitize_text_field( $s['title'] ?? __( 'Dostępne terminy', 'campsflow' ) );
-		$showMeetingPoints = ( $s['show_meeting_points'] ?? '' ) === 'yes';
-		$showCustomFields  = ( $s['show_custom_fields'] ?? '' ) === 'yes';
+		$s           = $this->get_settings_for_display();
+		$postId      = (int) get_the_ID();
+		$buttonLabel = sanitize_text_field( $s['button_label'] ?? __( 'Rezerwuj', 'campsflow' ) );
+		$title       = sanitize_text_field( $s['title'] ?? __( 'Dostępne terminy', 'campsflow' ) );
+		$showName    = ( $s['show_name'] ?? 'yes' ) === 'yes';
 
 		if ( ! $postId ) {
 			if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
@@ -205,7 +194,7 @@ final class EventSessionsWidget extends Widget_Base {
 		echo '<ul class="cf-sessions-box__list">';
 		while ( $sessions->have_posts() ) {
 			$sessions->the_post();
-			$this->echoSessionItem( (int) get_the_ID(), $buttonLabel, $showMeetingPoints, $showCustomFields );
+			$this->echoSessionItem( (int) get_the_ID(), $buttonLabel, $showName );
 		}
 		wp_reset_postdata();
 		echo '</ul></div>';
@@ -213,7 +202,7 @@ final class EventSessionsWidget extends Widget_Base {
 
 	// ── Session helpers ───────────────────────────────────────────────────────
 
-	private function echoSessionItem( int $sId, string $buttonLabel, bool $showMeetingPoints, bool $showCustomFields = false ): void {
+	private function echoSessionItem( int $sId, string $buttonLabel, bool $showName ): void {
 		$dateFrom   = (string) get_post_meta( $sId, 'cf_date_from', true );
 		$dateTo     = (string) get_post_meta( $sId, 'cf_date_to', true );
 		$price      = (int) get_post_meta( $sId, 'cf_price_from', true );
@@ -228,8 +217,12 @@ final class EventSessionsWidget extends Widget_Base {
 		$dateLabel  = $tsFrom ? ( date_i18n( 'j F', $tsFrom ) . ( $tsTo ? '–' . date_i18n( 'j F Y', $tsTo ) : '' ) ) : '';
 		$priceLabel = $price ? 'od ' . number_format( $price / 100, 0, ',', ' ' ) . ' zł' : '';
 		$tType      = is_array( $transport ) ? (string) ( $transport['type'] ?? 'own' ) : 'own';
+		$turnusName = $showName ? (string) get_post_meta( $sId, 'cf_turnus_name', true ) : '';
 
 		echo '<li class="cf-sessions-box__item' . ( $isFull ? ' cf-sessions-box__item--full' : '' ) . '">';
+		if ( $turnusName ) {
+			echo '<div class="cf-sessions-box__name">' . esc_html( $turnusName ) . '</div>';
+		}
 		if ( $dateLabel ) {
 			echo '<div class="cf-sessions-box__dates"><span class="dashicons dashicons-calendar-alt"></span> ' . esc_html( $dateLabel );
 			if ( $days > 0 ) {
@@ -242,12 +235,6 @@ final class EventSessionsWidget extends Widget_Base {
 			if ( $departureCity ) {
 				echo '<div class="cf-sessions-box__transport">🚌 ' . esc_html( $departureCity ) . '</div>';
 			}
-		}
-		if ( $showMeetingPoints ) {
-			$this->echoMeetingPoints( $sId );
-		}
-		if ( $showCustomFields ) {
-			$this->echoCustomFields( $sId );
 		}
 		echo '<div class="cf-sessions-box__meta">';
 		if ( $priceLabel ) {
@@ -265,41 +252,6 @@ final class EventSessionsWidget extends Widget_Base {
 		echo '</li>';
 	}
 
-	private function echoCustomFields( int $sId ): void {
-		$fields = json_decode( (string) get_post_meta( $sId, 'cf_custom_fields', true ), true );
-		if ( ! is_array( $fields ) || empty( $fields ) ) {
-			return;
-		}
-		echo '<dl class="cf-custom-fields">';
-		foreach ( $fields as $field ) {
-			if ( ! is_array( $field ) || empty( $field['key'] ) ) {
-				continue;
-			}
-			echo '<dt class="cf-custom-fields__label">' . esc_html( (string) ( $field['label'] ?? $field['key'] ) ) . '</dt>';
-			echo '<dd class="cf-custom-fields__value">' . $this->renderCustomFieldValue( $field ) . '</dd>';
-		}
-		echo '</dl>';
-	}
-
-	/** @param array<string,mixed> $field */
-	private function renderCustomFieldValue( array $field ): string {
-		$type  = (string) ( $field['type'] ?? 'text' );
-		$value = $field['value'] ?? null;
-		switch ( $type ) {
-			case 'html':
-				return wp_kses_post( (string) $value );
-			case 'number':
-				return esc_html( is_numeric( $value ) ? number_format( (float) $value, 2, ',', ' ' ) : '' );
-			case 'date':
-				$d = $value ? date_create( (string) $value ) : null;
-				return esc_html( $d ? $d->format( 'd.m.Y' ) : (string) $value );
-			case 'boolean':
-				return esc_html( $value ? __( 'Tak', 'campsflow' ) : __( 'Nie', 'campsflow' ) );
-			default:
-				return esc_html( (string) $value );
-		}
-	}
-
 	private function getDepartureCity( int $sId ): string {
 		$start = json_decode( (string) get_post_meta( $sId, 'cf_meeting_points_start', true ), true );
 		if ( ! is_array( $start ) || empty( $start ) ) {
@@ -310,37 +262,5 @@ final class EventSessionsWidget extends Widget_Base {
 			return '';
 		}
 		return (string) ( $first['name'] ?? '' );
-	}
-
-	private function echoMeetingPoints( int $sId ): void {
-		$start = json_decode( (string) get_post_meta( $sId, 'cf_meeting_points_start', true ), true );
-		if ( ! is_array( $start ) || empty( $start ) ) {
-			return;
-		}
-		echo '<div class="cf-meeting-points">';
-		echo '<strong class="cf-meeting-points__label">' . esc_html__( 'Zbiórka', 'campsflow' ) . ':</strong><ul>';
-		foreach ( array_slice( $start, 0, 5 ) as $mp ) {
-			if ( ! is_array( $mp ) ) {
-				continue;
-			}
-			$mpName    = (string) ( $mp['name'] ?? '' );
-			$mpAddress = (string) ( $mp['address'] ?? '' );
-			$mpDate    = (string) ( $mp['date'] ?? '' );
-			$mpHour    = (string) ( $mp['hour'] ?? '' );
-			$mpGps     = is_array( $mp['gps'] ?? null ) ? $mp['gps'] : null;
-			$addrLabel = implode( ', ', array_filter( array( $mpName, $mpAddress ) ) );
-			$timeLabel = implode( ' ', array_filter( array( $mpDate, $mpHour ) ) );
-			echo '<li class="cf-mp__item">';
-			if ( $timeLabel ) {
-				echo '<span class="cf-mp__time">' . esc_html( $timeLabel ) . '</span> ';
-			}
-			echo '<span class="cf-mp__place">' . esc_html( $addrLabel ) . '</span>';
-			if ( $mpGps && isset( $mpGps['lat'], $mpGps['lng'] ) ) {
-				$url = 'https://www.google.com/maps?q=' . $mpGps['lat'] . ',' . $mpGps['lng'];
-				echo ' <a href="' . esc_url( $url ) . '" target="_blank" rel="noopener">' . esc_html__( 'Mapa', 'campsflow' ) . '</a>';
-			}
-			echo '</li>';
-		}
-		echo '</ul></div>';
 	}
 }

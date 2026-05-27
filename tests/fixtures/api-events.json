@@ -108,6 +108,7 @@
             "hour": "19:30"
           }
         ],
+        "season": "lato 2026",
         "seatsAvailable": 5,
         "seatsAll": 18,
         "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=a1b2c3d4-e5f6-4789-8abc-def012345678",
@@ -146,6 +147,7 @@
             "hour": "19:30"
           }
         ],
+        "season": "lato 2026",
         "seatsAvailable": 14,
         "seatsAll": 18,
         "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=b2c3d4e5-f607-4890-9bcd-ef0123456789",
@@ -280,6 +282,7 @@
             "hour": "20:30"
           }
         ],
+        "season": "lato 2026",
         "seatsAvailable": 22,
         "seatsAll": 30,
         "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=c3d4e5f6-0718-4901-acde-f01234567890",
@@ -399,6 +402,7 @@
             "hour": "17:00"
           }
         ],
+        "season": "lato 2026",
         "seatsAvailable": 3,
         "seatsAll": 25,
         "reservationUrl": "https://campsflow.pl/embed/oaza-test/register?session=d4e5f607-1829-4a12-bdea-012345678901",

@@ -57,6 +57,7 @@ final class Transformer {
 				(int) $apiTurnus['seatsAll'],
 				(int) $apiTurnus['seatsAvailable'],
 			),
+			season:               (string) ( $apiTurnus['season'] ?? '' ),
 			customFields:         $customFields,
 		);
 	}

@@ -247,6 +247,10 @@ trait FilterRenderMethods {
 		return sprintf( _n( '%d rok', '%d lat', $yr, 'campsflow' ), $yr );
 	}
 
+	private function renderSeasonFilterSelect( string $emptyLabel ): void {
+		$this->renderTaxFilterSelect( 'cf_season', 'season', $emptyLabel );
+	}
+
 	private function renderDateRangePicker( string $emptyLabel ): void {
 		$from = sanitize_text_field( $_GET['dateFrom'] ?? '' );
 		$to   = sanitize_text_field( $_GET['dateTo'] ?? '' );

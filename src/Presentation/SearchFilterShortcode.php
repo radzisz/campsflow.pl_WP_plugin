@@ -10,7 +10,7 @@ namespace Campsflow\Presentation;
 final class SearchFilterShortcode {
 	use FilterRenderMethods;
 
-	private const ALL_FIELDS = array( 'category', 'age', 'destination', 'transport', 'child_age', 'dates' );
+	private const ALL_FIELDS = array( 'category', 'age', 'destination', 'transport', 'child_age', 'season', 'dates' );
 
 	public function register(): void {
 		add_shortcode( 'campsflow_search_filter', array( $this, 'render' ) );
@@ -43,6 +43,7 @@ final class SearchFilterShortcode {
 				'destination' => $this->renderDestinationFilterSelect( __( 'Wszystkie kierunki', 'campsflow' ) ),
 				'transport' => $this->renderTaxFilterSelect( 'cf_transport_type', 'transport', __( 'Transport', 'campsflow' ) ),
 				'child_age' => $this->renderChildAgeFilterSelect( __( 'Wiek', 'campsflow' ) ),
+				'season'    => $this->renderSeasonFilterSelect( __( 'Sezon', 'campsflow' ) ),
 				'dates'     => $this->renderDateRangePicker( __( 'Termin', 'campsflow' ) ),
 				default     => null,
 			};

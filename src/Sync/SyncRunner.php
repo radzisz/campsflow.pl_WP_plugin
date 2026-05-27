@@ -11,6 +11,7 @@ use Campsflow\Taxonomy\AgeGroupTaxonomy;
 use Campsflow\Taxonomy\DestinationTaxonomy;
 use Campsflow\Taxonomy\EventCategoryTaxonomy;
 use Campsflow\Taxonomy\EventTagTaxonomy;
+use Campsflow\Taxonomy\SeasonTaxonomy;
 use Campsflow\Taxonomy\TransportTypeTaxonomy;
 
 final class SyncRunner {
@@ -99,6 +100,7 @@ final class SyncRunner {
 		$this->setAgeGroupTerms( $postId, $event );
 		$this->setDestinationTerms( $postId, $event );
 		$this->setTransportTypeTerms( $postId, $event );
+		$this->setSeasonTerms( $postId, $event );
 
 		return array( $postId, ! $existing );
 	}
@@ -333,6 +335,26 @@ final class SyncRunner {
 		wp_set_object_terms( $postId, $types, TransportTypeTaxonomy::SLUG );
 	}
 
+	/**
+	 * @param array<string, mixed> $event
+	 */
+	private function setSeasonTerms( int $postId, array $event ): void {
+		$turnusy = is_array( $event['turnusy'] ?? null ) ? $event['turnusy'] : array();
+		$seasons = array();
+
+		foreach ( $turnusy as $turnus ) {
+			if ( ! is_array( $turnus ) ) {
+				continue;
+			}
+			$season = (string) ( $turnus['season'] ?? '' );
+			if ( $season !== '' && ! in_array( $season, $seasons, true ) ) {
+				$seasons[] = $season;
+			}
+		}
+
+		wp_set_object_terms( $postId, $seasons, SeasonTaxonomy::SLUG );
+	}
+
 	// ── Session ──────────────────────────────────────────────────────────────
 
 	private function upsertSession( TransformedTurnus $t, int $eventPostId, SyncStats $stats ): void {
@@ -374,6 +396,7 @@ final class SyncRunner {
 		update_post_meta( $postId, 'cf_seats_all', $t->seatsAll );
 		update_post_meta( $postId, 'cf_availability', $t->availabilityBucket->value );
 		update_post_meta( $postId, 'cf_reservation_url', $t->reservationUrl );
+		update_post_meta( $postId, 'cf_season', $t->season );
 		update_post_meta( $postId, 'cf_custom_fields', $t->customFields );
 	}
 

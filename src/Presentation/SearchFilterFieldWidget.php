@@ -62,6 +62,7 @@ final class SearchFilterFieldWidget extends Widget_Base {
 					'child_age'   => __( 'Wiek', 'campsflow' ),
 					'destination' => __( 'Kierunek', 'campsflow' ),
 					'transport'   => __( 'Transport', 'campsflow' ),
+					'season'      => __( 'Sezon', 'campsflow' ),
 					'dates'       => __( 'Termin (zakres dat)', 'campsflow' ),
 				),
 			)
@@ -357,6 +358,11 @@ final class SearchFilterFieldWidget extends Widget_Base {
 			case 'transport':
 				$label = $placeholder !== '' ? $placeholder : __( 'Transport', 'campsflow' );
 				$this->renderTaxFilterSelect( 'cf_transport_type', 'transport', $label );
+				break;
+
+			case 'season':
+				$label = $placeholder !== '' ? $placeholder : __( 'Sezon', 'campsflow' );
+				$this->renderSeasonFilterSelect( $label );
 				break;
 
 			case 'dates':

@@ -8,6 +8,7 @@ use Campsflow\PostType\EventPostType;
 use Campsflow\Taxonomy\AgeGroupTaxonomy;
 use Campsflow\Taxonomy\DestinationTaxonomy;
 use Campsflow\Taxonomy\EventCategoryTaxonomy;
+use Campsflow\Taxonomy\SeasonTaxonomy;
 use Campsflow\Taxonomy\TransportTypeTaxonomy;
 use WP_Query;
 use WP_REST_Request;
@@ -40,6 +41,7 @@ final class EventsEndpoint {
 		$childAges  = self::parseAges( sanitize_text_field( (string) $request->get_param( 'childAge' ) ) );
 		$dests      = self::parseSlugs( (string) $request->get_param( 'destination' ) );
 		$transports = self::parseSlugs( (string) $request->get_param( 'transport' ) );
+		$seasons    = self::parseSlugs( (string) $request->get_param( 'season' ) );
 		$eventClass = sanitize_text_field( (string) $request->get_param( 'eventClass' ) );
 		$dateFrom   = sanitize_text_field( (string) $request->get_param( 'dateFrom' ) );
 		$dateTo     = sanitize_text_field( (string) $request->get_param( 'dateTo' ) );
@@ -91,6 +93,14 @@ final class EventsEndpoint {
 				'taxonomy' => TransportTypeTaxonomy::SLUG,
 				'field'    => 'slug',
 				'terms'    => $transports,
+				'operator' => 'IN',
+			);
+		}
+		if ( ! empty( $seasons ) ) {
+			$taxQuery[] = array(
+				'taxonomy' => SeasonTaxonomy::SLUG,
+				'field'    => 'slug',
+				'terms'    => $seasons,
 				'operator' => 'IN',
 			);
 		}

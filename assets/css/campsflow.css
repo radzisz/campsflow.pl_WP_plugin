@@ -309,6 +309,7 @@
 .cf-sessions-box__item:last-child { border-bottom: none; }
 .cf-sessions-box__item--full { opacity: .6; }
 
+.cf-sessions-box__name  { font-weight: 700; font-size: 1rem; margin-bottom: .2rem; }
 .cf-sessions-box__dates { font-weight: 600; font-size: .95rem; }
 .cf-sessions-box__meta  { display: flex; align-items: center; gap: .5rem; }
 .cf-sessions-box__price { color: var(--cf-muted); font-size: .9rem; }

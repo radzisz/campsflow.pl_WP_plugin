@@ -58,6 +58,10 @@ final class SearchFilterFieldShortcode {
 				$label = $placeholder !== '' ? $placeholder : __( 'Transport', 'campsflow' );
 				$this->renderTaxFilterSelect( 'cf_transport_type', 'transport', $label );
 				break;
+			case 'season':
+				$label = $placeholder !== '' ? $placeholder : __( 'Sezon', 'campsflow' );
+				$this->renderSeasonFilterSelect( $label );
+				break;
 			case 'dates':
 				$this->renderDateRangePicker( __( 'Termin', 'campsflow' ) );
 				break;

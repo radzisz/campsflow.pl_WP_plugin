@@ -24,6 +24,11 @@ final class WpBakeryIntegration {
 		$this->mapEventSessions();
 		$this->mapEventTags();
 		$this->mapEventAgeGroups();
+		$this->mapEventLeadImage();
+		$this->mapEventGallery();
+		$this->mapEventLeadVideo();
+		$this->mapEventMap();
+		$this->mapEventField();
 	}
 
 	private function mapSearchFilter(): void {
@@ -39,8 +44,8 @@ final class WpBakeryIntegration {
 						'type'        => 'textfield',
 						'heading'     => __( 'Widoczne pola', 'campsflow' ),
 						'param_name'  => 'fields',
-						'value'       => 'category,age,destination,transport,child_age,dates',
-						'description' => __( 'Lista pól oddzielona przecinkami: category, age, destination, transport, child_age, dates', 'campsflow' ),
+						'value'       => 'category,age,destination,transport,child_age,season,dates',
+						'description' => __( 'Lista pól oddzielona przecinkami: category, age, destination, transport, child_age, season, dates', 'campsflow' ),
 					),
 					array(
 						'type'       => 'checkbox',
@@ -83,6 +88,7 @@ final class WpBakeryIntegration {
 							__( 'Wiek dziecka', 'campsflow' ) => 'child_age',
 							__( 'Kierunek', 'campsflow' )  => 'destination',
 							__( 'Transport', 'campsflow' ) => 'transport',
+							__( 'Sezon', 'campsflow' )     => 'season',
 							__( 'Termin (zakres dat)', 'campsflow' ) => 'dates',
 						),
 						'std'        => 'category',
@@ -321,6 +327,224 @@ final class WpBakeryIntegration {
 						'heading'    => __( 'Odstęp między pillsami (px)', 'campsflow' ),
 						'param_name' => 'gap',
 						'value'      => '6',
+					),
+				),
+			)
+		);
+	}
+
+	private function mapEventField(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Pole wydarzenia', 'campsflow' ),
+				'base'        => 'campsflow_event_field',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-text',
+				'description' => __( 'Wyświetla pojedyncze pole danych aktualnego wydarzenia', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Pole', 'campsflow' ),
+						'param_name' => 'field',
+						'value'      => array(
+							__( 'Tytuł wydarzenia', 'campsflow' ) => 'post_title',
+							__( 'Opis ogólny', 'campsflow' ) => 'cf_desc_general',
+							__( 'Program', 'campsflow' )   => 'cf_desc_program',
+							__( 'Co w cenie', 'campsflow' ) => 'cf_desc_price_include',
+							__( 'Jak się przygotować', 'campsflow' ) => 'cf_instr_prepare',
+							__( 'Co zabrać', 'campsflow' ) => 'cf_instr_take',
+							__( 'Lokalizacja: nazwa miejsca', 'campsflow' ) => 'cf_loc_name',
+							__( 'Lokalizacja: miejscowość', 'campsflow' ) => 'cf_loc_destination',
+							__( 'Lokalizacja: miasto', 'campsflow' ) => 'cf_loc_city',
+							__( 'Lokalizacja: ulica', 'campsflow' ) => 'cf_loc_street',
+							__( 'Lokalizacja: telefon', 'campsflow' ) => 'cf_loc_phone',
+							__( 'Lokalizacja: e-mail', 'campsflow' ) => 'cf_loc_email',
+							__( 'Lokalizacja: www', 'campsflow' ) => 'cf_loc_webpage',
+							__( 'Warunki: ubezpieczenie', 'campsflow' ) => 'cf_terms_insurance',
+							__( 'Warunki: zamawianie leków', 'campsflow' ) => 'cf_terms_drug',
+							__( 'Warunki: dieta specjalna', 'campsflow' ) => 'cf_terms_diet',
+							__( 'Warunki: terminy i dokumenty', 'campsflow' ) => 'cf_terms_deadlines',
+							__( 'URL rezerwacji', 'campsflow' ) => 'cf_reservation_url',
+							__( 'Pole własne', 'campsflow' ) => 'custom',
+						),
+						'std'        => 'post_title',
+					),
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Klucz pola własnego', 'campsflow' ),
+						'param_name'  => 'custom_key',
+						'value'       => '',
+						'description' => __( 'Wypełnij gdy wybrano "Pole własne".', 'campsflow' ),
+					),
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Tryb renderowania', 'campsflow' ),
+						'param_name' => 'render_mode',
+						'value'      => array(
+							__( 'Auto (wykryj HTML)', 'campsflow' )  => 'auto',
+							__( 'Tekst (uciecz HTML)', 'campsflow' ) => 'text',
+							__( 'HTML (renderuj)', 'campsflow' )     => 'html',
+						),
+						'std'        => 'auto',
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => __( 'Nagłówek', 'campsflow' ),
+						'param_name' => 'show_label',
+						'value'      => array( __( 'Pokaż nagłówek pola', 'campsflow' ) => '1' ),
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Tekst nagłówka', 'campsflow' ),
+						'param_name' => 'label',
+						'value'      => '',
+					),
+				),
+			)
+		);
+	}
+
+	private function mapEventLeadImage(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Zdjęcie główne', 'campsflow' ),
+				'base'        => 'campsflow_event_lead_image',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-format-image',
+				'description' => __( 'Zdjęcie główne aktualnego wydarzenia', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Tekst alternatywny (alt)', 'campsflow' ),
+						'param_name'  => 'alt',
+						'value'       => '',
+						'description' => __( 'Jeśli puste, użyty zostanie tytuł wydarzenia.', 'campsflow' ),
+					),
+				),
+			)
+		);
+	}
+
+	private function mapEventGallery(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Galeria', 'campsflow' ),
+				'base'        => 'campsflow_event_gallery',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-images-alt2',
+				'description' => __( 'Galeria zdjęć jako siatka z lightboxem lub slider', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Tryb', 'campsflow' ),
+						'param_name' => 'mode',
+						'value'      => array(
+							__( 'Siatka + lightbox', 'campsflow' ) => 'built-in',
+							__( 'Slider', 'campsflow' ) => 'slider',
+						),
+						'std'        => 'built-in',
+					),
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Kolumny (siatka)', 'campsflow' ),
+						'param_name'  => 'columns',
+						'value'       => '3',
+						'description' => __( 'Liczba kolumn 2–6 (tylko tryb siatka)', 'campsflow' ),
+					),
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Zdjęcia obok siebie (slider)', 'campsflow' ),
+						'param_name'  => 'slides_per_view',
+						'value'       => '3',
+						'description' => __( '1–6 (tylko tryb slider)', 'campsflow' ),
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => __( 'Opcje slidera', 'campsflow' ),
+						'param_name' => 'show_arrows',
+						'value'      => array( __( 'Pokaż strzałki', 'campsflow' ) => '1' ),
+						'std'        => '1',
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => '',
+						'param_name' => 'show_dots',
+						'value'      => array( __( 'Pokaż kropki', 'campsflow' ) => '1' ),
+						'std'        => '1',
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => '',
+						'param_name' => 'autoplay',
+						'value'      => array( __( 'Autoplay', 'campsflow' ) => '1' ),
+					),
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Czas autoplay (ms)', 'campsflow' ),
+						'param_name'  => 'autoplay_speed',
+						'value'       => '3000',
+						'description' => __( 'Czas między slajdami w ms', 'campsflow' ),
+					),
+				),
+			)
+		);
+	}
+
+	private function mapEventLeadVideo(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Wideo główne', 'campsflow' ),
+				'base'        => 'campsflow_event_lead_video',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-video-alt3',
+				'description' => __( 'Osadzone wideo (YouTube/Vimeo/plik) aktualnego wydarzenia', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Proporcje (aspekt)', 'campsflow' ),
+						'param_name' => 'aspect_ratio',
+						'value'      => array(
+							'16:9' => '16-9',
+							'4:3'  => '4-3',
+							'1:1'  => '1-1',
+						),
+						'std'        => '16-9',
+					),
+				),
+			)
+		);
+	}
+
+	private function mapEventMap(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Mapa', 'campsflow' ),
+				'base'        => 'campsflow_event_map',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-location-alt',
+				'description' => __( 'Mapa lokalizacji aktualnego wydarzenia (Google Maps lub OpenStreetMap)', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Dostawca mapy', 'campsflow' ),
+						'param_name' => 'provider',
+						'value'      => array(
+							__( 'OpenStreetMap', 'campsflow' ) => 'openstreetmap',
+							__( 'Google Maps', 'campsflow' )   => 'google',
+						),
+						'std'        => 'openstreetmap',
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Wysokość (px)', 'campsflow' ),
+						'param_name' => 'height',
+						'value'      => '400',
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Przybliżenie (zoom)', 'campsflow' ),
+						'param_name' => 'zoom',
+						'value'      => '14',
 					),
 				),
 			)

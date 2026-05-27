@@ -64,6 +64,15 @@ final class SettingsPage {
 			);
 		}
 
+		register_setting(
+			'campsflow_settings',
+			'campsflow_session_show_name',
+			array(
+				'sanitize_callback' => 'absint',
+				'default'           => '1',
+			)
+		);
+
 		foreach ( array(
 			'campsflow_age_child_max' => '12',
 			'campsflow_age_youth_max' => '17',
@@ -286,6 +295,18 @@ final class SettingsPage {
 		echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_age_youth_max" name="campsflow_age_youth_max" value="' . esc_attr( $youthMax ) . '" min="1" max="99">';
 		echo '</div>';
 		echo '<p class="cf-form__desc">' . esc_html__( 'Domyślnie: 17 — wiek max dla grupy Młodzież (powyżej = Dorośli).', 'campsflow' ) . '</p>';
+		echo '</div>';
+
+		echo '<h3>' . esc_html__( 'Turnusy', 'campsflow' ) . '</h3>';
+
+		$showName = (bool) get_option( 'campsflow_session_show_name', '1' );
+
+		echo '<div class="cf-form__group">';
+		echo '<label class="cf-form__checkbox">';
+		echo '<input type="checkbox" name="campsflow_session_show_name" value="1"' . checked( $showName, true, false ) . '>';
+		echo ' ' . esc_html__( 'Wyświetlaj nazwę turnusu (np. "Turnus I")', 'campsflow' );
+		echo '</label>';
+		echo '<p class="cf-form__desc">' . esc_html__( 'Odznacz, jeśli turnusy nie mają nazw własnych i chcesz wyświetlać tylko daty.', 'campsflow' ) . '</p>';
 		echo '</div>';
 
 		echo '<h3>' . esc_html__( 'Google Maps', 'campsflow' ) . '</h3>';
