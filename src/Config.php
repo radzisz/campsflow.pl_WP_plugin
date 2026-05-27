@@ -44,6 +44,25 @@ final class Config {
 			. '/sessions/' . rawurlencode( $cfSessionId );
 	}
 
+	public static function appUrl(): string {
+		return self::resolve( 'CAMPSFLOW_APP_URL', self::DEFAULT_APP_URL );
+	}
+
+	public static function appOrigin(): string {
+		$parsed = wp_parse_url( self::appUrl() );
+		$scheme = isset( $parsed['scheme'] ) ? $parsed['scheme'] . '://' : 'https://';
+		$host   = $parsed['host'] ?? '';
+		$port   = isset( $parsed['port'] ) ? ':' . $parsed['port'] : '';
+		return $scheme . $host . $port;
+	}
+
+	public static function embedRegistrationUrl( string $tenantSlug, string $sessionId ): string {
+		assert( $tenantSlug !== '', 'Tenant slug must not be empty' );
+		assert( $sessionId !== '', 'Session ID must not be empty' );
+		$base = rtrim( self::appUrl(), '/' );
+		return $base . '/embed/' . rawurlencode( $tenantSlug ) . '/register?session=' . rawurlencode( $sessionId );
+	}
+
 	/** Returns true if the value is overridden (constant or env var). */
 	public static function isOverridden( string $constant ): bool {
 		return defined( $constant ) || getenv( $constant ) !== false;
