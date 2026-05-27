@@ -17,6 +17,8 @@ final class WpBakeryIntegration {
 	public function mapElements(): void {
 		$this->mapListing();
 		$this->mapSearchFilter();
+		$this->mapSearchFilterField();
+		$this->mapSearchSort();
 		$this->mapSearchResults();
 		$this->mapEventMeta();
 		$this->mapEventSessions();
@@ -39,6 +41,89 @@ final class WpBakeryIntegration {
 						'param_name'  => 'fields',
 						'value'       => 'category,age,destination,transport,child_age,dates',
 						'description' => __( 'Lista pól oddzielona przecinkami: category, age, destination, transport, child_age, dates', 'campsflow' ),
+					),
+				),
+			)
+		);
+	}
+
+	private function mapSearchFilterField(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Pole filtru', 'campsflow' ),
+				'base'        => 'campsflow_search_filter_field',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-filter',
+				'description' => __( 'Pojedyncze pole filtru — umieść wielokrotnie obok widgetu Wyniki wyszukiwania', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Typ pola', 'campsflow' ),
+						'param_name' => 'field',
+						'value'      => array(
+							__( 'Profil', 'campsflow' )    => 'category',
+							__( 'Grupa wiekowa', 'campsflow' ) => 'age',
+							__( 'Wiek dziecka', 'campsflow' ) => 'child_age',
+							__( 'Kierunek', 'campsflow' )  => 'destination',
+							__( 'Transport', 'campsflow' ) => 'transport',
+							__( 'Data od', 'campsflow' )   => 'date_from',
+							__( 'Data do', 'campsflow' )   => 'date_to',
+						),
+						'std'        => 'category',
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Nagłówek', 'campsflow' ),
+						'param_name' => 'header',
+						'value'      => '',
+					),
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Label (opcja pusta)', 'campsflow' ),
+						'param_name'  => 'placeholder',
+						'value'       => '',
+						'description' => __( 'Pozostaw puste, aby użyć domyślnego.', 'campsflow' ),
+					),
+				),
+			)
+		);
+	}
+
+	private function mapSearchSort(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Sortowanie', 'campsflow' ),
+				'base'        => 'campsflow_search_sort',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-sort',
+				'description' => __( 'Pole sortowania wyników — umieść obok widgetu Wyniki wyszukiwania', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Nagłówek', 'campsflow' ),
+						'param_name' => 'header',
+						'value'      => '',
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Label (opcja pusta)', 'campsflow' ),
+						'param_name' => 'placeholder',
+						'value'      => __( 'Sortuj według', 'campsflow' ),
+					),
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Domyślne sortowanie', 'campsflow' ),
+						'param_name' => 'default',
+						'value'      => array(
+							__( '— brak —', 'campsflow' )  => '',
+							__( 'Nazwa A-Z', 'campsflow' ) => 'title_asc',
+							__( 'Nazwa Z-A', 'campsflow' ) => 'title_desc',
+							__( 'Termin: najwcześniejszy', 'campsflow' ) => 'date_asc',
+							__( 'Termin: najpóźniejszy', 'campsflow' ) => 'date_desc',
+							__( 'Cena: od najtańszej', 'campsflow' ) => 'price_asc',
+							__( 'Cena: od najdroższej', 'campsflow' ) => 'price_desc',
+						),
+						'std'        => '',
 					),
 				),
 			)

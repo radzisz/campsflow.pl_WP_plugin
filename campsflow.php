@@ -82,6 +82,8 @@ add_action(
 		( new Presentation\ListingShortcode() )->register();
 		( new Presentation\EventShortcodes() )->register();
 		( new Presentation\SearchFilterShortcode() )->register();
+		( new Presentation\SearchFilterFieldShortcode() )->register();
+		( new Presentation\SearchSortShortcode() )->register();
 		( new Presentation\SearchResultsShortcode() )->register();
 		( new Presentation\TemplateLoader() )->register();
 		( new Presentation\ElementorIntegration() )->register();
