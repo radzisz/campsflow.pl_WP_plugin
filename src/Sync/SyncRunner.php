@@ -194,7 +194,7 @@ final class SyncRunner {
 	 * @param array<string, mixed> $event
 	 */
 	private function setEventProfiles( int $postId, array $event ): void {
-		$raw = $event['eventProfile'] ?? array();
+		$raw = $event['eventCategories'] ?? array();
 		if ( ! is_array( $raw ) ) {
 			return;
 		}

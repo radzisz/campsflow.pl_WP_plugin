@@ -49,6 +49,8 @@ final class EventsEndpoint {
 			'location_mode'      => $lm === 'country_dest_city' ? 'country_dest_city' : 'country_dest',
 			'show_profile_tags'  => $request->get_param( 'showProfileTags' ) !== '0',
 			'profile_tags_label' => sanitize_text_field( (string) $request->get_param( 'profileTagsLabel' ) ),
+			'show_event_tags'    => $request->get_param( 'showEventTags' ) !== '0',
+			'event_tags_label'   => sanitize_text_field( (string) $request->get_param( 'eventTagsLabel' ) ),
 			'show_age_tags'      => $request->get_param( 'showAgeTags' ) !== '0',
 			'age_tags_label'     => sanitize_text_field( (string) $request->get_param( 'ageTagsLabel' ) ),
 			'show_date'          => $request->get_param( 'showDate' ) !== '0',

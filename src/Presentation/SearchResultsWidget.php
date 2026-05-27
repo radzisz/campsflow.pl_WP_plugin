@@ -100,6 +100,25 @@ final class SearchResultsWidget extends Widget_Base {
 			)
 		);
 		$this->add_control(
+			'show_event_tags',
+			array(
+				'label'     => __( 'Pokaż tagi (eventTags)', 'campsflow' ),
+				'type'      => Controls_Manager::SWITCHER,
+				'default'   => 'yes',
+				'label_on'  => __( 'Tak', 'campsflow' ),
+				'label_off' => __( 'Nie', 'campsflow' ),
+			)
+		);
+		$this->add_control(
+			'event_tags_label',
+			array(
+				'label'     => __( 'Nagłówek (tagi)', 'campsflow' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => '',
+				'condition' => array( 'show_event_tags' => 'yes' ),
+			)
+		);
+		$this->add_control(
 			'show_age_tags',
 			array(
 				'label'     => __( 'Pokaż grupę wiekową', 'campsflow' ),
@@ -196,6 +215,8 @@ final class SearchResultsWidget extends Widget_Base {
 			'location_mode'      => in_array( $s['location_mode'] ?? '', array( 'country_dest', 'country_dest_city' ), true ) ? (string) $s['location_mode'] : 'country_dest',
 			'show_profile_tags'  => ( $s['show_profile_tags'] ?? 'yes' ) === 'yes',
 			'profile_tags_label' => (string) ( $s['profile_tags_label'] ?? '' ),
+			'show_event_tags'    => ( $s['show_event_tags'] ?? 'yes' ) === 'yes',
+			'event_tags_label'   => (string) ( $s['event_tags_label'] ?? '' ),
 			'show_age_tags'      => ( $s['show_age_tags'] ?? 'yes' ) === 'yes',
 			'age_tags_label'     => (string) ( $s['age_tags_label'] ?? '' ),
 			'show_date'          => ( $s['show_date'] ?? 'yes' ) === 'yes',
@@ -215,6 +236,8 @@ final class SearchResultsWidget extends Widget_Base {
 			'locationMode'     => (string) $config['location_mode'],
 			'showProfileTags'  => $config['show_profile_tags'] ? '1' : '0',
 			'profileTagsLabel' => (string) $config['profile_tags_label'],
+			'showEventTags'    => $config['show_event_tags'] ? '1' : '0',
+			'eventTagsLabel'   => (string) $config['event_tags_label'],
 			'showAgeTags'      => $config['show_age_tags'] ? '1' : '0',
 			'ageTagsLabel'     => (string) $config['age_tags_label'],
 			'showDate'         => $config['show_date'] ? '1' : '0',

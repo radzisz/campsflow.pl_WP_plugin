@@ -13,6 +13,8 @@ final class EventCardRenderer {
 	private string $locationMode;
 	private bool $showProfileTags;
 	private string $profileTagsLabel;
+	private bool $showEventTags;
+	private string $eventTagsLabel;
 	private bool $showAgeTags;
 	private string $ageTagsLabel;
 	private bool $showDate;
@@ -29,6 +31,8 @@ final class EventCardRenderer {
 		$this->locationMode     = $lm === 'country_dest_city' ? 'country_dest_city' : 'country_dest';
 		$this->showProfileTags  = (bool) ( $config['show_profile_tags'] ?? true );
 		$this->profileTagsLabel = (string) ( $config['profile_tags_label'] ?? '' );
+		$this->showEventTags    = (bool) ( $config['show_event_tags'] ?? true );
+		$this->eventTagsLabel   = (string) ( $config['event_tags_label'] ?? '' );
 		$this->showAgeTags      = (bool) ( $config['show_age_tags'] ?? true );
 		$this->ageTagsLabel     = (string) ( $config['age_tags_label'] ?? '' );
 		$this->showDate         = (bool) ( $config['show_date'] ?? true );
@@ -176,6 +180,13 @@ final class EventCardRenderer {
 			$raw = wp_get_post_terms( $eventId, 'cf_event_category' );
 			if ( ! is_wp_error( $raw ) ) {
 				$this->renderTermGroup( $raw, 'cf-tag', $this->profileTagsLabel );
+			}
+		}
+
+		if ( $this->showEventTags ) {
+			$raw = wp_get_post_terms( $eventId, 'cf_event_tag' );
+			if ( ! is_wp_error( $raw ) ) {
+				$this->renderTermGroup( $raw, 'cf-tag cf-tag--event', $this->eventTagsLabel );
 			}
 		}
 
