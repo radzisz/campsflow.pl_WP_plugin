@@ -26,6 +26,7 @@ final class SearchFilterWidget extends Widget_Base {
 	}
 
 	protected function register_controls(): void {
+		$this->registerStyleLayoutSection();
 		$this->start_controls_section(
 			'section_filters',
 			array(
@@ -48,6 +49,50 @@ final class SearchFilterWidget extends Widget_Base {
 		$this->addFilterControl( 'destination', __( 'Kierunek', 'campsflow' ), __( 'Wszystkie kierunki', 'campsflow' ) );
 		$this->addFilterControl( 'transport', __( 'Transport', 'campsflow' ), __( 'Transport', 'campsflow' ) );
 		$this->addFilterControl( 'dates', __( 'Daty', 'campsflow' ), '' );
+		$this->end_controls_section();
+	}
+
+	private function registerStyleLayoutSection(): void {
+		$this->start_controls_section(
+			'section_style_layout',
+			array(
+				'label' => __( 'Układ formularza', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_control(
+			'form_direction',
+			array(
+				'label'     => __( 'Kierunek', 'campsflow' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'column',
+				'options'   => array(
+					'column' => __( 'Pionowy (filtry pod sobą)', 'campsflow' ),
+					'row'    => __( 'Poziomy (filtry obok siebie)', 'campsflow' ),
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .cf-filters' => 'display:flex; flex-direction:{{VALUE}}; flex-wrap:wrap; align-items:flex-start;',
+				),
+			)
+		);
+		$this->add_control(
+			'form_gap',
+			array(
+				'label'     => __( 'Odstęp między polami', 'campsflow' ),
+				'type'      => Controls_Manager::SLIDER,
+				'default'   => array( 'size' => 8 ),
+				'range'     => array(
+					'px' => array(
+						'min'  => 0,
+						'max'  => 40,
+						'step' => 1,
+					),
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .cf-filters' => 'gap: {{SIZE}}px;',
+				),
+			)
+		);
 		$this->end_controls_section();
 	}
 

@@ -27,6 +27,7 @@ final class SearchFilterFieldWidget extends Widget_Base {
 
 	protected function register_controls(): void {
 		$this->registerContentSection();
+		$this->registerStyleLayoutSection();
 		$this->registerStyleLabelSection();
 		$this->registerStyleInputSection();
 	}
@@ -89,6 +90,51 @@ final class SearchFilterFieldWidget extends Widget_Base {
 			)
 		);
 
+		$this->end_controls_section();
+	}
+
+	private function registerStyleLayoutSection(): void {
+		$this->start_controls_section(
+			'section_style_layout',
+			array(
+				'label' => __( 'Układ', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_control(
+			'layout',
+			array(
+				'label'     => __( 'Kierunek', 'campsflow' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'column',
+				'options'   => array(
+					'column' => __( 'Pionowy (nagłówek nad polem)', 'campsflow' ),
+					'row'    => __( 'Poziomy (nagłówek obok pola)', 'campsflow' ),
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .cf-filter-wrap' => 'display:flex; flex-direction:{{VALUE}}; align-items:center;',
+				),
+			)
+		);
+		$this->add_control(
+			'layout_gap',
+			array(
+				'label'     => __( 'Odstęp między nagłówkiem a polem', 'campsflow' ),
+				'type'      => Controls_Manager::SLIDER,
+				'default'   => array( 'size' => 8 ),
+				'range'     => array(
+					'px' => array(
+						'min'  => 0,
+						'max'  => 60,
+						'step' => 1,
+					),
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .cf-filter-wrap' => 'gap: {{SIZE}}px;',
+				),
+				'condition' => array( 'layout' => 'row' ),
+			)
+		);
 		$this->end_controls_section();
 	}
 
@@ -282,6 +328,8 @@ final class SearchFilterFieldWidget extends Widget_Base {
 		$placeholder = (string) ( $s['placeholder'] ?? '' );
 		$header      = (string) ( $s['header'] ?? '' );
 
+		echo '<div class="cf-filter-wrap">';
+
 		if ( $header !== '' ) {
 			echo '<label class="cf-filter-label">' . esc_html( $header ) . '</label>';
 		}
@@ -322,5 +370,7 @@ final class SearchFilterFieldWidget extends Widget_Base {
 				echo '<input class="cf-filter" type="date" name="dateTo" value="' . esc_attr( $current ) . '">';
 				break;
 		}
+
+		echo '</div>';
 	}
 }
