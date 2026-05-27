@@ -10,59 +10,37 @@ use WP_Query;
 final class EventCardRenderer {
 
 	public function renderCard( int $eventId ): string {
-		$locRaw   = (string) get_post_meta( $eventId, 'cf_localization', true );
-		$loc      = $locRaw ? ( json_decode( $locRaw, true ) ?? array() ) : array();
-		$city     = is_array( $loc['address'] ?? null ) ? ( $loc['address']['city'] ?? '' ) : '';
-		$dest     = (string) ( $loc['destination'] ?? '' );
-		$leadImg  = (string) get_post_meta( $eventId, 'cf_lead_image_url', true );
-		$titleRaw = get_the_title( $eventId );
-		$title    = $titleRaw ? (string) $titleRaw : '';
-
-		$sessions = new WP_Query(
-			array(
-				'post_type'      => SessionPostType::SLUG,
-				'post_status'    => 'publish',
-				'post_parent'    => $eventId,
-				'posts_per_page' => -1,
-				'orderby'        => 'meta_value',
-				'meta_key'       => 'cf_date_from',
-				'order'          => 'ASC',
-				'fields'         => 'ids',
-			)
-		);
+		$leadImg   = (string) get_post_meta( $eventId, 'cf_lead_image_url', true );
+		$titleRaw  = get_the_title( $eventId );
+		$title     = $titleRaw ? (string) $titleRaw : '';
+		$permalink = get_permalink( $eventId );
+		$link      = $permalink ? (string) $permalink : '#';
+		$minPrice  = (int) get_post_meta( $eventId, 'cf_event_min_price', true );
+		$sessionId = $this->nearestMatchingSession( $eventId );
 
 		ob_start();
 
 		echo '<article class="cf-card">';
 
 		if ( $leadImg ) {
+			echo '<a href="' . esc_url( $link ) . '" tabindex="-1" aria-hidden="true">';
 			echo '<img class="cf-card__image" src="' . esc_url( $leadImg ) . '" alt="' . esc_attr( $title ) . '" loading="lazy">';
+			echo '</a>';
 		}
 
 		echo '<div class="cf-card__body">';
-		echo '<h3 class="cf-card__title">' . esc_html( $title ) . '</h3>';
+		echo '<h3 class="cf-card__title"><a href="' . esc_url( $link ) . '">' . esc_html( $title ) . '</a></h3>';
 
-		if ( $city || $dest ) {
-			echo '<p class="cf-card__location">';
-			if ( $dest ) {
-				echo esc_html( $dest );
-			}
-			if ( $dest && $city ) {
-				echo ' · ';
-			}
-			if ( $city ) {
-				echo esc_html( $city );
-			}
-			echo '</p>';
-		}
+		$this->renderCardTerms( $eventId );
+		$this->renderCardDate( $sessionId );
+		$this->renderCardLocation( $eventId );
 
-		if ( $sessions->post_count > 0 ) {
-			echo '<ul class="cf-sessions">';
-			foreach ( array_map( static fn( $p ) => (int) ( $p instanceof \WP_Post ? $p->ID : $p ), (array) $sessions->posts ) as $sessionId ) {
-				echo $this->renderSessionRow( $sessionId ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			}
-			echo '</ul>';
+		echo '<div class="cf-card__footer">';
+		if ( $minPrice > 0 ) {
+			echo '<span class="cf-card__price">' . esc_html( $this->formatPrice( $minPrice ) ) . ' /os.</span>';
 		}
+		echo '<a class="cf-btn" href="' . esc_url( $link ) . '">' . esc_html__( 'Szczegóły', 'campsflow' ) . '</a>';
+		echo '</div>';
 
 		echo '</div></article>';
 
@@ -119,6 +97,130 @@ final class EventCardRenderer {
 
 	public function renderEmpty(): string {
 		return '<p class="cf-empty">' . esc_html__( 'Brak wydarzeń spełniających kryteria.', 'campsflow' ) . '</p>';
+	}
+
+	private function nearestMatchingSession( int $eventId ): ?int {
+		$today    = gmdate( 'Y-m-d' );
+		$dateFrom = sanitize_text_field( $_GET['dateFrom'] ?? '' );
+		$dateTo   = sanitize_text_field( $_GET['dateTo'] ?? '' );
+		$minDate  = ( $dateFrom && $dateFrom >= $today ) ? $dateFrom : $today;
+
+		$metaQuery = array(
+			array(
+				'key'     => 'cf_date_from',
+				'value'   => $minDate,
+				'compare' => '>=',
+				'type'    => 'DATE',
+			),
+		);
+
+		if ( $dateTo ) {
+			$metaQuery[] = array(
+				'key'     => 'cf_date_from',
+				'value'   => $dateTo,
+				'compare' => '<=',
+				'type'    => 'DATE',
+			);
+		}
+
+		$query = new WP_Query(
+			array(
+				'post_type'      => SessionPostType::SLUG,
+				'post_parent'    => $eventId,
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'orderby'        => 'meta_value',
+				'meta_key'       => 'cf_date_from',
+				'order'          => 'ASC',
+				'meta_query'     => $metaQuery,
+				'fields'         => 'ids',
+			)
+		);
+
+		$ids = array_map( static fn( $p ) => (int) ( $p instanceof \WP_Post ? $p->ID : $p ), (array) $query->posts );
+		return $ids[0] ?? null;
+	}
+
+	private function renderCardTerms( int $eventId ): void {
+		$profiles  = wp_get_post_terms( $eventId, 'cf_event_category' );
+		$ageGroups = wp_get_post_terms( $eventId, 'cf_age_group' );
+
+		if ( is_wp_error( $profiles ) ) {
+			$profiles = array();
+		}
+		if ( is_wp_error( $ageGroups ) ) {
+			$ageGroups = array();
+		}
+
+		if ( empty( $profiles ) && empty( $ageGroups ) ) {
+			return;
+		}
+
+		echo '<div class="cf-card__tags">';
+		foreach ( $profiles as $term ) {
+			assert( is_object( $term ) && isset( $term->name ) );
+			echo '<span class="cf-tag">' . esc_html( $term->name ) . '</span>';
+		}
+		foreach ( $ageGroups as $term ) {
+			assert( is_object( $term ) && isset( $term->name ) );
+			echo '<span class="cf-tag cf-tag--age">' . esc_html( $term->name ) . '</span>';
+		}
+		echo '</div>';
+	}
+
+	private function renderCardDate( ?int $sessionId ): void {
+		if ( $sessionId === null ) {
+			return;
+		}
+
+		$dateFrom = (string) get_post_meta( $sessionId, 'cf_date_from', true );
+		$dateTo   = (string) get_post_meta( $sessionId, 'cf_date_to', true );
+
+		if ( ! $dateFrom ) {
+			return;
+		}
+
+		$f = date_create( $dateFrom );
+		$t = $dateTo ? date_create( $dateTo ) : null;
+
+		if ( ! $f ) {
+			return;
+		}
+
+		$label = $f->format( 'd.m.Y' );
+
+		if ( $t ) {
+			$diffDays = $f->diff( $t )->days;
+			$days     = is_int( $diffDays ) ? $diffDays + 1 : 0;
+			$unit     = $days === 1 ? __( 'dzień', 'campsflow' ) : __( 'dni', 'campsflow' );
+			$label   .= ' – ' . $t->format( 'd.m.Y' ) . ' / ' . $days . ' ' . $unit;
+		}
+
+		echo '<p class="cf-card__date">' . esc_html( $label ) . '</p>';
+	}
+
+	private function renderCardLocation( int $eventId ): void {
+		$locRaw = (string) get_post_meta( $eventId, 'cf_localization', true );
+		if ( ! $locRaw ) {
+			return;
+		}
+
+		$loc = json_decode( $locRaw, true );
+		if ( ! is_array( $loc ) ) {
+			return;
+		}
+
+		$address = is_array( $loc['address'] ?? null ) ? $loc['address'] : array();
+		$country = (string) ( $address['country'] ?? $loc['country'] ?? '' );
+		$dest    = (string) ( $loc['destination'] ?? '' );
+		$city    = (string) ( $address['city'] ?? '' );
+
+		$parts = array_values( array_filter( array( $country, $dest, $city ) ) );
+		if ( empty( $parts ) ) {
+			return;
+		}
+
+		echo '<p class="cf-card__location">' . esc_html( implode( ' / ', $parts ) ) . '</p>';
 	}
 
 	private function formatDateRange( string $from, string $to ): string {
