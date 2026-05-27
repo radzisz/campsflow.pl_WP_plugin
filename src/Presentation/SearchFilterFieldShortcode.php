@@ -58,13 +58,8 @@ final class SearchFilterFieldShortcode {
 				$label = $placeholder !== '' ? $placeholder : __( 'Transport', 'campsflow' );
 				$this->renderTaxFilterSelect( 'cf_transport_type', 'transport', $label );
 				break;
-			case 'date_from':
-				$current = sanitize_text_field( $_GET['dateFrom'] ?? '' );
-				echo '<input class="cf-filter" type="date" name="dateFrom" value="' . esc_attr( $current ) . '">';
-				break;
-			case 'date_to':
-				$current = sanitize_text_field( $_GET['dateTo'] ?? '' );
-				echo '<input class="cf-filter" type="date" name="dateTo" value="' . esc_attr( $current ) . '">';
+			case 'dates':
+				$this->renderDateRangePicker( __( 'Termin', 'campsflow' ) );
 				break;
 		}
 

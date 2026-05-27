@@ -50,8 +50,9 @@ final class SettingsPage {
 		}
 
 		foreach ( array(
-			'campsflow_few_left_pct'    => '25',
-			'campsflow_almost_full_pct' => '10',
+			'campsflow_few_left_pct'        => '25',
+			'campsflow_almost_full_pct'     => '10',
+			'campsflow_google_maps_api_key' => '',
 		) as $key => $default ) {
 			register_setting(
 				'campsflow_settings',
@@ -285,6 +286,17 @@ final class SettingsPage {
 		echo '<input class="cf-form__input cf-form__input--pct" type="number" id="campsflow_age_youth_max" name="campsflow_age_youth_max" value="' . esc_attr( $youthMax ) . '" min="1" max="99">';
 		echo '</div>';
 		echo '<p class="cf-form__desc">' . esc_html__( 'Domyślnie: 17 — wiek max dla grupy Młodzież (powyżej = Dorośli).', 'campsflow' ) . '</p>';
+		echo '</div>';
+
+		echo '<h3>' . esc_html__( 'Google Maps', 'campsflow' ) . '</h3>';
+		echo '<p class="cf-form__desc">' . esc_html__( 'Klucz API wymagany tylko gdy wybierasz Google Maps w widgecie Mapa.', 'campsflow' ) . '</p>';
+
+		$mapsKey = (string) get_option( 'campsflow_google_maps_api_key', '' );
+
+		echo '<div class="cf-form__group">';
+		echo '<label class="cf-form__label" for="campsflow_google_maps_api_key">' . esc_html__( 'Klucz API Google Maps', 'campsflow' ) . '</label>';
+		echo '<input class="cf-form__input" type="text" id="campsflow_google_maps_api_key" name="campsflow_google_maps_api_key" value="' . esc_attr( $mapsKey ) . '" placeholder="AIza...">';
+		echo '<p class="cf-form__desc">' . esc_html__( 'Zostaw puste gdy używasz OpenStreetMap.', 'campsflow' ) . '</p>';
 		echo '</div>';
 
 		submit_button( __( 'Zapisz', 'campsflow' ), 'primary cf-form__submit' );

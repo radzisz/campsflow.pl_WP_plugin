@@ -27,6 +27,7 @@ final class ElementorIntegration {
 		$manager->register( new SearchFilterFieldWidget() );
 		$manager->register( new SearchSortWidget() );
 		$manager->register( new SearchResultsWidget() );
+		$manager->register( new EventMapWidget() );
 	}
 
 	public function registerCategory( \Elementor\Elements_Manager $manager ): void {

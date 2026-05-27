@@ -37,6 +37,21 @@ final class SearchResultsShortcode {
 	}
 
 	/**
+	 * @return int[]
+	 */
+	private static function parseAges( string $raw ): array {
+		if ( $raw === '' ) {
+			return array();
+		}
+		return array_values(
+			array_filter(
+				array_map( 'absint', explode( ',', $raw ) ),
+				fn( int $a ) => $a >= 1 && $a <= 99
+			)
+		);
+	}
+
+	/**
 	 * @return string[]
 	 */
 	private static function parseSlugs( string $raw ): array {
@@ -56,7 +71,7 @@ final class SearchResultsShortcode {
 		$ages       = self::parseSlugs( (string) ( $_GET['age'] ?? '' ) );
 		$dests      = self::parseSlugs( (string) ( $_GET['destination'] ?? '' ) );
 		$transports = self::parseSlugs( (string) ( $_GET['transport'] ?? '' ) );
-		$childAge   = absint( $_GET['childAge'] ?? 0 );
+		$childAges  = self::parseAges( (string) ( $_GET['childAge'] ?? '' ) );
 		$sort       = sanitize_text_field( $_GET['sort'] ?? '' );
 
 		$taxQuery = array();
@@ -95,19 +110,26 @@ final class SearchResultsShortcode {
 		}
 
 		$metaQuery = array();
-		if ( $childAge >= 1 && $childAge <= 99 ) {
-			$metaQuery[] = array(
-				'key'     => 'cf_min_age',
-				'value'   => $childAge,
-				'compare' => '<=',
-				'type'    => 'NUMERIC',
-			);
-			$metaQuery[] = array(
-				'key'     => 'cf_max_age',
-				'value'   => $childAge,
-				'compare' => '>=',
-				'type'    => 'NUMERIC',
-			);
+		if ( ! empty( $childAges ) ) {
+			$ageOr = array( 'relation' => 'OR' );
+			foreach ( $childAges as $age ) {
+				$ageOr[] = array(
+					'relation' => 'AND',
+					array(
+						'key'     => 'cf_min_age',
+						'value'   => $age,
+						'compare' => '<=',
+						'type'    => 'NUMERIC',
+					),
+					array(
+						'key'     => 'cf_max_age',
+						'value'   => $age,
+						'compare' => '>=',
+						'type'    => 'NUMERIC',
+					),
+				);
+			}
+			$metaQuery[] = $ageOr;
 		}
 		if ( $dateFrom ) {
 			$metaQuery[] = array(

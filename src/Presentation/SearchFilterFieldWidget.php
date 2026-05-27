@@ -62,8 +62,7 @@ final class SearchFilterFieldWidget extends Widget_Base {
 					'child_age'   => __( 'Wiek', 'campsflow' ),
 					'destination' => __( 'Kierunek', 'campsflow' ),
 					'transport'   => __( 'Transport', 'campsflow' ),
-					'date_from'   => __( 'Data od', 'campsflow' ),
-					'date_to'     => __( 'Data do', 'campsflow' ),
+					'dates'       => __( 'Termin (zakres dat)', 'campsflow' ),
 				),
 			)
 		);
@@ -85,7 +84,7 @@ final class SearchFilterFieldWidget extends Widget_Base {
 				'type'      => Controls_Manager::TEXT,
 				'default'   => '',
 				'condition' => array(
-					'field_type!' => array( 'date_from', 'date_to' ),
+					'field_type!' => array( 'dates' ),
 				),
 			)
 		);
@@ -360,14 +359,8 @@ final class SearchFilterFieldWidget extends Widget_Base {
 				$this->renderTaxFilterSelect( 'cf_transport_type', 'transport', $label );
 				break;
 
-			case 'date_from':
-				$current = sanitize_text_field( $_GET['dateFrom'] ?? '' );
-				echo '<input class="cf-filter" type="date" name="dateFrom" value="' . esc_attr( $current ) . '">';
-				break;
-
-			case 'date_to':
-				$current = sanitize_text_field( $_GET['dateTo'] ?? '' );
-				echo '<input class="cf-filter" type="date" name="dateTo" value="' . esc_attr( $current ) . '">';
+			case 'dates':
+				$this->renderDateRangePicker( __( 'Termin', 'campsflow' ) );
 				break;
 		}
 

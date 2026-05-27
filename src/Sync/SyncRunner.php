@@ -288,8 +288,17 @@ final class SyncRunner {
 
 		$parentId = 0;
 		if ( $country !== '' ) {
-			$existing = term_exists( $country, $slug );
-			$parentId = $termId( $existing ?? wp_insert_term( $country, $slug ) );
+			$countryName = self::resolveCountryName( $country );
+			$countrySlug = sanitize_title( strtolower( $country ) );
+			$existing    = get_term_by( 'slug', $countrySlug, $slug );
+			if ( $existing instanceof \WP_Term ) {
+				if ( $existing->name === $country ) {
+					wp_update_term( $existing->term_id, $slug, array( 'name' => $countryName ) );
+				}
+				$parentId = $existing->term_id;
+			} else {
+				$parentId = $termId( wp_insert_term( $countryName, $slug, array( 'slug' => $countrySlug ) ) );
+			}
 		}
 
 		$childArgs     = $parentId > 0 ? array( 'parent' => $parentId ) : array();
@@ -480,6 +489,52 @@ final class SyncRunner {
 		}
 
 		return $data;
+	}
+
+	private static function resolveCountryName( string $code ): string {
+		$map = array(
+			'PL' => 'Polska',
+			'DE' => 'Niemcy',
+			'CZ' => 'Czechy',
+			'SK' => 'Słowacja',
+			'AT' => 'Austria',
+			'CH' => 'Szwajcaria',
+			'IT' => 'Włochy',
+			'FR' => 'Francja',
+			'ES' => 'Hiszpania',
+			'PT' => 'Portugalia',
+			'GR' => 'Grecja',
+			'HR' => 'Chorwacja',
+			'SI' => 'Słowenia',
+			'HU' => 'Węgry',
+			'RO' => 'Rumunia',
+			'BG' => 'Bułgaria',
+			'RS' => 'Serbia',
+			'ME' => 'Czarnogóra',
+			'AL' => 'Albania',
+			'BA' => 'Bośnia i Hercegowina',
+			'MK' => 'Macedonia Północna',
+			'TR' => 'Turcja',
+			'GB' => 'Wielka Brytania',
+			'IE' => 'Irlandia',
+			'NL' => 'Holandia',
+			'BE' => 'Belgia',
+			'LU' => 'Luksemburg',
+			'DK' => 'Dania',
+			'SE' => 'Szwecja',
+			'NO' => 'Norwegia',
+			'FI' => 'Finlandia',
+			'EE' => 'Estonia',
+			'LV' => 'Łotwa',
+			'LT' => 'Litwa',
+			'BY' => 'Białoruś',
+			'UA' => 'Ukraina',
+			'MD' => 'Mołdawia',
+			'IS' => 'Islandia',
+			'MT' => 'Malta',
+			'CY' => 'Cypr',
+		);
+		return $map[ strtoupper( $code ) ] ?? $code;
 	}
 
 	private function findByMeta( string $postType, string $metaKey, string $metaValue ): int {

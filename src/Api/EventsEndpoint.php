@@ -37,7 +37,7 @@ final class EventsEndpoint {
 	public function handle( WP_REST_Request $request ): WP_REST_Response {
 		$categories = self::parseSlugs( (string) $request->get_param( 'category' ) );
 		$ages       = self::parseSlugs( (string) $request->get_param( 'age' ) );
-		$childAge   = absint( $request->get_param( 'childAge' ) );
+		$childAges  = self::parseAges( sanitize_text_field( (string) $request->get_param( 'childAge' ) ) );
 		$dests      = self::parseSlugs( (string) $request->get_param( 'destination' ) );
 		$transports = self::parseSlugs( (string) $request->get_param( 'transport' ) );
 		$eventClass = sanitize_text_field( (string) $request->get_param( 'eventClass' ) );
@@ -96,19 +96,26 @@ final class EventsEndpoint {
 		}
 
 		$metaQuery = array();
-		if ( $childAge >= 1 && $childAge <= 99 ) {
-			$metaQuery[] = array(
-				'key'     => 'cf_min_age',
-				'value'   => $childAge,
-				'compare' => '<=',
-				'type'    => 'NUMERIC',
-			);
-			$metaQuery[] = array(
-				'key'     => 'cf_max_age',
-				'value'   => $childAge,
-				'compare' => '>=',
-				'type'    => 'NUMERIC',
-			);
+		if ( ! empty( $childAges ) ) {
+			$ageOr = array( 'relation' => 'OR' );
+			foreach ( $childAges as $age ) {
+				$ageOr[] = array(
+					'relation' => 'AND',
+					array(
+						'key'     => 'cf_min_age',
+						'value'   => $age,
+						'compare' => '<=',
+						'type'    => 'NUMERIC',
+					),
+					array(
+						'key'     => 'cf_max_age',
+						'value'   => $age,
+						'compare' => '>=',
+						'type'    => 'NUMERIC',
+					),
+				);
+			}
+			$metaQuery[] = $ageOr;
 		}
 		if ( $eventClass ) {
 			$metaQuery[] = array(
@@ -160,6 +167,21 @@ final class EventsEndpoint {
 		$html     = $postIds ? $renderer->renderGrid( $postIds ) : $renderer->renderEmpty();
 
 		return new WP_REST_Response( array( 'html' => $html ), 200 );
+	}
+
+	/**
+	 * @return int[]
+	 */
+	private static function parseAges( string $raw ): array {
+		if ( $raw === '' ) {
+			return array();
+		}
+		return array_values(
+			array_filter(
+				array_map( 'absint', explode( ',', $raw ) ),
+				fn( int $a ) => $a >= 1 && $a <= 99
+			)
+		);
 	}
 
 	/**

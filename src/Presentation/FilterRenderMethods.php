@@ -22,14 +22,48 @@ trait FilterRenderMethods {
 			return;
 		}
 
-		echo '<select class="cf-filter" name="' . esc_attr( $paramName ) . '" multiple>';
+		$labelText = empty( $selected )
+			? esc_html( $emptyLabel )
+			: ( count( $selected ) === 1
+				? esc_html( self::findTermLabel( $terms, $selected[0] ) )
+				: esc_html( (string) count( $selected ) ) );
+
+		echo '<div class="cf-multi" data-name="' . esc_attr( $paramName ) . '" data-empty-label="' . esc_attr( $emptyLabel ) . '">';
+		echo '<button type="button" class="cf-multi__toggle" aria-haspopup="listbox" aria-expanded="false">';
+		echo '<span class="cf-multi__label">' . $labelText . '</span>';
+		if ( count( $selected ) > 1 ) {
+			echo '<span class="cf-multi__count">' . esc_html( (string) count( $selected ) ) . '</span>';
+		}
+		echo '<span class="cf-multi__arrow" aria-hidden="true">&#9662;</span>';
+		echo '</button>';
+		echo '<div class="cf-multi__dropdown" role="listbox" aria-multiselectable="true">';
+
 		foreach ( $terms as $term ) {
 			assert( is_object( $term ) && isset( $term->slug, $term->name ) );
-			$isSel = in_array( $term->slug, $selected, true ) ? ' selected="selected"' : '';
-			echo '<option value="' . esc_attr( $term->slug ) . '"' . $isSel . '>'
-				. esc_html( $term->name ) . '</option>';
+			$checked = in_array( $term->slug, $selected, true ) ? ' checked' : '';
+			echo '<label class="cf-multi__option">'
+				. '<input type="checkbox" value="' . esc_attr( $term->slug ) . '" data-label="' . esc_attr( $term->name ) . '"' . $checked . '>'
+				. esc_html( $term->name )
+				. '</label>';
 		}
-		echo '</select>';
+
+		echo '</div>';
+		echo '</div>';
+	}
+
+	/**
+	 * @param \WP_Term[]|\WP_Error $terms
+	 */
+	private static function findTermLabel( $terms, string $slug ): string {
+		if ( is_wp_error( $terms ) ) {
+			return $slug;
+		}
+		foreach ( $terms as $t ) {
+			if ( ( $t instanceof \WP_Term ) && $t->slug === $slug ) {
+				return $t->name;
+			}
+		}
+		return $slug;
 	}
 
 	/**
@@ -64,31 +98,65 @@ trait FilterRenderMethods {
 			return;
 		}
 
-		echo '<select class="cf-filter" name="destination" multiple>';
+		$labelText = empty( $selected )
+			? esc_html( $emptyLabel )
+			: ( count( $selected ) === 1
+				? esc_html( self::findDestinationLabel( $parents, $byParent, $selected[0] ) )
+				: esc_html( (string) count( $selected ) ) );
+
+		echo '<div class="cf-multi" data-name="destination" data-empty-label="' . esc_attr( $emptyLabel ) . '">';
+		echo '<button type="button" class="cf-multi__toggle" aria-haspopup="listbox" aria-expanded="false">';
+		echo '<span class="cf-multi__label">' . $labelText . '</span>';
+		if ( count( $selected ) > 1 ) {
+			echo '<span class="cf-multi__count">' . esc_html( (string) count( $selected ) ) . '</span>';
+		}
+		echo '<span class="cf-multi__arrow" aria-hidden="true">&#9662;</span>';
+		echo '</button>';
+		echo '<div class="cf-multi__dropdown" role="listbox" aria-multiselectable="true">';
 
 		foreach ( $parents as $pid => $parent ) {
 			assert( $parent instanceof \WP_Term );
 			$kids = $byParent[ (int) $pid ] ?? array();
-			if ( ! empty( $kids ) ) {
-				echo '<optgroup label="' . esc_attr( $parent->name ) . '">';
-				$isSel = in_array( $parent->slug, $selected, true ) ? ' selected="selected"' : '';
-				echo '<option value="' . esc_attr( $parent->slug ) . '"' . $isSel . '>'
-					. esc_html( $parent->name ) . '</option>';
-				foreach ( $kids as $child ) {
-					assert( $child instanceof \WP_Term );
-					$isSel = in_array( $child->slug, $selected, true ) ? ' selected="selected"' : '';
-					echo '<option value="' . esc_attr( $child->slug ) . '"' . $isSel . '>'
-						. esc_html( $child->name ) . '</option>';
-				}
-				echo '</optgroup>';
-			} else {
-				$isSel = in_array( $parent->slug, $selected, true ) ? ' selected="selected"' : '';
-				echo '<option value="' . esc_attr( $parent->slug ) . '"' . $isSel . '>'
-					. esc_html( $parent->name ) . '</option>';
+
+			echo '<div class="cf-multi__group">';
+			$checked = in_array( $parent->slug, $selected, true ) ? ' checked' : '';
+			echo '<label class="cf-multi__option cf-multi__option--parent">'
+				. '<input type="checkbox" value="' . esc_attr( $parent->slug ) . '" data-label="' . esc_attr( $parent->name ) . '"' . $checked . '>'
+				. esc_html( $parent->name )
+				. '</label>';
+
+			foreach ( $kids as $child ) {
+				assert( $child instanceof \WP_Term );
+				$checked = in_array( $child->slug, $selected, true ) ? ' checked' : '';
+				echo '<label class="cf-multi__option cf-multi__option--child">'
+					. '<input type="checkbox" value="' . esc_attr( $child->slug ) . '" data-label="' . esc_attr( $child->name ) . '"' . $checked . '>'
+					. esc_html( $child->name )
+					. '</label>';
 			}
+
+			echo '</div>';
 		}
 
-		echo '</select>';
+		echo '</div>';
+		echo '</div>';
+	}
+
+	/**
+	 * @param array<int, \WP_Term> $parents
+	 * @param array<int, list<\WP_Term>> $byParent
+	 */
+	private static function findDestinationLabel( array $parents, array $byParent, string $slug ): string {
+		foreach ( $parents as $pid => $parent ) {
+			if ( $parent->slug === $slug ) {
+				return $parent->name;
+			}
+			foreach ( $byParent[ $pid ] ?? array() as $child ) {
+				if ( $child->slug === $slug ) {
+					return $child->name;
+				}
+			}
+		}
+		return $slug;
 	}
 
 	/**
@@ -136,16 +204,102 @@ trait FilterRenderMethods {
 	}
 
 	private function renderChildAgeFilterSelect( string $emptyLabel ): void {
-		$current = absint( $_GET['childAge'] ?? 0 );
+		$selected = self::parseMultiParam( 'childAge' );
 
-		echo '<select class="cf-filter" name="childAge">';
-		echo '<option value="">' . esc_html( $emptyLabel ) . '</option>';
-		for ( $yr = 4; $yr <= 17; $yr++ ) {
-			$selected = selected( $current, $yr, false );
-			echo '<option value="' . esc_attr( (string) $yr ) . '"' . $selected . '>'
-				. esc_html( sprintf( _n( '%d rok', '%d lat', $yr, 'campsflow' ), $yr ) ) . '</option>';
+		$labelText = empty( $selected )
+			? esc_html( $emptyLabel )
+			: ( count( $selected ) === 1
+				? esc_html( self::ageLabel( (int) $selected[0] ) )
+				: esc_html( (string) count( $selected ) ) );
+
+		echo '<div class="cf-multi" data-name="childAge" data-empty-label="' . esc_attr( $emptyLabel ) . '">';
+		echo '<button type="button" class="cf-multi__toggle" aria-haspopup="listbox" aria-expanded="false">';
+		echo '<span class="cf-multi__label">' . $labelText . '</span>';
+		if ( count( $selected ) > 1 ) {
+			echo '<span class="cf-multi__count">' . esc_html( (string) count( $selected ) ) . '</span>';
 		}
-		echo '<option value="18"' . selected( $current, 18, false ) . '>18+</option>';
-		echo '</select>';
+		echo '<span class="cf-multi__arrow" aria-hidden="true">&#9662;</span>';
+		echo '</button>';
+		echo '<div class="cf-multi__dropdown" role="listbox" aria-multiselectable="true">';
+
+		for ( $yr = 4; $yr <= 17; $yr++ ) {
+			$checked = in_array( (string) $yr, $selected, true ) ? ' checked' : '';
+			$label   = self::ageLabel( $yr );
+			echo '<label class="cf-multi__option">'
+				. '<input type="checkbox" value="' . esc_attr( (string) $yr ) . '" data-label="' . esc_attr( $label ) . '"' . $checked . '>'
+				. esc_html( $label )
+				. '</label>';
+		}
+		$checked = in_array( '18', $selected, true ) ? ' checked' : '';
+		echo '<label class="cf-multi__option">'
+			. '<input type="checkbox" value="18" data-label="18+"' . $checked . '>18+'
+			. '</label>';
+
+		echo '</div>';
+		echo '</div>';
+	}
+
+	private static function ageLabel( int $yr ): string {
+		if ( $yr >= 18 ) {
+			return '18+';
+		}
+		/* translators: %d: child age in years */
+		return sprintf( _n( '%d rok', '%d lat', $yr, 'campsflow' ), $yr );
+	}
+
+	private function renderDateRangePicker( string $emptyLabel ): void {
+		$from = sanitize_text_field( $_GET['dateFrom'] ?? '' );
+		$to   = sanitize_text_field( $_GET['dateTo'] ?? '' );
+
+		$displayFrom = self::formatDateDisplay( $from );
+		$displayTo   = self::formatDateDisplay( $to );
+
+		if ( $from !== '' && $to !== '' ) {
+			$toggleLabel = $displayFrom . ' – ' . $displayTo;
+		} elseif ( $from !== '' ) {
+			$toggleLabel = $displayFrom . ' – ?';
+		} else {
+			$toggleLabel = $emptyLabel;
+		}
+
+		echo '<div class="cf-daterange" data-name-from="dateFrom" data-name-to="dateTo" data-empty-label="' . esc_attr( $emptyLabel ) . '">';
+		echo '<button type="button" class="cf-daterange__toggle" aria-haspopup="dialog" aria-expanded="false">';
+		echo '<span class="cf-daterange__label">' . esc_html( $toggleLabel ) . '</span>';
+		echo '<span class="cf-daterange__arrow" aria-hidden="true">&#9662;</span>';
+		echo '</button>';
+
+		echo '<div class="cf-daterange__dropdown" role="dialog">';
+		echo '<div class="cf-daterange__inputs">';
+		echo '<label class="cf-daterange__field" data-role="from">';
+		echo '<span class="cf-daterange__field-label">' . esc_html__( 'Wyjazd po', 'campsflow' ) . '</span>';
+		echo '<input type="text" class="cf-daterange__text" data-role="from" readonly placeholder="DD.MM.RRRR" value="' . esc_attr( $displayFrom ) . '">';
+		echo '</label>';
+		echo '<span class="cf-daterange__field-sep" aria-hidden="true">—</span>';
+		echo '<label class="cf-daterange__field" data-role="to">';
+		echo '<span class="cf-daterange__field-label">' . esc_html__( 'powrót przed', 'campsflow' ) . '</span>';
+		echo '<input type="text" class="cf-daterange__text" data-role="to" readonly placeholder="DD.MM.RRRR" value="' . esc_attr( $displayTo ) . '">';
+		echo '</label>';
+		echo '</div>';
+		echo '<div class="cf-daterange__calendars"></div>';
+		echo '<div class="cf-daterange__actions">';
+		echo '<button type="button" class="cf-daterange__clear">' . esc_html__( 'wyczyść wszystko', 'campsflow' ) . '</button>';
+		echo '<button type="button" class="cf-daterange__confirm">' . esc_html__( 'Wybierz', 'campsflow' ) . '</button>';
+		echo '</div>';
+		echo '</div>';
+
+		echo '<input type="hidden" class="cf-filter" name="dateFrom" value="' . esc_attr( $from ) . '">';
+		echo '<input type="hidden" class="cf-filter" name="dateTo" value="' . esc_attr( $to ) . '">';
+		echo '</div>';
+	}
+
+	private static function formatDateDisplay( string $ymd ): string {
+		if ( $ymd === '' ) {
+			return '';
+		}
+		$parts = explode( '-', $ymd );
+		if ( count( $parts ) !== 3 ) {
+			return $ymd;
+		}
+		return $parts[2] . '.' . $parts[1] . '.' . $parts[0];
 	}
 }

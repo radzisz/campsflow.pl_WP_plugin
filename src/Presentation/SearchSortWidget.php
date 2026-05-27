@@ -8,14 +8,23 @@ use Elementor\Widget_Base;
 
 final class SearchSortWidget extends Widget_Base {
 
-	/** @var array<string, string> */
-	private const SORT_OPTIONS = array(
-		'title_asc'  => 'Nazwa A-Z',
-		'title_desc' => 'Nazwa Z-A',
-		'date_asc'   => 'Termin: najwcześniejszy',
-		'date_desc'  => 'Termin: najpóźniejszy',
-		'price_asc'  => 'Cena: od najtańszej',
-		'price_desc' => 'Cena: od najdroższej',
+	/** @var array<string, array{asc: string, desc: string, default_label: string}> */
+	private const SORT_GROUPS = array(
+		'title' => array(
+			'asc'           => 'title_asc',
+			'desc'          => 'title_desc',
+			'default_label' => 'Nazwa',
+		),
+		'date'  => array(
+			'asc'           => 'date_asc',
+			'desc'          => 'date_desc',
+			'default_label' => 'Termin',
+		),
+		'price' => array(
+			'asc'           => 'price_asc',
+			'desc'          => 'price_desc',
+			'default_label' => 'Cena',
+		),
 	);
 
 	public function get_name(): string {
@@ -38,7 +47,7 @@ final class SearchSortWidget extends Widget_Base {
 		$this->registerContentSection();
 		$this->registerStyleLayoutSection();
 		$this->registerStyleLabelSection();
-		$this->registerStyleInputSection();
+		$this->registerStyleButtonSection();
 	}
 
 	private function registerContentSection(): void {
@@ -54,7 +63,7 @@ final class SearchSortWidget extends Widget_Base {
 			'cf_sort_tip',
 			array(
 				'type'            => Controls_Manager::RAW_HTML,
-				'raw'             => __( 'Umieść ten widget obok pól filtru — działa tak samo jak każde inne pole: zmienia URL, a widget <strong>Wyniki wyszukiwania</strong> reaguje automatycznie.', 'campsflow' ),
+				'raw'             => __( 'Lista klikalnych etykiet — kliknięcie pokazuje strzałkę kierunku, ponowne kliknięcie odwraca kierunek. Reaguje na reset filtrów automatycznie.', 'campsflow' ),
 				'content_classes' => 'elementor-descriptor',
 			)
 		);
@@ -70,29 +79,11 @@ final class SearchSortWidget extends Widget_Base {
 		);
 
 		$this->add_control(
-			'placeholder',
+			'separator',
 			array(
-				'label'   => __( 'Label (opcja pusta)', 'campsflow' ),
+				'label'   => __( 'Separator', 'campsflow' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Sortuj według', 'campsflow' ),
-			)
-		);
-
-		$this->add_control(
-			'default_sort',
-			array(
-				'label'   => __( 'Domyślne sortowanie', 'campsflow' ),
-				'type'    => Controls_Manager::SELECT,
-				'default' => '',
-				'options' => array(
-					''           => __( '— brak (pierwsza widoczna opcja) —', 'campsflow' ),
-					'title_asc'  => __( 'Nazwa A-Z', 'campsflow' ),
-					'title_desc' => __( 'Nazwa Z-A', 'campsflow' ),
-					'date_asc'   => __( 'Termin: najwcześniejszy', 'campsflow' ),
-					'date_desc'  => __( 'Termin: najpóźniejszy', 'campsflow' ),
-					'price_asc'  => __( 'Cena: od najtańszej', 'campsflow' ),
-					'price_desc' => __( 'Cena: od najdroższej', 'campsflow' ),
-				),
+				'default' => '/',
 			)
 		);
 
@@ -103,36 +94,29 @@ final class SearchSortWidget extends Widget_Base {
 			)
 		);
 
-		$this->addSortOptionControls( 'title_asc', __( 'Nazwa A-Z', 'campsflow' ) );
-		$this->addSortOptionControls( 'title_desc', __( 'Nazwa Z-A', 'campsflow' ) );
-		$this->addSortOptionControls( 'date_asc', __( 'Termin: najwcześniejszy', 'campsflow' ) );
-		$this->addSortOptionControls( 'date_desc', __( 'Termin: najpóźniejszy', 'campsflow' ) );
-		$this->addSortOptionControls( 'price_asc', __( 'Cena: od najtańszej', 'campsflow' ) );
-		$this->addSortOptionControls( 'price_desc', __( 'Cena: od najdroższej', 'campsflow' ) );
+		foreach ( self::SORT_GROUPS as $key => $group ) {
+			$this->add_control(
+				'show_' . $key,
+				array(
+					'label'     => $group['default_label'],
+					'type'      => Controls_Manager::SWITCHER,
+					'default'   => 'yes',
+					'label_on'  => __( 'Tak', 'campsflow' ),
+					'label_off' => __( 'Nie', 'campsflow' ),
+				)
+			);
+			$this->add_control(
+				'label_' . $key,
+				array(
+					'label'     => __( 'Etykieta', 'campsflow' ),
+					'type'      => Controls_Manager::TEXT,
+					'default'   => $group['default_label'],
+					'condition' => array( 'show_' . $key => 'yes' ),
+				)
+			);
+		}
 
 		$this->end_controls_section();
-	}
-
-	private function addSortOptionControls( string $key, string $defaultLabel ): void {
-		$this->add_control(
-			'show_' . $key,
-			array(
-				'label'     => $defaultLabel,
-				'type'      => Controls_Manager::SWITCHER,
-				'default'   => 'yes',
-				'label_on'  => __( 'Tak', 'campsflow' ),
-				'label_off' => __( 'Nie', 'campsflow' ),
-			)
-		);
-		$this->add_control(
-			'label_' . $key,
-			array(
-				'label'     => __( 'Etykieta', 'campsflow' ),
-				'type'      => Controls_Manager::TEXT,
-				'default'   => $defaultLabel,
-				'condition' => array( 'show_' . $key => 'yes' ),
-			)
-		);
 	}
 
 	private function registerStyleLayoutSection(): void {
@@ -151,11 +135,11 @@ final class SearchSortWidget extends Widget_Base {
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'column',
 				'options'   => array(
-					'column' => __( 'Pionowy (nagłówek nad polem)', 'campsflow' ),
-					'row'    => __( 'Poziomy (nagłówek obok pola)', 'campsflow' ),
+					'column' => __( 'Pionowy (nagłówek nad paskiem)', 'campsflow' ),
+					'row'    => __( 'Poziomy (nagłówek obok paska)', 'campsflow' ),
 				),
 				'selectors' => array(
-					'{{WRAPPER}} .cf-sort-wrap' => 'display:flex; flex-direction:{{VALUE}}; align-items:center;',
+					'{{WRAPPER}} .cf-sort-wrap' => 'display:flex; flex-direction:{{VALUE}}; align-items:center; flex-wrap:wrap;',
 				),
 			)
 		);
@@ -163,7 +147,7 @@ final class SearchSortWidget extends Widget_Base {
 		$this->add_control(
 			'layout_gap',
 			array(
-				'label'     => __( 'Odstęp między nagłówkiem a polem', 'campsflow' ),
+				'label'     => __( 'Odstęp między nagłówkiem a paskiem', 'campsflow' ),
 				'type'      => Controls_Manager::SLIDER,
 				'default'   => array( 'size' => 8 ),
 				'range'     => array(
@@ -221,133 +205,42 @@ final class SearchSortWidget extends Widget_Base {
 			)
 		);
 
-		$this->add_control(
-			'label_font_weight',
-			array(
-				'label'     => __( 'Grubość czcionki', 'campsflow' ),
-				'type'      => Controls_Manager::SELECT,
-				'default'   => '',
-				'options'   => array(
-					''    => __( 'Domyślna', 'campsflow' ),
-					'400' => __( 'Normalna (400)', 'campsflow' ),
-					'600' => __( 'Półgruba (600)', 'campsflow' ),
-					'700' => __( 'Gruba (700)', 'campsflow' ),
-				),
-				'selectors' => array(
-					'{{WRAPPER}} .cf-filter-label' => 'font-weight: {{VALUE}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'label_margin_bottom',
-			array(
-				'label'      => __( 'Odstęp pod nagłówkiem', 'campsflow' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
-				'range'      => array(
-					'px' => array(
-						'min' => 0,
-						'max' => 40,
-					),
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} .cf-filter-label' => 'margin-bottom: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
 		$this->end_controls_section();
 	}
 
-	private function registerStyleInputSection(): void {
+	private function registerStyleButtonSection(): void {
 		$this->start_controls_section(
-			'section_style_input',
+			'section_style_btn',
 			array(
-				'label' => __( 'Pole wyboru', 'campsflow' ),
+				'label' => __( 'Przyciski sortowania', 'campsflow' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			)
 		);
 
 		$this->add_control(
-			'input_width',
-			array(
-				'label'      => __( 'Szerokość', 'campsflow' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%' ),
-				'range'      => array(
-					'%'  => array(
-						'min' => 10,
-						'max' => 100,
-					),
-					'px' => array(
-						'min' => 50,
-						'max' => 600,
-					),
-				),
-				'default'    => array(
-					'unit' => '%',
-					'size' => 100,
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} .cf-filter' => 'width: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'input_bg',
-			array(
-				'label'     => __( 'Tło', 'campsflow' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .cf-filter' => 'background-color: {{VALUE}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'input_color',
+			'btn_color',
 			array(
 				'label'     => __( 'Kolor tekstu', 'campsflow' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .cf-filter' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .cf-sort-btn' => 'color: {{VALUE}};',
 				),
 			)
 		);
 
 		$this->add_control(
-			'input_border_color',
+			'btn_active_color',
 			array(
-				'label'     => __( 'Kolor obramowania', 'campsflow' ),
+				'label'     => __( 'Kolor aktywnego', 'campsflow' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .cf-filter' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} .cf-sort-btn.is-active' => 'color: {{VALUE}};',
 				),
 			)
 		);
 
 		$this->add_control(
-			'input_border_radius',
-			array(
-				'label'      => __( 'Zaokrąglenie', 'campsflow' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%' ),
-				'range'      => array(
-					'px' => array(
-						'min' => 0,
-						'max' => 50,
-					),
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} .cf-filter' => 'border-radius: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'input_font_size',
+			'btn_font_size',
 			array(
 				'label'      => __( 'Rozmiar czcionki', 'campsflow' ),
 				'type'       => Controls_Manager::SLIDER,
@@ -359,7 +252,18 @@ final class SearchSortWidget extends Widget_Base {
 					),
 				),
 				'selectors'  => array(
-					'{{WRAPPER}} .cf-filter' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .cf-sort-btn' => 'font-size: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'sep_color',
+			array(
+				'label'     => __( 'Kolor separatora', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-sort-bar__sep' => 'color: {{VALUE}};',
 				),
 			)
 		);
@@ -370,20 +274,23 @@ final class SearchSortWidget extends Widget_Base {
 	protected function render(): void {
 		$s           = $this->get_settings_for_display();
 		$header      = (string) ( $s['header'] ?? '' );
-		$placeholder = (string) ( $s['placeholder'] ?? '' );
-		$defaultSort = (string) ( $s['default_sort'] ?? '' );
-		$currentSort = sanitize_text_field( $_GET['sort'] ?? $defaultSort );
+		$separator   = (string) ( $s['separator'] ?? '/' );
+		$currentSort = sanitize_text_field( $_GET['sort'] ?? '' );
 
-		$options = array();
-		foreach ( self::SORT_OPTIONS as $value => $fallbackLabel ) {
-			if ( ( $s[ 'show_' . $value ] ?? 'yes' ) !== 'yes' ) {
+		$buttons = array();
+		foreach ( self::SORT_GROUPS as $key => $group ) {
+			if ( ( $s[ 'show_' . $key ] ?? 'yes' ) !== 'yes' ) {
 				continue;
 			}
-			$custom            = (string) ( $s[ 'label_' . $value ] ?? '' );
-			$options[ $value ] = $custom !== '' ? $custom : $fallbackLabel;
+			$custom    = (string) ( $s[ 'label_' . $key ] ?? '' );
+			$buttons[] = array(
+				'asc'   => $group['asc'],
+				'desc'  => $group['desc'],
+				'label' => $custom !== '' ? $custom : $group['default_label'],
+			);
 		}
 
-		if ( empty( $options ) ) {
+		if ( empty( $buttons ) ) {
 			return;
 		}
 
@@ -393,14 +300,30 @@ final class SearchSortWidget extends Widget_Base {
 			echo '<label class="cf-filter-label">' . esc_html( $header ) . '</label>';
 		}
 
-		$emptyLabel = $placeholder !== '' ? $placeholder : __( 'Sortuj według', 'campsflow' );
-		echo '<select class="cf-filter" name="sort">';
-		echo '<option value="">' . esc_html( $emptyLabel ) . '</option>';
-		foreach ( $options as $value => $label ) {
-			$selected = selected( $currentSort, $value, false );
-			echo '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_html( $label ) . '</option>';
+		echo '<div class="cf-sort-bar">';
+
+		$last = count( $buttons ) - 1;
+		foreach ( $buttons as $i => $btn ) {
+			$isAsc    = $currentSort === $btn['asc'];
+			$isDesc   = $currentSort === $btn['desc'];
+			$classes  = 'cf-sort-btn';
+			$classes .= $isAsc ? ' is-active is-asc' : ( $isDesc ? ' is-active is-desc' : '' );
+			$arrow    = $isAsc ? '▲' : ( $isDesc ? '▼' : '' );
+
+			echo '<button type="button" class="' . esc_attr( $classes ) . '"'
+				. ' data-asc="' . esc_attr( $btn['asc'] ) . '"'
+				. ' data-desc="' . esc_attr( $btn['desc'] ) . '">'
+				. esc_html( $btn['label'] )
+				. ' <span class="cf-sort-btn__arrow" aria-hidden="true">' . esc_html( $arrow ) . '</span>'
+				. '</button>';
+
+			if ( $i < $last && $separator !== '' ) {
+				echo '<span class="cf-sort-bar__sep" aria-hidden="true">' . esc_html( $separator ) . '</span>';
+			}
 		}
-		echo '</select>';
+
+		echo '<input type="hidden" class="cf-filter" name="sort" value="' . esc_attr( $currentSort ) . '">';
+		echo '</div>';
 
 		echo '</div>';
 	}

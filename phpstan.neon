@@ -25,6 +25,7 @@ parameters:
         - src/Presentation/SearchFilterFieldWidget.php
         - src/Presentation/SearchSortWidget.php
         - src/Presentation/SearchResultsWidget.php
+        - src/Presentation/EventMapWidget.php
         - src/Presentation/WpBakeryIntegration.php
         - src/Presentation/WpBakeryDynamicContent.php
 

@@ -85,6 +85,7 @@ add_action(
 		( new Presentation\SearchFilterFieldShortcode() )->register();
 		( new Presentation\SearchSortShortcode() )->register();
 		( new Presentation\SearchResultsShortcode() )->register();
+		( new Presentation\EventMapShortcode() )->register();
 		( new Presentation\TemplateLoader() )->register();
 		( new Presentation\ElementorIntegration() )->register();
 		( new Presentation\WpBakeryIntegration() )->register();
@@ -113,6 +114,20 @@ add_action(
 			array(),
 			CAMPSFLOW_VERSION,
 			true,
+		);
+		wp_enqueue_script(
+			'campsflow-event-map',
+			CAMPSFLOW_PLUGIN_URL . 'assets/js/event-map.js',
+			array(),
+			CAMPSFLOW_VERSION,
+			true,
+		);
+		wp_localize_script(
+			'campsflow-event-map',
+			'cfMapConfig',
+			array(
+				'googleApiKey' => (string) get_option( 'campsflow_google_maps_api_key', '' ),
+			)
 		);
 	}
 );

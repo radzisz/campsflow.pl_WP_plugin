@@ -21,7 +21,11 @@ final class SearchFilterShortcode {
 	 */
 	public function render( array|string $atts ): string {
 		$atts = shortcode_atts(
-			array( 'fields' => implode( ',', self::ALL_FIELDS ) ),
+			array(
+				'fields'      => implode( ',', self::ALL_FIELDS ),
+				'show_reset'  => 'yes',
+				'reset_label' => __( 'Wyczyść filtry', 'campsflow' ),
+			),
 			is_array( $atts ) ? $atts : array(),
 			'campsflow_search_filter'
 		);
@@ -39,19 +43,16 @@ final class SearchFilterShortcode {
 				'destination' => $this->renderDestinationFilterSelect( __( 'Wszystkie kierunki', 'campsflow' ) ),
 				'transport' => $this->renderTaxFilterSelect( 'cf_transport_type', 'transport', __( 'Transport', 'campsflow' ) ),
 				'child_age' => $this->renderChildAgeFilterSelect( __( 'Wiek', 'campsflow' ) ),
-				'dates'     => $this->renderDateInputs(),
+				'dates'     => $this->renderDateRangePicker( __( 'Termin', 'campsflow' ) ),
 				default     => null,
 			};
 		}
 
+		if ( $atts['show_reset'] === 'yes' ) {
+			echo '<button type="button" class="cf-reset">' . esc_html( $atts['reset_label'] ) . '</button>';
+		}
+
 		echo '</form>';
 		return (string) ob_get_clean();
-	}
-
-	private function renderDateInputs(): void {
-		$from = sanitize_text_field( $_GET['dateFrom'] ?? '' );
-		$to   = sanitize_text_field( $_GET['dateTo'] ?? '' );
-		echo '<input class="cf-filter" type="date" name="dateFrom" value="' . esc_attr( $from ) . '">';
-		echo '<input class="cf-filter" type="date" name="dateTo" value="' . esc_attr( $to ) . '">';
 	}
 }

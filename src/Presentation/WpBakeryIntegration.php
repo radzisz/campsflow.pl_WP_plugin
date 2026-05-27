@@ -42,6 +42,23 @@ final class WpBakeryIntegration {
 						'value'       => 'category,age,destination,transport,child_age,dates',
 						'description' => __( 'Lista pól oddzielona przecinkami: category, age, destination, transport, child_age, dates', 'campsflow' ),
 					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => __( 'Przycisk reset', 'campsflow' ),
+						'param_name' => 'show_reset',
+						'value'      => array( __( 'Pokaż przycisk wyczyść filtry', 'campsflow' ) => 'yes' ),
+						'std'        => 'yes',
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Tekst przycisku reset', 'campsflow' ),
+						'param_name' => 'reset_label',
+						'value'      => __( 'Wyczyść filtry', 'campsflow' ),
+						'dependency' => array(
+							'element' => 'show_reset',
+							'value'   => array( 'yes' ),
+						),
+					),
 				),
 			)
 		);
@@ -66,8 +83,7 @@ final class WpBakeryIntegration {
 							__( 'Wiek dziecka', 'campsflow' ) => 'child_age',
 							__( 'Kierunek', 'campsflow' )  => 'destination',
 							__( 'Transport', 'campsflow' ) => 'transport',
-							__( 'Data od', 'campsflow' )   => 'date_from',
-							__( 'Data do', 'campsflow' )   => 'date_to',
+							__( 'Termin (zakres dat)', 'campsflow' ) => 'dates',
 						),
 						'std'        => 'category',
 					),
@@ -96,7 +112,7 @@ final class WpBakeryIntegration {
 				'base'        => 'campsflow_search_sort',
 				'category'    => 'CampsFlow',
 				'icon'        => 'dashicons-sort',
-				'description' => __( 'Pole sortowania wyników — umieść obok widgetu Wyniki wyszukiwania', 'campsflow' ),
+				'description' => __( 'Klikalne etykiety sortowania — kliknięcie pokazuje strzałkę, drugie odwraca kierunek', 'campsflow' ),
 				'params'      => array(
 					array(
 						'type'       => 'textfield',
@@ -106,24 +122,34 @@ final class WpBakeryIntegration {
 					),
 					array(
 						'type'       => 'textfield',
-						'heading'    => __( 'Label (opcja pusta)', 'campsflow' ),
-						'param_name' => 'placeholder',
-						'value'      => __( 'Sortuj według', 'campsflow' ),
+						'heading'    => __( 'Separator', 'campsflow' ),
+						'param_name' => 'separator',
+						'value'      => '/',
 					),
 					array(
-						'type'       => 'dropdown',
-						'heading'    => __( 'Domyślne sortowanie', 'campsflow' ),
-						'param_name' => 'default',
-						'value'      => array(
-							__( '— brak —', 'campsflow' )  => '',
-							__( 'Nazwa A-Z', 'campsflow' ) => 'title_asc',
-							__( 'Nazwa Z-A', 'campsflow' ) => 'title_desc',
-							__( 'Termin: najwcześniejszy', 'campsflow' ) => 'date_asc',
-							__( 'Termin: najpóźniejszy', 'campsflow' ) => 'date_desc',
-							__( 'Cena: od najtańszej', 'campsflow' ) => 'price_asc',
-							__( 'Cena: od najdroższej', 'campsflow' ) => 'price_desc',
-						),
-						'std'        => '',
+						'type'        => 'textfield',
+						'heading'     => __( 'Widoczne opcje', 'campsflow' ),
+						'param_name'  => 'show',
+						'value'       => 'title,date,price',
+						'description' => __( 'Przecinek: title, date, price', 'campsflow' ),
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Etykieta: Nazwa', 'campsflow' ),
+						'param_name' => 'label_title',
+						'value'      => '',
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Etykieta: Termin', 'campsflow' ),
+						'param_name' => 'label_date',
+						'value'      => '',
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Etykieta: Cena', 'campsflow' ),
+						'param_name' => 'label_price',
+						'value'      => '',
 					),
 				),
 			)

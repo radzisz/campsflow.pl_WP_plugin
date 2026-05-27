@@ -4,18 +4,27 @@ declare(strict_types=1);
 namespace Campsflow\Presentation;
 
 /**
- * [campsflow_search_sort header="" placeholder="" default=""]
+ * [campsflow_search_sort header="" separator="/" show="title,date,price" label_title="" label_date="" label_price=""]
  */
 final class SearchSortShortcode {
 
-	/** @var array<string, string> */
-	private const SORT_OPTIONS = array(
-		'title_asc'  => 'Nazwa A-Z',
-		'title_desc' => 'Nazwa Z-A',
-		'date_asc'   => 'Termin: najwcześniejszy',
-		'date_desc'  => 'Termin: najpóźniejszy',
-		'price_asc'  => 'Cena: od najtańszej',
-		'price_desc' => 'Cena: od najdroższej',
+	/** @var array<string, array{asc: string, desc: string, default_label: string}> */
+	private const SORT_GROUPS = array(
+		'title' => array(
+			'asc'           => 'title_asc',
+			'desc'          => 'title_desc',
+			'default_label' => 'Nazwa',
+		),
+		'date'  => array(
+			'asc'           => 'date_asc',
+			'desc'          => 'date_desc',
+			'default_label' => 'Termin',
+		),
+		'price' => array(
+			'asc'           => 'price_asc',
+			'desc'          => 'price_desc',
+			'default_label' => 'Cena',
+		),
 	);
 
 	public function register(): void {
@@ -29,32 +38,71 @@ final class SearchSortShortcode {
 		$atts = shortcode_atts(
 			array(
 				'header'      => '',
-				'placeholder' => '',
-				'default'     => '',
+				'separator'   => '/',
+				'show'        => 'title,date,price',
+				'label_title' => '',
+				'label_date'  => '',
+				'label_price' => '',
 			),
 			is_array( $atts ) ? $atts : array(),
 			'campsflow_search_sort'
 		);
 
 		$header      = sanitize_text_field( (string) $atts['header'] );
-		$placeholder = sanitize_text_field( (string) $atts['placeholder'] );
-		$default     = sanitize_key( (string) $atts['default'] );
-		$current     = sanitize_text_field( $_GET['sort'] ?? $default );
+		$separator   = sanitize_text_field( (string) $atts['separator'] );
+		$show        = array_map( 'trim', explode( ',', (string) $atts['show'] ) );
+		$currentSort = sanitize_text_field( $_GET['sort'] ?? '' );
+
+		$buttons = array();
+		foreach ( self::SORT_GROUPS as $key => $group ) {
+			if ( ! in_array( $key, $show, true ) ) {
+				continue;
+			}
+			$custom    = sanitize_text_field( (string) $atts[ 'label_' . $key ] );
+			$buttons[] = array(
+				'asc'   => $group['asc'],
+				'desc'  => $group['desc'],
+				'label' => $custom !== '' ? $custom : $group['default_label'],
+			);
+		}
+
+		if ( empty( $buttons ) ) {
+			return '';
+		}
 
 		ob_start();
+
+		echo '<div class="cf-sort-wrap">';
 
 		if ( $header !== '' ) {
 			echo '<label class="cf-filter-label">' . esc_html( $header ) . '</label>';
 		}
 
-		$emptyLabel = $placeholder !== '' ? $placeholder : __( 'Sortuj według', 'campsflow' );
-		echo '<select class="cf-filter" name="sort">';
-		echo '<option value="">' . esc_html( $emptyLabel ) . '</option>';
-		foreach ( self::SORT_OPTIONS as $value => $label ) {
-			$selected = selected( $current, $value, false );
-			echo '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_html( $label ) . '</option>';
+		echo '<div class="cf-sort-bar">';
+
+		$last = count( $buttons ) - 1;
+		foreach ( $buttons as $i => $btn ) {
+			$isAsc   = $currentSort === $btn['asc'];
+			$isDesc  = $currentSort === $btn['desc'];
+			$classes = 'cf-sort-btn' . ( $isAsc ? ' is-active is-asc' : ( $isDesc ? ' is-active is-desc' : '' ) );
+			$arrow   = $isAsc ? '▲' : ( $isDesc ? '▼' : '' );
+
+			echo '<button type="button" class="' . esc_attr( $classes ) . '"'
+				. ' data-asc="' . esc_attr( $btn['asc'] ) . '"'
+				. ' data-desc="' . esc_attr( $btn['desc'] ) . '">'
+				. esc_html( $btn['label'] )
+				. ' <span class="cf-sort-btn__arrow" aria-hidden="true">' . esc_html( $arrow ) . '</span>'
+				. '</button>';
+
+			if ( $i < $last && $separator !== '' ) {
+				echo '<span class="cf-sort-bar__sep" aria-hidden="true">' . esc_html( $separator ) . '</span>';
+			}
 		}
-		echo '</select>';
+
+		echo '<input type="hidden" class="cf-filter" name="sort" value="' . esc_attr( $currentSort ) . '">';
+		echo '</div>';
+
+		echo '</div>';
 
 		return (string) ob_get_clean();
 	}

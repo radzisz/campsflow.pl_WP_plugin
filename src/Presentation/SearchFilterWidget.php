@@ -49,6 +49,28 @@ final class SearchFilterWidget extends Widget_Base {
 		$this->addFilterControl( 'destination', __( 'Kierunek', 'campsflow' ), __( 'Wszystkie kierunki', 'campsflow' ) );
 		$this->addFilterControl( 'transport', __( 'Transport', 'campsflow' ), __( 'Transport', 'campsflow' ) );
 		$this->addFilterControl( 'dates', __( 'Daty', 'campsflow' ), '' );
+
+		$this->add_control(
+			'show_reset',
+			array(
+				'label'     => __( 'Przycisk reset', 'campsflow' ),
+				'type'      => Controls_Manager::SWITCHER,
+				'default'   => 'yes',
+				'label_on'  => __( 'Tak', 'campsflow' ),
+				'label_off' => __( 'Nie', 'campsflow' ),
+				'separator' => 'before',
+			)
+		);
+		$this->add_control(
+			'reset_label',
+			array(
+				'label'     => __( 'Tekst przycisku reset', 'campsflow' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => __( 'Wyczyść filtry', 'campsflow' ),
+				'condition' => array( 'show_reset' => 'yes' ),
+			)
+		);
+
 		$this->end_controls_section();
 	}
 
@@ -142,10 +164,12 @@ final class SearchFilterWidget extends Widget_Base {
 			$this->renderTaxFilterSelect( 'cf_transport_type', 'transport', (string) ( $s['label_transport'] ?? '' ) );
 		}
 		if ( ( $s['show_dates'] ?? '' ) === 'yes' ) {
-			$currentFrom = sanitize_text_field( $_GET['dateFrom'] ?? '' );
-			$currentTo   = sanitize_text_field( $_GET['dateTo'] ?? '' );
-			echo '<input class="cf-filter" type="date" name="dateFrom" value="' . esc_attr( $currentFrom ) . '">';
-			echo '<input class="cf-filter" type="date" name="dateTo" value="' . esc_attr( $currentTo ) . '">';
+			$this->renderDateRangePicker( __( 'Termin', 'campsflow' ) );
+		}
+
+		if ( ( $s['show_reset'] ?? '' ) === 'yes' ) {
+			$resetLabel = (string) ( $s['reset_label'] ?? __( 'Wyczyść filtry', 'campsflow' ) );
+			echo '<button type="button" class="cf-reset">' . esc_html( $resetLabel ) . '</button>';
 		}
 
 		echo '</form>';
