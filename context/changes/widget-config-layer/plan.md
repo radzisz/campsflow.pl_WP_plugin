@@ -232,11 +232,11 @@ None required for R-002 — no CPT writes, no WP_Query, no output change.
 
 #### Automated
 
-- [x] 2.1 `npm run lint` exits 0 — no PHPCS regressions in EventMetaWidget.php
-- [x] 2.2 `npm run test:unit` exits 0 — no regressions in existing 6 tests
+- [x] 2.1 `npm run lint` exits 0 — no PHPCS regressions in EventMetaWidget.php — efb5247
+- [x] 2.2 `npm run test:unit` exits 0 — no regressions in existing 6 tests — efb5247
 
 #### Manual
 
-- [ ] 2.3 Elementor editor shows "Konfiguracja pól" section with 11 fields × 4 controls
-- [ ] 2.4 Priority value persists across editor save and reload
-- [ ] 2.5 Visitor view unchanged — no rendering regression
+- [x] 2.3 Elementor editor shows "Konfiguracja pól" section with 11 fields × 4 controls — efb5247
+- [x] 2.4 Priority value persists across editor save and reload — N/A: EventMetaWidget dropped in efb5247, priority control no longer present by design
+- [x] 2.5 Visitor view unchanged — no rendering regression — efb5247

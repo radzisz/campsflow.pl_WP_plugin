@@ -1,9 +1,9 @@
 ---
 change_id: widget-config-layer
 title: Shared widget config layer — R-002
-status: implementing
+status: implemented
 created: 2026-05-26
-updated: 2026-05-26
+updated: 2026-05-27
 archived_at: null
 ---
 
