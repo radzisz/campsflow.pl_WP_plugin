@@ -183,11 +183,7 @@ final class SyncRunner {
 	 */
 	private function setEventTags( int $postId, array $event ): void {
 		$raw = $event['eventTags'] ?? array();
-		if ( ! is_array( $raw ) ) {
-			return;
-		}
-		$names = array_values( array_filter( array_map( 'strval', $raw ) ) );
-		wp_set_object_terms( $postId, $names, EventTagTaxonomy::SLUG );
+		$this->setTermsWithMeta( $postId, is_array( $raw ) ? $raw : array(), EventTagTaxonomy::SLUG );
 	}
 
 	/**
@@ -195,11 +191,52 @@ final class SyncRunner {
 	 */
 	private function setEventProfiles( int $postId, array $event ): void {
 		$raw = $event['eventCategories'] ?? array();
-		if ( ! is_array( $raw ) ) {
-			return;
+		$this->setTermsWithMeta( $postId, is_array( $raw ) ? $raw : array(), EventCategoryTaxonomy::SLUG );
+	}
+
+	/**
+	 * @param array<mixed> $raw
+	 */
+	private function setTermsWithMeta( int $postId, array $raw, string $taxonomy ): void {
+		$termIds = array();
+
+		foreach ( $raw as $item ) {
+			$name    = '';
+			$color   = '';
+			$visible = true;
+
+			if ( is_string( $item ) ) {
+				$name = $item;
+			} elseif ( is_array( $item ) ) {
+				$name    = (string) ( $item['name'] ?? '' );
+				$color   = (string) ( $item['color'] ?? '' );
+				$visible = (bool) ( $item['visible'] ?? true );
+			}
+
+			if ( $name === '' || ! $visible ) {
+				continue;
+			}
+
+			$existing = term_exists( $name, $taxonomy );
+			if ( $existing === null || $existing === 0 ) {
+				$result = wp_insert_term( $name, $taxonomy );
+				$termId = is_wp_error( $result ) ? 0 : (int) $result['term_id'];
+			} else {
+				$termId = (int) ( is_array( $existing ) ? $existing['term_id'] : $existing );
+			}
+
+			if ( $termId === 0 ) {
+				continue;
+			}
+
+			if ( $color !== '' ) {
+				update_term_meta( $termId, 'cf_color', $color );
+			}
+
+			$termIds[] = $termId;
 		}
-		$names = array_values( array_filter( array_map( 'strval', $raw ) ) );
-		wp_set_object_terms( $postId, $names, EventCategoryTaxonomy::SLUG );
+
+		wp_set_object_terms( $postId, $termIds, $taxonomy );
 	}
 
 	/**

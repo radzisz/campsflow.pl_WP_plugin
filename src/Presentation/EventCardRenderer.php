@@ -212,7 +212,9 @@ final class EventCardRenderer {
 		echo '<div class="cf-card__tags">';
 		foreach ( $filtered as $term ) {
 			assert( $term instanceof WP_Term );
-			echo '<span class="' . esc_attr( $tagClass ) . '">' . esc_html( $term->name ) . '</span>';
+			$color = (string) get_term_meta( $term->term_id, 'cf_color', true );
+			$style = $color !== '' ? ' style="background-color:' . esc_attr( $color ) . '"' : '';
+			echo '<span class="' . esc_attr( $tagClass ) . '"' . $style . '>' . esc_html( $term->name ) . '</span>';
 		}
 		echo '</div>';
 	}
