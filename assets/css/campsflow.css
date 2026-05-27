@@ -127,6 +127,15 @@
 
 .cf-card__footer .cf-btn { margin-left: 0; }
 
+.cf-card__section-label {
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--cf-muted);
+    margin: .25rem 0 .15rem;
+}
+
 .cf-card__location {
     font-size: .85rem;
     color: var(--cf-muted);

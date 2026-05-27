@@ -35,18 +35,28 @@ final class EventsEndpoint {
 	}
 
 	public function handle( WP_REST_Request $request ): WP_REST_Response {
-		$category     = sanitize_text_field( (string) $request->get_param( 'category' ) );
-		$age          = sanitize_text_field( (string) $request->get_param( 'age' ) );
-		$childAge     = absint( $request->get_param( 'childAge' ) );
-		$destination  = sanitize_text_field( (string) $request->get_param( 'destination' ) );
-		$transport    = sanitize_text_field( (string) $request->get_param( 'transport' ) );
-		$eventClass   = sanitize_text_field( (string) $request->get_param( 'eventClass' ) );
-		$dateFrom     = sanitize_text_field( (string) $request->get_param( 'dateFrom' ) );
-		$dateTo       = sanitize_text_field( (string) $request->get_param( 'dateTo' ) );
-		$sort         = sanitize_text_field( (string) $request->get_param( 'sort' ) );
-		$locationMode = in_array( $request->get_param( 'locationMode' ), array( 'country_dest', 'country_dest_city' ), true )
-			? (string) $request->get_param( 'locationMode' )
-			: 'country_dest';
+		$category    = sanitize_text_field( (string) $request->get_param( 'category' ) );
+		$age         = sanitize_text_field( (string) $request->get_param( 'age' ) );
+		$childAge    = absint( $request->get_param( 'childAge' ) );
+		$destination = sanitize_text_field( (string) $request->get_param( 'destination' ) );
+		$transport   = sanitize_text_field( (string) $request->get_param( 'transport' ) );
+		$eventClass  = sanitize_text_field( (string) $request->get_param( 'eventClass' ) );
+		$dateFrom    = sanitize_text_field( (string) $request->get_param( 'dateFrom' ) );
+		$dateTo      = sanitize_text_field( (string) $request->get_param( 'dateTo' ) );
+		$sort        = sanitize_text_field( (string) $request->get_param( 'sort' ) );
+		$lm          = sanitize_text_field( (string) $request->get_param( 'locationMode' ) );
+		$config      = array(
+			'location_mode'      => $lm === 'country_dest_city' ? 'country_dest_city' : 'country_dest',
+			'show_profile_tags'  => $request->get_param( 'showProfileTags' ) !== '0',
+			'profile_tags_label' => sanitize_text_field( (string) $request->get_param( 'profileTagsLabel' ) ),
+			'show_age_tags'      => $request->get_param( 'showAgeTags' ) !== '0',
+			'age_tags_label'     => sanitize_text_field( (string) $request->get_param( 'ageTagsLabel' ) ),
+			'show_date'          => $request->get_param( 'showDate' ) !== '0',
+			'date_label'         => sanitize_text_field( (string) $request->get_param( 'dateLabel' ) ),
+			'show_location'      => $request->get_param( 'showLocation' ) !== '0',
+			'location_label'     => sanitize_text_field( (string) $request->get_param( 'locationLabel' ) ),
+			'button_text'        => sanitize_text_field( (string) $request->get_param( 'buttonText' ) ),
+		);
 
 		$taxQuery = array( 'relation' => 'AND' );
 		if ( $category ) {
@@ -139,7 +149,7 @@ final class EventsEndpoint {
 
 		$query    = new WP_Query( $args );
 		$postIds  = array_map( static fn( $p ) => (int) ( $p instanceof \WP_Post ? $p->ID : $p ), (array) $query->posts );
-		$renderer = new EventCardRenderer( $locationMode );
+		$renderer = new EventCardRenderer( $config );
 		$html     = $postIds ? $renderer->renderGrid( $postIds ) : $renderer->renderEmpty();
 
 		return new WP_REST_Response( array( 'html' => $html ), 200 );

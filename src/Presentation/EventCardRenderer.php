@@ -6,10 +6,37 @@ namespace Campsflow\Presentation;
 use Campsflow\PostType\SessionPostType;
 use Campsflow\Sync\AvailabilityBucket;
 use WP_Query;
+use WP_Term;
 
 final class EventCardRenderer {
 
-	public function __construct( private readonly string $locationMode = 'country_dest' ) {}
+	private string $locationMode;
+	private bool $showProfileTags;
+	private string $profileTagsLabel;
+	private bool $showAgeTags;
+	private string $ageTagsLabel;
+	private bool $showDate;
+	private string $dateLabel;
+	private bool $showLocation;
+	private string $locationLabel;
+	private string $buttonText;
+
+	/**
+	 * @param array<string, mixed> $config
+	 */
+	public function __construct( array $config = array() ) {
+		$lm                     = (string) ( $config['location_mode'] ?? '' );
+		$this->locationMode     = $lm === 'country_dest_city' ? 'country_dest_city' : 'country_dest';
+		$this->showProfileTags  = (bool) ( $config['show_profile_tags'] ?? true );
+		$this->profileTagsLabel = (string) ( $config['profile_tags_label'] ?? '' );
+		$this->showAgeTags      = (bool) ( $config['show_age_tags'] ?? true );
+		$this->ageTagsLabel     = (string) ( $config['age_tags_label'] ?? '' );
+		$this->showDate         = (bool) ( $config['show_date'] ?? true );
+		$this->dateLabel        = (string) ( $config['date_label'] ?? '' );
+		$this->showLocation     = (bool) ( $config['show_location'] ?? true );
+		$this->locationLabel    = (string) ( $config['location_label'] ?? '' );
+		$this->buttonText       = (string) ( $config['button_text'] ?? '' );
+	}
 
 	public function renderCard( int $eventId ): string {
 		$leadImg   = (string) get_post_meta( $eventId, 'cf_lead_image_url', true );
@@ -19,6 +46,7 @@ final class EventCardRenderer {
 		$link      = $permalink ? (string) $permalink : '#';
 		$minPrice  = (int) get_post_meta( $eventId, 'cf_event_min_price', true );
 		$sessionId = $this->nearestMatchingSession( $eventId );
+		$btnText   = $this->buttonText !== '' ? $this->buttonText : __( 'Szczegóły', 'campsflow' );
 
 		ob_start();
 
@@ -41,7 +69,7 @@ final class EventCardRenderer {
 		if ( $minPrice > 0 ) {
 			echo '<span class="cf-card__price">' . esc_html( $this->formatPrice( $minPrice ) ) . ' /os.</span>';
 		}
-		echo '<a class="cf-btn" href="' . esc_url( $link ) . '">' . esc_html__( 'Szczegóły', 'campsflow' ) . '</a>';
+		echo '<a class="cf-btn" href="' . esc_url( $link ) . '">' . esc_html( $btnText ) . '</a>';
 		echo '</div>';
 
 		echo '</div></article>';
@@ -144,34 +172,42 @@ final class EventCardRenderer {
 	}
 
 	private function renderCardTerms( int $eventId ): void {
-		$profiles  = wp_get_post_terms( $eventId, 'cf_event_category' );
-		$ageGroups = wp_get_post_terms( $eventId, 'cf_age_group' );
-
-		if ( is_wp_error( $profiles ) ) {
-			$profiles = array();
-		}
-		if ( is_wp_error( $ageGroups ) ) {
-			$ageGroups = array();
+		if ( $this->showProfileTags ) {
+			$raw = wp_get_post_terms( $eventId, 'cf_event_category' );
+			if ( ! is_wp_error( $raw ) ) {
+				$this->renderTermGroup( $raw, 'cf-tag', $this->profileTagsLabel );
+			}
 		}
 
-		if ( empty( $profiles ) && empty( $ageGroups ) ) {
+		if ( $this->showAgeTags ) {
+			$raw = wp_get_post_terms( $eventId, 'cf_age_group' );
+			if ( ! is_wp_error( $raw ) ) {
+				$this->renderTermGroup( $raw, 'cf-tag cf-tag--age', $this->ageTagsLabel );
+			}
+		}
+	}
+
+	/**
+	 * @param WP_Term[]|int[] $terms
+	 */
+	private function renderTermGroup( array $terms, string $tagClass, string $label ): void {
+		$filtered = array_filter( $terms, static fn( mixed $t ) => $t instanceof WP_Term );
+		if ( empty( $filtered ) ) {
 			return;
 		}
-
-		echo '<div class="cf-card__tags">';
-		foreach ( $profiles as $term ) {
-			assert( is_object( $term ) && isset( $term->name ) );
-			echo '<span class="cf-tag">' . esc_html( $term->name ) . '</span>';
+		if ( $label !== '' ) {
+			echo '<p class="cf-card__section-label">' . esc_html( $label ) . '</p>';
 		}
-		foreach ( $ageGroups as $term ) {
-			assert( is_object( $term ) && isset( $term->name ) );
-			echo '<span class="cf-tag cf-tag--age">' . esc_html( $term->name ) . '</span>';
+		echo '<div class="cf-card__tags">';
+		foreach ( $filtered as $term ) {
+			assert( $term instanceof WP_Term );
+			echo '<span class="' . esc_attr( $tagClass ) . '">' . esc_html( $term->name ) . '</span>';
 		}
 		echo '</div>';
 	}
 
 	private function renderCardDate( ?int $sessionId ): void {
-		if ( $sessionId === null ) {
+		if ( ! $this->showDate || $sessionId === null ) {
 			return;
 		}
 
@@ -198,10 +234,17 @@ final class EventCardRenderer {
 			$label   .= ' – ' . $t->format( 'd.m.Y' ) . ' / ' . $days . ' ' . $unit;
 		}
 
+		if ( $this->dateLabel !== '' ) {
+			echo '<p class="cf-card__section-label">' . esc_html( $this->dateLabel ) . '</p>';
+		}
 		echo '<p class="cf-card__date">' . esc_html( $label ) . '</p>';
 	}
 
 	private function renderCardLocation( int $eventId ): void {
+		if ( ! $this->showLocation ) {
+			return;
+		}
+
 		$locRaw = (string) get_post_meta( $eventId, 'cf_localization', true );
 		if ( ! $locRaw ) {
 			return;
@@ -226,6 +269,9 @@ final class EventCardRenderer {
 			return;
 		}
 
+		if ( $this->locationLabel !== '' ) {
+			echo '<p class="cf-card__section-label">' . esc_html( $this->locationLabel ) . '</p>';
+		}
 		echo '<p class="cf-card__location">' . esc_html( implode( ' / ', $parts ) ) . '</p>';
 	}
 

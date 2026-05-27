@@ -42,7 +42,6 @@ final class SearchResultsWidget extends Widget_Base {
 				'content_classes' => 'elementor-descriptor',
 			)
 		);
-
 		$this->add_control(
 			'columns',
 			array(
@@ -54,36 +53,176 @@ final class SearchResultsWidget extends Widget_Base {
 				'step'    => 1,
 			)
 		);
+		$this->end_controls_section();
+		$this->registerCardSection();
+	}
 
-		$this->add_control(
-			'location_mode',
+	private function registerCardSection(): void {
+		$this->start_controls_section(
+			'section_card',
 			array(
-				'label'   => __( 'Format lokalizacji', 'campsflow' ),
-				'type'    => Controls_Manager::SELECT,
-				'default' => 'country_dest',
-				'options' => array(
-					'country_dest'      => __( 'Kraj / Destynacja', 'campsflow' ),
-					'country_dest_city' => __( 'Kraj / Destynacja / Miasto', 'campsflow' ),
-				),
+				'label' => __( 'Karta wynikowa', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_CONTENT,
 			)
 		);
-
+		$this->registerCardTagControls();
+		$this->registerCardInfoControls();
+		$this->add_control(
+			'button_text',
+			array(
+				'label'       => __( 'Tekst przycisku', 'campsflow' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => '',
+				'placeholder' => __( 'Szczegóły', 'campsflow' ),
+			)
+		);
 		$this->end_controls_section();
 	}
 
+	private function registerCardTagControls(): void {
+		$this->add_control(
+			'show_profile_tags',
+			array(
+				'label'     => __( 'Pokaż profil obozu', 'campsflow' ),
+				'type'      => Controls_Manager::SWITCHER,
+				'default'   => 'yes',
+				'label_on'  => __( 'Tak', 'campsflow' ),
+				'label_off' => __( 'Nie', 'campsflow' ),
+			)
+		);
+		$this->add_control(
+			'profile_tags_label',
+			array(
+				'label'     => __( 'Nagłówek (profil)', 'campsflow' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => '',
+				'condition' => array( 'show_profile_tags' => 'yes' ),
+			)
+		);
+		$this->add_control(
+			'show_age_tags',
+			array(
+				'label'     => __( 'Pokaż grupę wiekową', 'campsflow' ),
+				'type'      => Controls_Manager::SWITCHER,
+				'default'   => 'yes',
+				'label_on'  => __( 'Tak', 'campsflow' ),
+				'label_off' => __( 'Nie', 'campsflow' ),
+			)
+		);
+		$this->add_control(
+			'age_tags_label',
+			array(
+				'label'     => __( 'Nagłówek (wiek)', 'campsflow' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => '',
+				'condition' => array( 'show_age_tags' => 'yes' ),
+			)
+		);
+	}
+
+	private function registerCardInfoControls(): void {
+		$this->add_control(
+			'show_date',
+			array(
+				'label'     => __( 'Pokaż datę', 'campsflow' ),
+				'type'      => Controls_Manager::SWITCHER,
+				'default'   => 'yes',
+				'label_on'  => __( 'Tak', 'campsflow' ),
+				'label_off' => __( 'Nie', 'campsflow' ),
+			)
+		);
+		$this->add_control(
+			'date_label',
+			array(
+				'label'     => __( 'Nagłówek (data)', 'campsflow' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => '',
+				'condition' => array( 'show_date' => 'yes' ),
+			)
+		);
+		$this->add_control(
+			'show_location',
+			array(
+				'label'     => __( 'Pokaż lokalizację', 'campsflow' ),
+				'type'      => Controls_Manager::SWITCHER,
+				'default'   => 'yes',
+				'label_on'  => __( 'Tak', 'campsflow' ),
+				'label_off' => __( 'Nie', 'campsflow' ),
+			)
+		);
+		$this->add_control(
+			'location_label',
+			array(
+				'label'     => __( 'Nagłówek (lokalizacja)', 'campsflow' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => '',
+				'condition' => array( 'show_location' => 'yes' ),
+			)
+		);
+		$this->add_control(
+			'location_mode',
+			array(
+				'label'     => __( 'Format lokalizacji', 'campsflow' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'country_dest',
+				'options'   => array(
+					'country_dest'      => __( 'Kraj / Destynacja', 'campsflow' ),
+					'country_dest_city' => __( 'Kraj / Destynacja / Miasto', 'campsflow' ),
+				),
+				'condition' => array( 'show_location' => 'yes' ),
+			)
+		);
+	}
+
 	protected function render(): void {
-		$s            = $this->get_settings_for_display();
-		$columns      = max( 1, min( 4, (int) ( $s['columns'] ?? 3 ) ) );
-		$locationMode = in_array( $s['location_mode'] ?? '', array( 'country_dest', 'country_dest_city' ), true )
-			? (string) $s['location_mode']
-			: 'country_dest';
-		$endpoint     = add_query_arg( 'locationMode', $locationMode, rest_url( 'campsflow/v1/events' ) );
-		$postIds      = $this->queryEventIds();
-		$renderer     = new EventCardRenderer( $locationMode );
+		$s        = $this->get_settings_for_display();
+		$columns  = max( 1, min( 4, (int) ( $s['columns'] ?? 3 ) ) );
+		$config   = $this->buildCardConfig( $s );
+		$endpoint = add_query_arg( $this->buildEndpointParams( $config ), rest_url( 'campsflow/v1/events' ) );
+		$postIds  = $this->queryEventIds();
+		$renderer = new EventCardRenderer( $config );
 
 		echo '<div class="cf-search-results" data-endpoint="' . esc_url( $endpoint ) . '" style="--cf-columns:' . esc_attr( (string) $columns ) . '">';
 		echo $postIds ? $renderer->renderGrid( $postIds ) : $renderer->renderEmpty(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '</div>';
+	}
+
+	/**
+	 * @param array<string, mixed> $s
+	 * @return array<string, mixed>
+	 */
+	private function buildCardConfig( array $s ): array {
+		return array(
+			'location_mode'      => in_array( $s['location_mode'] ?? '', array( 'country_dest', 'country_dest_city' ), true ) ? (string) $s['location_mode'] : 'country_dest',
+			'show_profile_tags'  => ( $s['show_profile_tags'] ?? 'yes' ) === 'yes',
+			'profile_tags_label' => (string) ( $s['profile_tags_label'] ?? '' ),
+			'show_age_tags'      => ( $s['show_age_tags'] ?? 'yes' ) === 'yes',
+			'age_tags_label'     => (string) ( $s['age_tags_label'] ?? '' ),
+			'show_date'          => ( $s['show_date'] ?? 'yes' ) === 'yes',
+			'date_label'         => (string) ( $s['date_label'] ?? '' ),
+			'show_location'      => ( $s['show_location'] ?? 'yes' ) === 'yes',
+			'location_label'     => (string) ( $s['location_label'] ?? '' ),
+			'button_text'        => (string) ( $s['button_text'] ?? '' ),
+		);
+	}
+
+	/**
+	 * @param array<string, mixed> $config
+	 * @return array<string, string>
+	 */
+	private function buildEndpointParams( array $config ): array {
+		return array(
+			'locationMode'     => (string) $config['location_mode'],
+			'showProfileTags'  => $config['show_profile_tags'] ? '1' : '0',
+			'profileTagsLabel' => (string) $config['profile_tags_label'],
+			'showAgeTags'      => $config['show_age_tags'] ? '1' : '0',
+			'ageTagsLabel'     => (string) $config['age_tags_label'],
+			'showDate'         => $config['show_date'] ? '1' : '0',
+			'dateLabel'        => (string) $config['date_label'],
+			'showLocation'     => $config['show_location'] ? '1' : '0',
+			'locationLabel'    => (string) $config['location_label'],
+			'buttonText'       => (string) $config['button_text'],
+		);
 	}
 
 	/**
