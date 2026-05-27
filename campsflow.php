@@ -81,6 +81,8 @@ add_action(
 		( new Taxonomy\TransportTypeTaxonomy() )->register();
 		( new Presentation\ListingShortcode() )->register();
 		( new Presentation\EventShortcodes() )->register();
+		( new Presentation\SearchFilterShortcode() )->register();
+		( new Presentation\SearchResultsShortcode() )->register();
 		( new Presentation\TemplateLoader() )->register();
 		( new Presentation\ElementorIntegration() )->register();
 		( new Presentation\WpBakeryIntegration() )->register();

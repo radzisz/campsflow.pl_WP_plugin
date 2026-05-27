@@ -16,10 +16,59 @@ final class WpBakeryIntegration {
 
 	public function mapElements(): void {
 		$this->mapListing();
+		$this->mapSearchFilter();
+		$this->mapSearchResults();
 		$this->mapEventMeta();
 		$this->mapEventSessions();
 		$this->mapEventTags();
 		$this->mapEventAgeGroups();
+	}
+
+	private function mapSearchFilter(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Filtry wyszukiwania', 'campsflow' ),
+				'base'        => 'campsflow_search_filter',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-search',
+				'description' => __( 'Formularz filtrów AJAX — umieść obok widgetu Wyniki wyszukiwania', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Widoczne pola', 'campsflow' ),
+						'param_name'  => 'fields',
+						'value'       => 'category,age,destination,transport,child_age,dates',
+						'description' => __( 'Lista pól oddzielona przecinkami: category, age, destination, transport, child_age, dates', 'campsflow' ),
+					),
+				),
+			)
+		);
+	}
+
+	private function mapSearchResults(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Wyniki wyszukiwania', 'campsflow' ),
+				'base'        => 'campsflow_search_results',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-grid-view',
+				'description' => __( 'Siatka wyników reagująca na filtry AJAX', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Kolumny', 'campsflow' ),
+						'param_name' => 'columns',
+						'value'      => array(
+							'1' => '1',
+							'2' => '2',
+							'3' => '3',
+							'4' => '4',
+						),
+						'std'        => '3',
+					),
+				),
+			)
+		);
 	}
 
 	private function mapListing(): void {

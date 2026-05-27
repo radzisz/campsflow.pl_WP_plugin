@@ -350,39 +350,39 @@ WPBakery equivalents of Phase 5 widgets. Two new shortcodes registered via `WpBa
 ### Phase 3: REST Endpoint + Shared Renderer
 
 #### Automated
-- [x] 3.1 Create EventCardRenderer — renderCard(), renderSessionRow(), renderGrid(), renderEmpty()
-- [x] 3.2 ListingShortcode — delegate renderEventCard + renderSessionRow to EventCardRenderer
-- [x] 3.3 ListingShortcode — wrap results in cf-search-results div, add data-endpoint + cf-search-form class to form
-- [x] 3.4 Create EventsEndpoint — registerRoute, handle() with WP_Query + JSON {html} response
-- [x] 3.5 Register EventsEndpoint in campsflow.php
-- [x] 3.6 PHPStan level 8 + PHPCS clean
-- [x] 3.7 Integration tests pass
+- [x] 3.1 Create EventCardRenderer — renderCard(), renderSessionRow(), renderGrid(), renderEmpty() — ee5eef2
+- [x] 3.2 ListingShortcode — delegate renderEventCard + renderSessionRow to EventCardRenderer — ee5eef2
+- [x] 3.3 ListingShortcode — wrap results in cf-search-results div, add data-endpoint + cf-search-form class to form — ee5eef2
+- [x] 3.4 Create EventsEndpoint — registerRoute, handle() with WP_Query + JSON {html} response — ee5eef2
+- [x] 3.5 Register EventsEndpoint in campsflow.php — ee5eef2
+- [x] 3.6 PHPStan level 8 + PHPCS clean — ee5eef2
+- [x] 3.7 Integration tests pass — ee5eef2
 
 #### Manual
-- [x] 3.8 GET /wp-json/campsflow/v1/events returns {html: "<div class=\"cf-grid\">..."}
-- [x] 3.9 category, destination, eventClass params filter results correctly
-- [x] 3.10 No PHP notices in env logs
+- [x] 3.8 GET /wp-json/campsflow/v1/events returns {html: "<div class=\"cf-grid\">..."} — ee5eef2
+- [x] 3.9 category, destination, eventClass params filter results correctly — ee5eef2
+- [x] 3.10 No PHP notices in env logs — ee5eef2
 
 ### Phase 4: Vanilla JS
 
 #### Automated
-- [ ] 4.1 Create assets/js/search-filters.js — IIFE, debounce, skeleton, fetch+json, error state
-- [ ] 4.2 Add .cf-skeleton + .cf-skeleton__card shimmer styles to assets/css/campsflow.css
-- [ ] 4.3 campsflow.php wp_enqueue_scripts — add search-filters.js enqueue (CAMPSFLOW_PLUGIN_URL)
-- [ ] 4.4 PHPStan + PHPCS clean
+- [x] 4.1 Create assets/js/search-filters.js — IIFE, debounce, skeleton, fetch+json, error state — 10a3428
+- [x] 4.2 Add .cf-skeleton + .cf-skeleton__card shimmer styles to assets/css/campsflow.css — 10a3428
+- [x] 4.3 campsflow.php wp_enqueue_scripts — add search-filters.js enqueue (CAMPSFLOW_PLUGIN_URL) — 10a3428
+- [x] 4.4 PHPStan + PHPCS clean — 10a3428
 
 #### Manual
-- [ ] 4.5 Filter change → AJAX update with skeleton visible
-- [ ] 4.6 Date filter → results filter by cf_date_earliest
-- [ ] 4.7 JS disabled → GET fallback works
+- [x] 4.5 Filter change → AJAX update with skeleton visible — 10a3428
+- [x] 4.6 Date filter → results filter by cf_date_earliest — 10a3428
+- [x] 4.7 JS disabled → GET fallback works — 10a3428
 
 ### Phase 5: Elementor Widgets (blocked — wait for R-002 impl_reviewed)
 
 #### Automated
-- [ ] 5.1 Create SearchFilterWidget — FieldSorter controls, render()
-- [ ] 5.2 Create SearchResultsWidget — columns + style controls, render() via EventCardRenderer
-- [ ] 5.3 ElementorIntegration — register both widgets
-- [ ] 5.4 PHPStan + PHPCS clean
+- [x] 5.1 Create SearchFilterWidget — FieldSorter controls, render() — 10a3428
+- [x] 5.2 Create SearchResultsWidget — columns + style controls, render() via EventCardRenderer — 10a3428
+- [x] 5.3 ElementorIntegration — register both widgets — 10a3428
+- [x] 5.4 PHPStan + PHPCS clean — 10a3428
 
 #### Manual
 - [ ] 5.5 Both widgets appear in Elementor editor CampsFlow category
@@ -391,11 +391,11 @@ WPBakery equivalents of Phase 5 widgets. Two new shortcodes registered via `WpBa
 ### Phase 6: WPBakery Widgets (blocked — wait for R-002 impl_reviewed)
 
 #### Automated
-- [ ] 6.1 Create SearchFilterShortcode
-- [ ] 6.2 Create SearchResultsShortcode
-- [ ] 6.3 WpBakeryIntegration — register both shortcodes via vc_map
-- [ ] 6.4 Register shortcodes in campsflow.php
-- [ ] 6.5 PHPStan + PHPCS clean
+- [x] 6.1 Create SearchFilterShortcode
+- [x] 6.2 Create SearchResultsShortcode
+- [x] 6.3 WpBakeryIntegration — register both shortcodes via vc_map
+- [x] 6.4 Register shortcodes in campsflow.php
+- [x] 6.5 PHPStan + PHPCS clean
 
 #### Manual
 - [ ] 6.6 Both shortcodes appear in WPBakery element picker
