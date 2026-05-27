@@ -108,7 +108,7 @@ final class ListingShortcode {
 		);
 
 		if ( ! $query->have_posts() ) {
-			echo '<p class="cf-empty">' . esc_html__( 'Brak imprez spełniających kryteria.', 'campsflow' ) . '</p>';
+			echo '<p class="cf-empty">' . esc_html__( 'Brak wydarzeń spełniających kryteria.', 'campsflow' ) . '</p>';
 			return;
 		}
 

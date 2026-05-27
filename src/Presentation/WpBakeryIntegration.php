@@ -29,17 +29,17 @@ final class WpBakeryIntegration {
 				'base'        => 'campsflow_listing',
 				'category'    => 'CampsFlow',
 				'icon'        => 'dashicons-flag',
-				'description' => __( 'Wyświetla listę imprez lub turnusów z filtrami', 'campsflow' ),
+				'description' => __( 'Wyświetla listę wydarzeń lub turnusów z filtrami', 'campsflow' ),
 				'params'      => array(
 					array(
 						'type'        => 'dropdown',
 						'heading'     => __( 'Widok', 'campsflow' ),
 						'param_name'  => 'view',
 						'value'       => array(
-							__( 'Lista imprez', 'campsflow' ) => 'events',
+							__( 'Lista wydarzeń', 'campsflow' ) => 'events',
 							__( 'Lista turnusów (płaska)', 'campsflow' ) => 'sessions',
 						),
-						'description' => __( 'Imprezowy — z wyborem turnusu. Płaski — bezpośrednie zapisy.', 'campsflow' ),
+						'description' => __( 'Wydarzeniowy — z wyborem turnusu. Płaski — bezpośrednie zapisy.', 'campsflow' ),
 					),
 					array(
 						'type'       => 'dropdown',
@@ -61,11 +61,11 @@ final class WpBakeryIntegration {
 	private function mapEventMeta(): void {
 		vc_map(
 			array(
-				'name'        => __( 'CampsFlow — Szczegóły imprezy', 'campsflow' ),
+				'name'        => __( 'CampsFlow — Szczegóły wydarzenia', 'campsflow' ),
 				'base'        => 'campsflow_event_meta',
 				'category'    => 'CampsFlow',
 				'icon'        => 'dashicons-info-outline',
-				'description' => __( 'Lokalizacja, tagi i opis aktualnej imprezy', 'campsflow' ),
+				'description' => __( 'Lokalizacja, tagi i opis aktualnego wydarzenia', 'campsflow' ),
 				'params'      => array(
 					array(
 						'type'       => 'checkbox',
@@ -98,7 +98,7 @@ final class WpBakeryIntegration {
 				'base'        => 'campsflow_event_tags',
 				'category'    => 'CampsFlow',
 				'icon'        => 'dashicons-tag',
-				'description' => __( 'Tagi taksonomiczne imprezy jako pillsy', 'campsflow' ),
+				'description' => __( 'Tagi taksonomiczne wydarzenia jako pillsy', 'campsflow' ),
 				'params'      => array(
 					array(
 						'type'       => 'dropdown',
@@ -136,7 +136,7 @@ final class WpBakeryIntegration {
 				'base'        => 'campsflow_event_age_groups',
 				'category'    => 'CampsFlow',
 				'icon'        => 'dashicons-groups',
-				'description' => __( 'Grupy wiekowe imprezy jako pillsy', 'campsflow' ),
+				'description' => __( 'Grupy wiekowe wydarzenia jako pillsy', 'campsflow' ),
 				'params'      => array(
 					array(
 						'type'       => 'dropdown',

@@ -68,8 +68,8 @@ final class ElementorLinks {
 			);
 			add_submenu_page(
 				'edit.php?post_type=' . EventPostType::SLUG,
-				__( 'Szablon strony imprezy (Elementor Pro)', 'campsflow' ),
-				__( '✏ Szablon imprezy', 'campsflow' ),
+				__( 'Szablon strony wydarzenia (Elementor Pro)', 'campsflow' ),
+				__( '✏ Szablon wydarzenia', 'campsflow' ),
 				'manage_options',
 				'cf-edit-single',
 				static function () use ( $themeBuilderUrl ): void {

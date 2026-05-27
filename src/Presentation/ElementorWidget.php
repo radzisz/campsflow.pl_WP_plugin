@@ -48,7 +48,7 @@ final class ElementorWidget extends Widget_Base {
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'events',
 				'options' => array(
-					'events'   => __( 'Lista imprez', 'campsflow' ),
+					'events'   => __( 'Lista wydarzeń', 'campsflow' ),
 					'sessions' => __( 'Lista turnusów (płaska)', 'campsflow' ),
 				),
 			)
@@ -134,7 +134,7 @@ final class ElementorWidget extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_card',
 			array(
-				'label' => __( 'Karta imprezy', 'campsflow' ),
+				'label' => __( 'Karta wydarzenia', 'campsflow' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			)
 		);
@@ -196,7 +196,7 @@ final class ElementorWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			array(
 				'name'     => 'title_typography',
-				'label'    => __( 'Tytuł imprezy', 'campsflow' ),
+				'label'    => __( 'Tytuł wydarzenia', 'campsflow' ),
 				'selector' => '{{WRAPPER}} .cf-card__title, {{WRAPPER}} .cf-sessions-flat__event',
 			)
 		);

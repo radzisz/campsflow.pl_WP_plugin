@@ -18,11 +18,11 @@ final class EventPostType {
 			self::SLUG,
 			array(
 				'labels'            => array(
-					'name'          => __( 'Imprezy', 'campsflow' ),
-					'singular_name' => __( 'Impreza', 'campsflow' ),
+					'name'          => __( 'Wydarzenia', 'campsflow' ),
+					'singular_name' => __( 'Wydarzenie', 'campsflow' ),
 					'menu_name'     => __( 'CampsFlow', 'campsflow' ),
-					'all_items'     => __( 'Imprezy', 'campsflow' ),
-					'search_items'  => __( 'Szukaj imprez', 'campsflow' ),
+					'all_items'     => __( 'Wydarzenia', 'campsflow' ),
+					'search_items'  => __( 'Szukaj wydarzeń', 'campsflow' ),
 					'not_found'     => __( 'Nie znaleziono wydarzeń. Uruchom synchronizację.', 'campsflow' ),
 				),
 				'public'            => true,

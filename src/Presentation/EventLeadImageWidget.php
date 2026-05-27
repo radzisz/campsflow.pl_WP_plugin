@@ -42,7 +42,7 @@ final class EventLeadImageWidget extends Widget_Base {
 			array(
 				'label'       => __( 'Tekst alternatywny (alt)', 'campsflow' ),
 				'type'        => Controls_Manager::TEXT,
-				'description' => __( 'Jeśli puste, użyty zostanie tytuł imprezy.', 'campsflow' ),
+				'description' => __( 'Jeśli puste, użyty zostanie tytuł wydarzenia.', 'campsflow' ),
 			)
 		);
 		$this->add_control(

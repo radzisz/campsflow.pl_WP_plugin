@@ -15,7 +15,7 @@ final class EventFieldWidget extends Widget_Base {
 	}
 
 	public function get_title(): string {
-		return __( 'CampsFlow — Pole imprezy', 'campsflow' );
+		return __( 'CampsFlow — Pole wydarzenia', 'campsflow' );
 	}
 
 	public function get_icon(): string {
@@ -27,7 +27,7 @@ final class EventFieldWidget extends Widget_Base {
 	}
 
 	public function get_keywords(): array {
-		return array( 'pole', 'impreza', 'campsflow', 'event', 'field' );
+		return array( 'pole', 'wydarzenie', 'campsflow', 'event', 'field' );
 	}
 
 	protected function register_controls(): void {
@@ -52,7 +52,7 @@ final class EventFieldWidget extends Widget_Base {
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'post_title',
 				'options' => array(
-					'post_title'            => __( 'Tytuł imprezy', 'campsflow' ),
+					'post_title'            => __( 'Tytuł wydarzenia', 'campsflow' ),
 					'cf_reservation_url'    => __( 'URL rezerwacji', 'campsflow' ),
 					'cf_lead_image_url'     => __( 'URL zdjęcia głównego (surowy)', 'campsflow' ),
 					'cf_lead_video_url'     => __( 'URL wideo głównego (surowy)', 'campsflow' ),
@@ -236,12 +236,12 @@ final class EventFieldWidget extends Widget_Base {
 	private function buildCustomFieldOptions(): array {
 		$postId = (int) get_the_ID();
 		if ( ! $postId ) {
-			return array( '' => __( '(otwórz na stronie imprezy)', 'campsflow' ) );
+			return array( '' => __( '(otwórz na stronie wydarzenia)', 'campsflow' ) );
 		}
 		$raw    = (string) get_post_meta( $postId, 'cf_custom_fields', true );
 		$fields = json_decode( $raw, true );
 		if ( ! is_array( $fields ) || empty( $fields ) ) {
-			return array( '' => __( '(brak pól własnych w tej imprezie)', 'campsflow' ) );
+			return array( '' => __( '(brak pól własnych w tym wydarzeniu)', 'campsflow' ) );
 		}
 		$options = array( '' => __( '— wybierz pole —', 'campsflow' ) );
 		foreach ( $fields as $item ) {
