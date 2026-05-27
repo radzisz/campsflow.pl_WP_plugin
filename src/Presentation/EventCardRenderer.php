@@ -211,11 +211,10 @@ final class EventCardRenderer {
 		}
 
 		$address = is_array( $loc['address'] ?? null ) ? $loc['address'] : array();
-		$country = (string) ( $address['country'] ?? $loc['country'] ?? '' );
 		$dest    = (string) ( $loc['destination'] ?? '' );
 		$city    = (string) ( $address['city'] ?? '' );
 
-		$parts = array_values( array_filter( array( $country, $dest, $city ) ) );
+		$parts = array_values( array_filter( array( $dest, $city ) ) );
 		if ( empty( $parts ) ) {
 			return;
 		}
