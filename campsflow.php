@@ -71,6 +71,11 @@ register_deactivation_hook(
 add_action(
 	'plugins_loaded',
 	static function (): void {
+		if ( get_option( 'campsflow_version' ) !== CAMPSFLOW_VERSION ) {
+			Presentation\RegistrationFormShortcode::createPageIfMissing();
+			update_option( 'campsflow_version', CAMPSFLOW_VERSION );
+		}
+
 		( new Sync\SyncScheduler() )->register();
 		( new PostType\PostStatus() )->register();
 		( new PostType\EventPostType() )->register();
