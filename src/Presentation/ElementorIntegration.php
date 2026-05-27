@@ -23,7 +23,6 @@ final class ElementorIntegration {
 		$manager->register( new EventLeadVideoWidget() );
 		$manager->register( new EventGalleryWidget() );
 		$manager->register( new EventTagsWidget() );
-		$manager->register( new EventAgeGroupWidget() );
 		$manager->register( new SearchFilterWidget() );
 		$manager->register( new SearchFilterFieldWidget() );
 		$manager->register( new SearchSortWidget() );

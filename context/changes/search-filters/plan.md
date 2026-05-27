@@ -391,11 +391,11 @@ WPBakery equivalents of Phase 5 widgets. Two new shortcodes registered via `WpBa
 ### Phase 6: WPBakery Widgets (blocked — wait for R-002 impl_reviewed)
 
 #### Automated
-- [x] 6.1 Create SearchFilterShortcode
-- [x] 6.2 Create SearchResultsShortcode
-- [x] 6.3 WpBakeryIntegration — register both shortcodes via vc_map
-- [x] 6.4 Register shortcodes in campsflow.php
-- [x] 6.5 PHPStan + PHPCS clean
+- [x] 6.1 Create SearchFilterShortcode — c2f68d6
+- [x] 6.2 Create SearchResultsShortcode — c2f68d6
+- [x] 6.3 WpBakeryIntegration — register both shortcodes via vc_map — c2f68d6
+- [x] 6.4 Register shortcodes in campsflow.php — c2f68d6
+- [x] 6.5 PHPStan + PHPCS clean — c2f68d6
 
 #### Manual
 - [ ] 6.6 Both shortcodes appear in WPBakery element picker

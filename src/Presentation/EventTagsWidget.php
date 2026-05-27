@@ -39,6 +39,19 @@ final class EventTagsWidget extends Widget_Base {
 			)
 		);
 		$this->add_control(
+			'taxonomy',
+			array(
+				'label'   => __( 'Rodzaj tagów', 'campsflow' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'cf_event_category',
+				'options' => array(
+					'cf_event_category' => __( 'Profil wydarzenia', 'campsflow' ),
+					'cf_event_tag'      => __( 'Tagi marketingowe', 'campsflow' ),
+					'cf_age_group'      => __( 'Grupy wiekowe', 'campsflow' ),
+				),
+			)
+		);
+		$this->add_control(
 			'show_label',
 			array(
 				'label'     => __( 'Pokaż nagłówek', 'campsflow' ),
@@ -152,6 +165,7 @@ final class EventTagsWidget extends Widget_Base {
 	protected function render(): void {
 		$s           = $this->get_settings_for_display();
 		$postId      = (int) get_the_ID();
+		$taxonomy    = sanitize_key( (string) ( $s['taxonomy'] ?? 'cf_event_category' ) );
 		$showLabel   = ( $s['show_label'] ?? '' ) === 'yes';
 		$labelText   = sanitize_text_field( (string) ( $s['label_text'] ?? '' ) );
 		$placeholder = sanitize_text_field( (string) ( $s['editor_placeholder'] ?? '' ) );
@@ -159,7 +173,13 @@ final class EventTagsWidget extends Widget_Base {
 		$maxTerms    = max( 0, (int) ( $s['max_terms'] ?? 0 ) );
 		$gap         = max( 0, (int) ( $s['pill_gap']['size'] ?? 6 ) );
 
-		$terms = $postId ? get_the_terms( $postId, 'cf_event_category' ) : false;
+		$pillClass = match ( $taxonomy ) {
+			'cf_event_tag' => 'cf-tag cf-tag--event',
+			'cf_age_group' => 'cf-tag cf-tag--age',
+			default        => 'cf-tag',
+		};
+
+		$terms = $postId ? get_the_terms( $postId, $taxonomy ) : false;
 		$terms = is_array( $terms ) ? $terms : array();
 
 		if ( 'name_asc' === $sortOrder ) {
@@ -191,7 +211,7 @@ final class EventTagsWidget extends Widget_Base {
 			echo '<div class="cf-tags__label">' . esc_html( $labelText ) . '</div>';
 		}
 		foreach ( $terms as $term ) {
-			echo '<span class="cf-tag">' . esc_html( $term->name ) . '</span>';
+			echo '<span class="' . esc_attr( $pillClass ) . '">' . esc_html( $term->name ) . '</span>';
 		}
 		echo '</div>';
 	}

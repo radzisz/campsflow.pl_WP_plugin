@@ -27,7 +27,7 @@ final class SearchSortWidget extends Widget_Base {
 	}
 
 	public function get_icon(): string {
-		return 'eicon-sort-amount-asc';
+		return 'eicon-sort-amount-desc';
 	}
 
 	public function get_categories(): array {
