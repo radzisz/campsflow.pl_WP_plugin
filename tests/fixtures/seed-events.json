@@ -10,11 +10,7 @@
     "minAge": 10,
     "maxAge": 16,
     "eventTags": [
-      {
-        "name": "hit sezonu",
-        "color": "#fb923c",
-        "visible": true
-      }
+      "hit sezonu"
     ],
     "eventProfile": [
       "active",
@@ -41,13 +37,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-fabryka-adrenaliny---myczkowce-2330167781-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-fabryka-adrenaliny---myczkowce-3791641291-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-fabryka-adrenaliny---myczkowce-3421668745-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-fabryka-adrenaliny---myczkowce-1217006076-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-fabryka-adrenaliny---myczkowce-2764507367-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-39-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-39-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-fabryka-adrenaliny---myczkowce-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-39-f-small-60-40-75-1.webp",
     "leadVideoUrl": "https://www.youtube.com/watch?v=A3gvUOYRRm3",
     "videoUrls": [
       "https://www.youtube.com/watch?v=A3gvUOYRRm3"
@@ -108,6 +101,7 @@
         "dateTo": "2026-06-30",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -160,6 +154,7 @@
         "dateTo": "2026-07-09",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -212,6 +207,7 @@
         "dateTo": "2026-07-18",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -253,6 +249,7 @@
         "dateTo": "2026-07-27",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -305,6 +302,7 @@
         "dateTo": "2026-08-05",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -342,18 +340,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Przygoda",
-        "color": "#fef08a",
-        "visible": true
-      },
-      {
-        "name": "Góry",
-        "color": "#d1fae5",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -369,11 +357,7 @@
     "minAge": 13,
     "maxAge": 17,
     "eventTags": [
-      {
-        "name": "nowość",
-        "color": "#fb923c",
-        "visible": true
-      }
+      "nowość"
     ],
     "eventProfile": [
       "chill",
@@ -400,12 +384,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-1489806273-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-1736249880-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-3983752069-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-118211453-4-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-93-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-93-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-chill-sea-camp---dzwirzyno-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-93-f-small-60-40-75-1.webp",
     "leadVideoUrl": null,
     "videoUrls": [
       null
@@ -466,6 +448,7 @@
         "dateTo": "2026-07-01",
         "numberOfDays": 11,
         "priceFrom": 349000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -518,6 +501,7 @@
         "dateTo": "2026-07-15",
         "numberOfDays": 11,
         "priceFrom": 349000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -559,6 +543,7 @@
         "dateTo": "2026-07-29",
         "numberOfDays": 11,
         "priceFrom": 349000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -611,6 +596,7 @@
         "dateTo": "2026-08-12",
         "numberOfDays": 11,
         "priceFrom": 349000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -652,6 +638,7 @@
         "dateTo": "2026-08-26",
         "numberOfDays": 11,
         "priceFrom": 349000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -700,18 +687,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -727,11 +704,7 @@
     "minAge": 12,
     "maxAge": 17,
     "eventTags": [
-      {
-        "name": "hit sezonu",
-        "color": "#fb923c",
-        "visible": true
-      }
+      "hit sezonu"
     ],
     "eventProfile": [
       "active",
@@ -758,13 +731,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-surf-camp---dzwirzyno-2310690720-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-surf-camp---dzwirzyno-1984580124-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-surf-camp---dzwirzyno-1585631990-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-surf-camp---dzwirzyno-3128957979-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-surf-camp---dzwirzyno-2252850379-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-48-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-48-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-surf-camp---dzwirzyno-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-48-f-small-60-40-75-1.webp",
     "leadVideoUrl": "https://www.youtube.com/watch?v=Ihd8Z3XQr-J",
     "videoUrls": [
       "https://www.youtube.com/watch?v=Ihd8Z3XQr-J"
@@ -825,6 +795,7 @@
         "dateTo": "2026-07-01",
         "numberOfDays": 11,
         "priceFrom": 359000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -877,6 +848,7 @@
         "dateTo": "2026-07-15",
         "numberOfDays": 11,
         "priceFrom": 359000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -929,6 +901,7 @@
         "dateTo": "2026-07-29",
         "numberOfDays": 11,
         "priceFrom": 359000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -970,6 +943,7 @@
         "dateTo": "2026-08-12",
         "numberOfDays": 11,
         "priceFrom": 359000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -1022,6 +996,7 @@
         "dateTo": "2026-08-26",
         "numberOfDays": 11,
         "priceFrom": 359000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -1059,18 +1034,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Surf",
-        "color": "#bae6fd",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -1086,11 +1051,7 @@
     "minAge": 13,
     "maxAge": 17,
     "eventTags": [
-      {
-        "name": "nowość",
-        "color": "#fb923c",
-        "visible": true
-      }
+      "nowość"
     ],
     "eventProfile": [
       "active",
@@ -1117,12 +1078,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-kite-camp---dzwirzyno-1290371837-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-kite-camp---dzwirzyno-2279273896-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-kite-camp---dzwirzyno-3948791878-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-kite-camp---dzwirzyno-1645232795-4-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-92-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-92-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-kite-camp---dzwirzyno-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-92-f-small-60-40-75-1.webp",
     "leadVideoUrl": null,
     "videoUrls": [
       null
@@ -1183,6 +1142,7 @@
         "dateTo": "2026-07-15",
         "numberOfDays": 11,
         "priceFrom": 369000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -1235,6 +1195,7 @@
         "dateTo": "2026-07-29",
         "numberOfDays": 11,
         "priceFrom": 369000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -1276,6 +1237,7 @@
         "dateTo": "2026-08-12",
         "numberOfDays": 11,
         "priceFrom": 369000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -1328,6 +1290,7 @@
         "dateTo": "2026-08-26",
         "numberOfDays": 11,
         "priceFrom": 369000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -1365,18 +1328,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Kite",
-        "color": "#c7d2fe",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -1392,11 +1345,7 @@
     "minAge": 8,
     "maxAge": 14,
     "eventTags": [
-      {
-        "name": "polecamy",
-        "color": "#fb923c",
-        "visible": true
-      }
+      "polecamy"
     ],
     "eventProfile": [
       "active",
@@ -1423,13 +1372,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-3467671309-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-3178207830-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-1749621942-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-2956562937-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-2283060309-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-8-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-8-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-moc-aktywnosci---ochotnica-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-8-f-small-60-40-75-1.webp",
     "leadVideoUrl": null,
     "videoUrls": [
       null
@@ -1490,6 +1436,7 @@
         "dateTo": "2026-06-29",
         "numberOfDays": 8,
         "priceFrom": 289000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -1542,6 +1489,7 @@
         "dateTo": "2026-07-08",
         "numberOfDays": 8,
         "priceFrom": 289000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -1594,6 +1542,7 @@
         "dateTo": "2026-07-17",
         "numberOfDays": 8,
         "priceFrom": 289000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -1635,32 +1584,22 @@
         "dateTo": "2026-07-26",
         "numberOfDays": 8,
         "priceFrom": 289000,
+        "season": "lato",
         "transport": {
-          "type": "minibus",
-          "description": "Minibus klimatyzowany (Kraków / Nowy Sącz)."
+          "type": "bus",
+          "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
         },
         "meetingPoints_start": [
           {
-            "name": "Kraków",
-            "address": "Kraków",
+            "name": "Kraków Główny",
+            "address": "ul. Bosacka 18, Kraków",
             "gps": {
-              "lat": 50.06,
-              "lng": 19.94
+              "lat": 50.0681,
+              "lng": 19.9452
             },
-            "description": "Zbiórka przy minibusie.",
+            "description": "Zbiórka 15 minut przed odjazdem przy autokarze. Kraków — odjazd punktualnie.",
             "date": "2026-07-19",
             "hour": "07:00"
-          },
-          {
-            "name": "Nowy Sącz",
-            "address": "Nowy Sącz",
-            "gps": {
-              "lat": 50.06,
-              "lng": 19.94
-            },
-            "description": "Zbiórka przy minibusie.",
-            "date": "2026-07-19",
-            "hour": "08:30"
           }
         ],
         "meetingPoints_return": [
@@ -1698,6 +1637,7 @@
         "dateTo": "2026-08-04",
         "numberOfDays": 8,
         "priceFrom": 289000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -1735,18 +1675,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Przygoda",
-        "color": "#fef08a",
-        "visible": true
-      },
-      {
-        "name": "Góry",
-        "color": "#d1fae5",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -1762,11 +1692,7 @@
     "minAge": 6,
     "maxAge": 10,
     "eventTags": [
-      {
-        "name": "polecamy",
-        "color": "#fb923c",
-        "visible": true
-      }
+      "polecamy"
     ],
     "eventProfile": [
       "chill",
@@ -1792,12 +1718,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-643566268-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-1211682527-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-297377106-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-3000343156-4-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-51-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-51-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-happy-kids---ochotnica-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-51-f-small-60-40-75-1.webp",
     "leadVideoUrl": null,
     "videoUrls": [
       null
@@ -1858,6 +1782,7 @@
         "dateTo": "2026-06-28",
         "numberOfDays": 7,
         "priceFrom": 189000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -1910,6 +1835,7 @@
         "dateTo": "2026-07-05",
         "numberOfDays": 7,
         "priceFrom": 189000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -1962,6 +1888,7 @@
         "dateTo": "2026-07-12",
         "numberOfDays": 7,
         "priceFrom": 189000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -2003,6 +1930,7 @@
         "dateTo": "2026-07-19",
         "numberOfDays": 7,
         "priceFrom": 189000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -2055,6 +1983,7 @@
         "dateTo": "2026-07-26",
         "numberOfDays": 7,
         "priceFrom": 189000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -2096,6 +2025,7 @@
         "dateTo": "2026-08-02",
         "numberOfDays": 7,
         "priceFrom": 189000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -2144,13 +2074,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
+        "name": "Obozy wypoczynkowe",
+        "color": "#6ee7b7",
         "visible": true
       }
     ]
@@ -2191,13 +2116,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-1700517258-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-1628256315-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-2438585083-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-3421808093-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-119481403-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-49-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-49-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-gym-parkour-camp---zubrzyca-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-49-f-small-60-40-75-1.webp",
     "leadVideoUrl": "https://www.youtube.com/watch?v=trhw1UaJfu5",
     "videoUrls": [
       "https://www.youtube.com/watch?v=trhw1UaJfu5"
@@ -2258,6 +2180,7 @@
         "dateTo": "2026-06-30",
         "numberOfDays": 9,
         "priceFrom": 329000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -2310,32 +2233,22 @@
         "dateTo": "2026-07-09",
         "numberOfDays": 9,
         "priceFrom": 329000,
+        "season": "lato",
         "transport": {
-          "type": "minibus",
-          "description": "Minibus klimatyzowany (Kraków / Katowice)."
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
         },
         "meetingPoints_start": [
           {
-            "name": "Kraków",
-            "address": "Kraków",
+            "name": "Centrum Sportowe Orawa",
+            "address": "Zubrzyca Górna 188, Zubrzyca Górna",
             "gps": {
-              "lat": 50.06,
-              "lng": 19.94
+              "lat": 49.5489,
+              "lng": 19.6517
             },
-            "description": "Zbiórka przy minibusie.",
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
             "date": "2026-07-01",
-            "hour": "07:00"
-          },
-          {
-            "name": "Katowice",
-            "address": "Katowice",
-            "gps": {
-              "lat": 50.06,
-              "lng": 19.94
-            },
-            "description": "Zbiórka przy minibusie.",
-            "date": "2026-07-01",
-            "hour": "08:30"
+            "hour": "16:00"
           }
         ],
         "meetingPoints_return": [],
@@ -2362,6 +2275,7 @@
         "dateTo": "2026-07-18",
         "numberOfDays": 9,
         "priceFrom": 329000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -2414,6 +2328,7 @@
         "dateTo": "2026-07-27",
         "numberOfDays": 9,
         "priceFrom": 329000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -2455,32 +2370,22 @@
         "dateTo": "2026-08-05",
         "numberOfDays": 9,
         "priceFrom": 329000,
+        "season": "lato",
         "transport": {
-          "type": "minibus",
-          "description": "Minibus klimatyzowany (Kraków / Katowice)."
+          "type": "bus",
+          "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
         },
         "meetingPoints_start": [
           {
-            "name": "Kraków",
-            "address": "Kraków",
+            "name": "Kraków Główny",
+            "address": "ul. Bosacka 18, Kraków",
             "gps": {
-              "lat": 50.06,
-              "lng": 19.94
+              "lat": 50.0681,
+              "lng": 19.9452
             },
-            "description": "Zbiórka przy minibusie.",
+            "description": "Zbiórka 15 minut przed odjazdem przy autokarze. Kraków — odjazd punktualnie.",
             "date": "2026-07-28",
             "hour": "07:00"
-          },
-          {
-            "name": "Katowice",
-            "address": "Katowice",
-            "gps": {
-              "lat": 50.06,
-              "lng": 19.94
-            },
-            "description": "Zbiórka przy minibusie.",
-            "date": "2026-07-28",
-            "hour": "08:30"
           }
         ],
         "meetingPoints_return": [
@@ -2514,18 +2419,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
-        "visible": true
-      },
-      {
-        "name": "Przygoda",
-        "color": "#fef08a",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -2541,11 +2436,7 @@
     "minAge": 10,
     "maxAge": 15,
     "eventTags": [
-      {
-        "name": "nowość",
-        "color": "#fb923c",
-        "visible": true
-      }
+      "nowość"
     ],
     "eventProfile": [
       "nauka",
@@ -2572,13 +2463,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-3467671309-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-3178207830-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-1749621942-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-2956562937-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-2283060309-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-91-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-91-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-moc-aktywnosci---ochotnica-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-91-f-small-60-40-75-1.webp",
     "leadVideoUrl": "https://www.youtube.com/watch?v=S6anLMVEvlz",
     "videoUrls": [
       "https://www.youtube.com/watch?v=S6anLMVEvlz"
@@ -2639,6 +2527,7 @@
         "dateTo": "2026-06-30",
         "numberOfDays": 9,
         "priceFrom": 319000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -2691,6 +2580,7 @@
         "dateTo": "2026-07-09",
         "numberOfDays": 9,
         "priceFrom": 319000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -2743,6 +2633,7 @@
         "dateTo": "2026-07-18",
         "numberOfDays": 9,
         "priceFrom": 319000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -2784,6 +2675,7 @@
         "dateTo": "2026-07-27",
         "numberOfDays": 9,
         "priceFrom": 319000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -2836,6 +2728,7 @@
         "dateTo": "2026-08-05",
         "numberOfDays": 9,
         "priceFrom": 319000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -2873,18 +2766,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Nauka",
-        "color": "#e9d5ff",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Tech & Nauka",
-        "color": "#e0e7ff",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -2924,12 +2807,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-643566268-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-1211682527-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-297377106-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-3000343156-4-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-50-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-50-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-happy-kids---ochotnica-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-50-f-small-60-40-75-1.webp",
     "leadVideoUrl": null,
     "videoUrls": [
       null
@@ -2990,6 +2871,7 @@
         "dateTo": "2026-06-30",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -3042,6 +2924,7 @@
         "dateTo": "2026-07-09",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -3083,6 +2966,7 @@
         "dateTo": "2026-07-18",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -3135,6 +3019,7 @@
         "dateTo": "2026-07-27",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -3176,6 +3061,7 @@
         "dateTo": "2026-08-05",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -3224,13 +3110,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -3246,11 +3127,7 @@
     "minAge": 10,
     "maxAge": 17,
     "eventTags": [
-      {
-        "name": "polecamy",
-        "color": "#fb923c",
-        "visible": true
-      }
+      "polecamy"
     ],
     "eventProfile": [
       "język",
@@ -3277,12 +3154,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-643566268-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-1211682527-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-297377106-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-happy-kids---ochotnica-3000343156-4-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-90-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-90-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-happy-kids---ochotnica-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-90-f-small-60-40-75-1.webp",
     "leadVideoUrl": null,
     "videoUrls": [
       null
@@ -3343,6 +3218,7 @@
         "dateTo": "2026-06-30",
         "numberOfDays": 9,
         "priceFrom": 319000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -3395,6 +3271,7 @@
         "dateTo": "2026-07-18",
         "numberOfDays": 9,
         "priceFrom": 319000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -3436,6 +3313,7 @@
         "dateTo": "2026-07-27",
         "numberOfDays": 9,
         "priceFrom": 319000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -3488,6 +3366,7 @@
         "dateTo": "2026-08-14",
         "numberOfDays": 9,
         "priceFrom": 319000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -3525,18 +3404,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Językowy",
-        "color": "#fce7f3",
-        "visible": true
-      },
-      {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -3577,12 +3446,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-1489806273-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-1736249880-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-3983752069-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-118211453-4-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-61-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-61-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-chill-sea-camp---dzwirzyno-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-61-f-small-60-40-75-1.webp",
     "leadVideoUrl": "https://www.youtube.com/watch?v=F1HnuydwmNR",
     "videoUrls": [
       "https://www.youtube.com/watch?v=F1HnuydwmNR"
@@ -3643,6 +3510,7 @@
         "dateTo": "2026-06-30",
         "numberOfDays": 9,
         "priceFrom": 329000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków / Katowice (dojazd w cenie)."
@@ -3706,6 +3574,7 @@
         "dateTo": "2026-07-09",
         "numberOfDays": 9,
         "priceFrom": 329000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków / Wrocław (dojazd w cenie)."
@@ -3769,6 +3638,7 @@
         "dateTo": "2026-07-18",
         "numberOfDays": 9,
         "priceFrom": 329000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -3810,6 +3680,7 @@
         "dateTo": "2026-08-05",
         "numberOfDays": 9,
         "priceFrom": 329000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków / Katowice / Wrocław (dojazd w cenie)."
@@ -3884,6 +3755,7 @@
         "dateTo": "2026-08-23",
         "numberOfDays": 9,
         "priceFrom": 329000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -3921,18 +3793,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
-        "visible": true
-      },
-      {
-        "name": "Sporty wodne",
-        "color": "#cffafe",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -3973,13 +3835,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-fabryka-adrenaliny---myczkowce-2330167781-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-fabryka-adrenaliny---myczkowce-3791641291-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-fabryka-adrenaliny---myczkowce-3421668745-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-fabryka-adrenaliny---myczkowce-1217006076-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-fabryka-adrenaliny---myczkowce-2764507367-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-39-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-39-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-fabryka-adrenaliny---myczkowce-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-39-f-small-60-40-75-1.webp",
     "leadVideoUrl": null,
     "videoUrls": [
       null
@@ -4040,6 +3899,7 @@
         "dateTo": "2026-06-29",
         "numberOfDays": 8,
         "priceFrom": 299000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -4092,6 +3952,7 @@
         "dateTo": "2026-07-17",
         "numberOfDays": 8,
         "priceFrom": 299000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -4133,32 +3994,22 @@
         "dateTo": "2026-08-04",
         "numberOfDays": 8,
         "priceFrom": 299000,
+        "season": "lato",
         "transport": {
-          "type": "minibus",
-          "description": "Minibus klimatyzowany (Rzeszów / Przemyśl)."
+          "type": "bus",
+          "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
         },
         "meetingPoints_start": [
           {
-            "name": "Rzeszów",
-            "address": "Rzeszów",
+            "name": "Kraków Główny",
+            "address": "ul. Bosacka 18, Kraków",
             "gps": {
-              "lat": 50.06,
-              "lng": 19.94
+              "lat": 50.0681,
+              "lng": 19.9452
             },
-            "description": "Zbiórka przy minibusie.",
+            "description": "Zbiórka 15 minut przed odjazdem przy autokarze. Kraków — odjazd punktualnie.",
             "date": "2026-07-28",
             "hour": "07:00"
-          },
-          {
-            "name": "Przemyśl",
-            "address": "Przemyśl",
-            "gps": {
-              "lat": 50.06,
-              "lng": 19.94
-            },
-            "description": "Zbiórka przy minibusie.",
-            "date": "2026-07-28",
-            "hour": "08:30"
           }
         ],
         "meetingPoints_return": [
@@ -4196,32 +4047,22 @@
         "dateTo": "2026-08-22",
         "numberOfDays": 8,
         "priceFrom": 299000,
+        "season": "lato",
         "transport": {
-          "type": "minibus",
-          "description": "Minibus klimatyzowany (Rzeszów / Przemyśl)."
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
         },
         "meetingPoints_start": [
           {
-            "name": "Rzeszów",
-            "address": "Rzeszów",
+            "name": "Ośrodek Sportów Wodnych Myczkowce",
+            "address": "ul. Jeziorna 3, Myczkowce",
             "gps": {
-              "lat": 50.06,
-              "lng": 19.94
+              "lat": 49.3849,
+              "lng": 22.1633
             },
-            "description": "Zbiórka przy minibusie.",
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
             "date": "2026-08-15",
-            "hour": "07:00"
-          },
-          {
-            "name": "Przemyśl",
-            "address": "Przemyśl",
-            "gps": {
-              "lat": 50.06,
-              "lng": 19.94
-            },
-            "description": "Zbiórka przy minibusie.",
-            "date": "2026-08-15",
-            "hour": "08:30"
+            "hour": "16:00"
           }
         ],
         "meetingPoints_return": [],
@@ -4244,18 +4085,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Góry",
-        "color": "#d1fae5",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -4296,13 +4127,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-3467671309-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-3178207830-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-1749621942-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-2956562937-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-2283060309-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-65-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-65-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-moc-aktywnosci---ochotnica-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-65-f-small-60-40-75-1.webp",
     "leadVideoUrl": "https://www.youtube.com/watch?v=LPk8CpzhcN9",
     "videoUrls": [
       "https://www.youtube.com/watch?v=LPk8CpzhcN9"
@@ -4363,6 +4191,7 @@
         "dateTo": "2026-06-30",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -4415,6 +4244,7 @@
         "dateTo": "2026-07-09",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -4456,6 +4286,7 @@
         "dateTo": "2026-07-18",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -4508,6 +4339,7 @@
         "dateTo": "2026-08-05",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -4549,6 +4381,7 @@
         "dateTo": "2026-08-23",
         "numberOfDays": 9,
         "priceFrom": 309000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -4597,18 +4430,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Góry",
-        "color": "#d1fae5",
-        "visible": true
-      },
-      {
-        "name": "Przygoda",
-        "color": "#fef08a",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -4648,13 +4471,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-3467671309-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-3178207830-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-1749621942-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-2956562937-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-2283060309-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-79-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-79-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-moc-aktywnosci---ochotnica-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-79-f-small-60-40-75-1.webp",
     "leadVideoUrl": null,
     "videoUrls": [
       null
@@ -4715,6 +4535,7 @@
         "dateTo": "2026-06-30",
         "numberOfDays": 9,
         "priceFrom": 259000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków / Katowice (dojazd w cenie)."
@@ -4778,6 +4599,7 @@
         "dateTo": "2026-07-09",
         "numberOfDays": 9,
         "priceFrom": 259000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -4819,6 +4641,7 @@
         "dateTo": "2026-07-18",
         "numberOfDays": 9,
         "priceFrom": 259000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków / Katowice (dojazd w cenie)."
@@ -4882,6 +4705,7 @@
         "dateTo": "2026-07-27",
         "numberOfDays": 9,
         "priceFrom": 259000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -4923,6 +4747,7 @@
         "dateTo": "2026-08-14",
         "numberOfDays": 9,
         "priceFrom": 259000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -4971,94 +4796,60 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
   },
   {
-    "id": "a1b2c3d4-0001-4000-8000-000000000099",
-    "eventClass": "YOUTH_CAMP",
+    "id": "de932bf3-8f1c-4e17-bfc3-dc9b1f6fff26",
+    "eventClass": "REGULAR_CAMP",
     "eventProcess": {
-      "id": "f1a2b3c4-0000-0000-0000-000000000099",
-      "name": "Obóz morski"
+      "id": "f1a2b3c4-0000-0000-0000-000000000003",
+      "name": "Obóz sportowy"
     },
-    "name": "Chorwacja Adriatycka — Prom & Camp 2026",
-    "minAge": 13,
-    "maxAge": 17,
-    "eventTags": [
-      {
-        "name": "nowość",
-        "color": "#fb923c",
-        "visible": true
-      },
-      {
-        "name": "zagranica",
-        "color": "#fb923c",
-        "visible": true
-      }
-    ],
+    "name": "Wakeboard Camp — Przylasek Rusiecki 2026",
+    "minAge": 10,
+    "maxAge": 16,
+    "eventTags": [],
     "eventProfile": [
       "active",
-      "morze",
-      "przygoda"
-    ],
-    "eventCategories": [
-      {
-        "name": "Morze i plaża",
-        "visible": true,
-        "color": "#bae6fd"
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Przygoda",
-        "color": "#fef08a",
-        "visible": true
-      }
+      "sport",
+      "woda"
     ],
     "localization": {
-      "destination": "Chorwacja",
-      "name": "Ośrodek Plava Laguna — Poreč",
+      "destination": "Kraków",
+      "name": "Wake Park Kraków — Przylasek Rusiecki",
       "address": {
-        "address": "Zelena Laguna bb",
-        "city": "Poreč",
-        "code": "52440",
-        "country": "HR"
+        "address": "ul. Rusiecka 100",
+        "city": "Kraków",
+        "code": "31-997",
+        "country": "PL"
       },
       "gps": {
-        "lat": 45.2276,
-        "lng": 13.5871
+        "lat": 50.0589,
+        "lng": 20.1019
       },
-      "webpage": "https://plavalaguna.com",
-      "email": "camps@plavalaguna.com",
-      "phone": "+385 52 410 500",
-      "description": "Kompleks wypoczynkowy nad Adriatykiem w pobliżu Poreč, z bezpośrednim dostępem do morza, boiskami sportowymi i własną plażą.",
+      "webpage": "https://wakepark-krakow.pl",
+      "email": "kontakt@wakepark-krakow.pl",
+      "phone": "+48 12 300 40 00",
+      "description": "Wyciąg nart wodnych nad zalewem Przylasek Rusiecki w granicach Krakowa. Pełen sprzęt wakeboardowy, instruktorzy i strefa plażowa — idealne na półkolonie wodne.",
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-surf-camp---dzwirzyno-2310690720-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-surf-camp---dzwirzyno-1984580124-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-surf-camp---dzwirzyno-1585631990-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-surf-camp---dzwirzyno-3128957979-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-surf-camp---dzwirzyno-2252850379-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-95-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-95-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-surf-camp---dzwirzyno-0-1920-515-75-1.jpeg",
-    "leadVideoUrl": "",
-    "videoUrls": [],
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-95-f-small-60-40-75-1.webp",
+    "leadVideoUrl": null,
+    "videoUrls": [
+      null
+    ],
     "description": {
-      "general": "<p>Obóz morski w sercu chorwackiej Istrii — dla tych, którzy chcą połączyć słońce Adriatyku z aktywnym wypoczynkiem. Podróż promem przez Morze Adriatyckie to część przygody.</p><p>Na miejscu czekają: snorkeling, siatkówka plażowa, kajakarstwo morskie i wieczorne dyskoteki na plaży. Zakwaterowanie w domkach kempingowych bezpośrednio nad morzem.</p>",
-      "program": "<ul><li>Rejs promem Gdynia–Poreč (opcja) lub autokar przez Słowenię</li><li>Snorkeling i nurkowanie z instruktorem</li><li>Siatkówka plażowa i beach soccer</li><li>Kajakarstwo morskie po adriatyckich zatoczkach</li><li>Wycieczka do Poreč i Rovinj</li><li>Wieczorne ogniska i dyskoteki na plaży</li></ul>",
-      "priceInclude": "<ul><li>Transport (autokar + prom lub autokar przez Słowenię)</li><li>Zakwaterowanie w domkach kempingowych</li><li>Pełne wyżywienie</li><li>Opieka kadry i instruktorów</li><li>Ubezpieczenie NNW + KL</li><li>Sprzęt do sportów wodnych</li></ul>"
+      "general": "<p>Wakeboard Camp to półkolonia w formule dziennej nad zalewem Przylasek Rusiecki w granicach Krakowa. To idealna propozycja dla dzieci i młodzieży, które chcą opanować wakeboarding bez wyjeżdżania z miasta — rano przygoda na wodzie, wieczorem powrót do domu.</p><p>Pod okiem instruktorów uczestnicy uczą się jazdy na wyciągu nart wodnych, od pierwszych przejazdów po pierwsze skoki. Sprzęt — deski, kamizelki, kaski — jest w cenie i dobrany do poziomu. Naukę uzupełniają gry plażowe i sporty wodne.</p><p>Dzień zaczyna się o poranku i kończy po południu, z pełną opieką, posiłkiem i bezpieczną asekuracją na wodzie. Wakeboard Camp to wakacyjna dawka adrenaliny na wyciągnięcie ręki, idealna dla mieszkańców Krakowa i okolic.</p>",
+      "program": "<ul><li>Codzienne sesje wakeboardingu na wyciągu</li><li>Nauka od podstaw: start, balans, pierwsze przejazdy</li><li>Doskonalenie techniki i pierwsze skoki</li><li>Gry plażowe i sporty wodne</li><li>Zajęcia na świeżym powietrzu i integracja</li><li>Mini-zawody na zakończenie tygodnia</li></ul>",
+      "priceInclude": "<ul><li>Opieka instruktorów i wychowawców (5 dni, formuła dzienna)</li><li>Obiad i podwieczorek każdego dnia</li><li>Sesje wakeboardingu na wyciągu</li><li>Sprzęt: deski, kamizelki, kaski, pianki</li><li>Asekuracja i opieka ratownika</li><li>Ubezpieczenie NNW</li></ul>"
     },
     "documents": [
       {
@@ -5068,207 +4859,216 @@
       {
         "name": "Karta zdrowia",
         "url": "https://camps4you.pl/docs/karta-zdrowia.pdf"
+      },
+      {
+        "name": "Karta kwalifikacyjna uczestnika",
+        "url": "https://camps4you.pl/docs/karta-kwalifikacyjna.pdf"
       }
     ],
     "generalTerms": {
-      "insurance": "Ubezpieczenie NNW + KL Europa na sumę 50 000 EUR przez cały czas trwania turnusu.",
-      "drugOrdering": "Leki przekazać kierownikowi w oryginalnych opakowaniach.",
-      "specialDiet": "Diety specjalne po wcześniejszym zgłoszeniu.",
-      "deadlinesAndDocumentsInfo": "Dokumenty na 7 dni przed wyjazdem. Zaliczka 30% w 3 dni od rezerwacji."
+      "insurance": "Każdy uczestnik objęty jest ubezpieczeniem NNW (następstwa nieszczęśliwych wypadków) na sumę 20 000 zł przez cały czas trwania turnusu, łącznie z transportem.",
+      "drugOrdering": "Leki przyjmowane na stałe należy przekazać kierownikowi wypoczynku w oryginalnych opakowaniach wraz z pisemną instrukcją dawkowania podpisaną przez rodzica lub opiekuna.",
+      "specialDiet": "Zapewniamy dietę obiad i podwieczorek. Diety specjalne (bezglutenowa, bezmleczna, wegetariańska) realizujemy po wcześniejszym zgłoszeniu na minimum 14 dni przed rozpoczęciem turnusu.",
+      "deadlinesAndDocumentsInfo": "Komplet dokumentów (karta kwalifikacyjna, zgody i oświadczenia) prosimy dostarczyć najpóźniej na 7 dni przed wyjazdem. Zaliczka 30% płatna w ciągu 3 dni od rezerwacji, pozostała kwota na 21 dni przed turnusem."
     },
     "instructions": {
-      "howToPrepare": "<p>Przyda się paszport lub dowód osobisty ważny min. 6 miesięcy.</p>",
-      "whatToTake": "<ul><li>dowód tożsamości / paszport</li><li>strój kąpielowy (3 sztuki)</li><li>krem z filtrem SPF 50+</li><li>klapki i buty do wody</li><li>sportowy plecak dzienny</li></ul>"
+      "howToPrepare": "<p>Przed wyjazdem prosimy o spakowanie bagażu zgodnie z poniższą listą oraz dostarczenie kompletu dokumentów. Zalecamy oznaczenie rzeczy imieniem i nazwiskiem dziecka. W dniu wyjazdu prosimy o przybycie na miejsce zbiórki 15 minut przed planowanym odjazdem.</p>",
+      "whatToTake": "<ul><li>dowód tożsamości lub legitymacja szkolna</li><li>strój sportowy i obuwie sportowe (2 pary)</li><li>klapki, strój kąpielowy i ręcznik</li><li>kurtka przeciwdeszczowa i ciepła bluza</li><li>nakrycie głowy i krem z filtrem UV</li><li>przybory toaletowe i ręczniki</li><li>mała kieszonkowa na drobne wydatki</li><li>strój kąpielowy i ręcznik</li><li>obuwie na zmianę i krem z filtrem</li></ul>"
     },
-    "reservationUrl": "https://campsflow.pl/embed/camps4you/register?event=a1b2c3d4-0001-4000-8000-000000000099",
+    "reservationUrl": "https://campsflow.pl/embed/camps4you/register?event=de932bf3-8f1c-4e17-bfc3-dc9b1f6fff26",
     "contact": {
-      "firstname": "Anna",
-      "lastname": "Kowalska",
-      "email": "anna@camps4you.pl",
-      "phone": "+48 12 654 25 60"
+      "firstname": "Katarzyna",
+      "lastname": "Wiśniewska",
+      "email": "kasia@camps4you.pl",
+      "phone": "+48 12 654 25 62"
     },
     "customFields": [
       {
-        "key": "min_wiek_plywania",
-        "label": "Wymagany poziom pływania",
-        "value": "Umiejętność pływania obowiązkowa"
+        "key": "poziom_trudnosci",
+        "label": "Poziom trudności",
+        "value": "Od podstaw"
       },
       {
-        "key": "paszport",
-        "label": "Wymagane dokumenty",
-        "value": "Dowód osobisty lub paszport"
+        "key": "formula",
+        "label": "Formuła",
+        "value": "Półkolonia dzienna (bez noclegów)"
       }
     ],
     "turnusy": [
       {
-        "id": "a2b3c4d5-0001-4000-8000-000000000001",
-        "name": "Turnus I — lipiec",
-        "dateFrom": "2026-07-05",
-        "dateTo": "2026-07-19",
-        "numberOfDays": 15,
-        "priceFrom": 429000,
-        "currency": "PLN",
+        "id": "87752a2d-88d2-4e43-9a13-269be619070d",
+        "name": "Turnus I",
+        "dateFrom": "2026-06-29",
+        "dateTo": "2026-07-03",
+        "numberOfDays": 5,
+        "priceFrom": 129000,
         "season": "lato",
         "transport": {
-          "type": "ferry",
-          "description": "Autokar + prom Split–Ancona (w cenie)."
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
         },
         "meetingPoints_start": [
           {
-            "name": "Kraków Główny",
-            "address": "ul. Bosacka 18, Kraków",
+            "name": "Wake Park Kraków — Przylasek Rusiecki",
+            "address": "ul. Rusiecka 100, Kraków",
             "gps": {
-              "lat": 50.0681,
-              "lng": 19.9452
+              "lat": 50.0589,
+              "lng": 20.1019
             },
-            "description": "Odjazd autokarem.",
-            "date": "2026-07-05",
-            "hour": "06:00"
-          },
-          {
-            "name": "Katowice Dworzec",
-            "address": "ul. Dworcowa 1, Katowice",
-            "gps": {
-              "lat": 50.2576,
-              "lng": 19.0183
-            },
-            "description": "Zbiórka na parkingu.",
-            "date": "2026-07-05",
-            "hour": "07:15"
-          },
-          {
-            "name": "Wrocław Główny",
-            "address": "ul. Piłsudskiego 105, Wrocław",
-            "gps": {
-              "lat": 51.0986,
-              "lng": 17.0364
-            },
-            "description": "Zbiórka przy autokarze.",
-            "date": "2026-07-05",
-            "hour": "09:00"
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
+            "date": "2026-06-29",
+            "hour": "16:00"
           }
         ],
-        "meetingPoints_return": [
+        "meetingPoints_return": [],
+        "seatsAvailable": 3,
+        "seatsAll": 16,
+        "reservationUrl": "https://campsflow.pl/embed/camps4you/register?session=87752a2d-88d2-4e43-9a13-269be619070d",
+        "customFields": [
           {
-            "address": "Kraków Główny",
-            "gps": {
-              "lat": 50.0681,
-              "lng": 19.9452
-            },
-            "description": "Powrót do Krakowa.",
-            "date": "2026-07-19",
-            "hour": "20:00"
+            "key": "znizka_wczesna",
+            "label": "Zniżka za wczesną rezerwację",
+            "value": "5% przy rezerwacji do 1 marca 2026"
+          },
+          {
+            "key": "typ_zakwaterowania",
+            "label": "Typ zakwaterowania",
+            "value": "Bez noclegu (formuła dzienna)"
           }
-        ],
-        "seatsAvailable": 18,
-        "seatsAll": 24,
-        "customFields": []
+        ]
       },
       {
-        "id": "a2b3c4d5-0001-4000-8000-000000000002",
-        "name": "Turnus II — sierpień",
-        "dateFrom": "2026-08-02",
-        "dateTo": "2026-08-16",
-        "numberOfDays": 15,
-        "priceFrom": 429000,
-        "currency": "PLN",
+        "id": "51c03121-033c-49f1-9162-99065fe5634b",
+        "name": "Turnus II",
+        "dateFrom": "2026-07-13",
+        "dateTo": "2026-07-17",
+        "numberOfDays": 5,
+        "priceFrom": 129000,
         "season": "lato",
         "transport": {
-          "type": "bus",
-          "description": "Autokar klimatyzowany przez Słowenię (bez promu)."
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
         },
         "meetingPoints_start": [
           {
-            "name": "Kraków Główny",
-            "address": "ul. Bosacka 18, Kraków",
+            "name": "Wake Park Kraków — Przylasek Rusiecki",
+            "address": "ul. Rusiecka 100, Kraków",
             "gps": {
-              "lat": 50.0681,
-              "lng": 19.9452
+              "lat": 50.0589,
+              "lng": 20.1019
             },
-            "description": "Odjazd autokarem.",
-            "date": "2026-08-02",
-            "hour": "06:00"
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
+            "date": "2026-07-13",
+            "hour": "16:00"
+          }
+        ],
+        "meetingPoints_return": [],
+        "seatsAvailable": 0,
+        "seatsAll": 20,
+        "reservationUrl": "https://campsflow.pl/embed/camps4you/register?session=51c03121-033c-49f1-9162-99065fe5634b",
+        "customFields": [
+          {
+            "key": "znizka_wczesna",
+            "label": "Zniżka za wczesną rezerwację",
+            "value": "5% przy rezerwacji do 1 marca 2026"
           },
           {
-            "name": "Warszawa Centralna",
-            "address": "Al. Jerozolimskie 54, Warszawa",
-            "gps": {
-              "lat": 52.2285,
-              "lng": 21.003
-            },
-            "description": "Zbiórka na parkingu.",
-            "date": "2026-08-01",
-            "hour": "22:00"
+            "key": "typ_zakwaterowania",
+            "label": "Typ zakwaterowania",
+            "value": "Bez noclegu (formuła dzienna)"
           }
-        ],
-        "meetingPoints_return": [
-          {
-            "address": "Kraków Główny",
-            "gps": {
-              "lat": 50.0681,
-              "lng": 19.9452
-            },
-            "description": "Powrót do Krakowa.",
-            "date": "2026-08-16",
-            "hour": "21:00"
-          }
-        ],
-        "seatsAvailable": 6,
-        "seatsAll": 24,
-        "customFields": []
+        ]
       },
       {
-        "id": "a2b3c4d5-0001-4000-8000-000000000003",
-        "name": "Turnus III — sierpień",
-        "dateFrom": "2026-08-23",
-        "dateTo": "2026-09-06",
-        "numberOfDays": 15,
-        "priceFrom": 409000,
-        "currency": "PLN",
+        "id": "ab421bbb-cf7e-4dd1-9c44-8bdcc03be413",
+        "name": "Turnus III",
+        "dateFrom": "2026-07-27",
+        "dateTo": "2026-07-31",
+        "numberOfDays": 5,
+        "priceFrom": 129000,
         "season": "lato",
         "transport": {
-          "type": "ferry",
-          "description": "Autokar + prom Rijeka–Ancona (w cenie). Early-bird −5% do 1 marca."
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
         },
         "meetingPoints_start": [
           {
-            "name": "Kraków Główny",
-            "address": "ul. Bosacka 18, Kraków",
+            "name": "Wake Park Kraków — Przylasek Rusiecki",
+            "address": "ul. Rusiecka 100, Kraków",
             "gps": {
-              "lat": 50.0681,
-              "lng": 19.9452
+              "lat": 50.0589,
+              "lng": 20.1019
             },
-            "description": "Odjazd autokarem.",
-            "date": "2026-08-23",
-            "hour": "06:00"
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
+            "date": "2026-07-27",
+            "hour": "16:00"
+          }
+        ],
+        "meetingPoints_return": [],
+        "seatsAvailable": 14,
+        "seatsAll": 20,
+        "reservationUrl": "https://campsflow.pl/embed/camps4you/register?session=ab421bbb-cf7e-4dd1-9c44-8bdcc03be413",
+        "customFields": [
+          {
+            "key": "znizka_wczesna",
+            "label": "Zniżka za wczesną rezerwację",
+            "value": "5% przy rezerwacji do 1 marca 2026"
           },
           {
-            "name": "Wrocław Główny",
-            "address": "ul. Piłsudskiego 105, Wrocław",
-            "gps": {
-              "lat": 51.0986,
-              "lng": 17.0364
-            },
-            "description": "Zbiórka przy autokarze.",
-            "date": "2026-08-23",
-            "hour": "08:30"
+            "key": "typ_zakwaterowania",
+            "label": "Typ zakwaterowania",
+            "value": "Bez noclegu (formuła dzienna)"
           }
-        ],
-        "meetingPoints_return": [
+        ]
+      },
+      {
+        "id": "e3807f0f-6f92-49e2-853f-7ded3fd2980d",
+        "name": "Turnus IV",
+        "dateFrom": "2026-08-10",
+        "dateTo": "2026-08-14",
+        "numberOfDays": 5,
+        "priceFrom": 129000,
+        "season": "lato",
+        "transport": {
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
+        },
+        "meetingPoints_start": [
           {
-            "address": "Kraków Główny",
+            "name": "Wake Park Kraków — Przylasek Rusiecki",
+            "address": "ul. Rusiecka 100, Kraków",
             "gps": {
-              "lat": 50.0681,
-              "lng": 19.9452
+              "lat": 50.0589,
+              "lng": 20.1019
             },
-            "description": "Powrót do Krakowa.",
-            "date": "2026-09-06",
-            "hour": "20:00"
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
+            "date": "2026-08-10",
+            "hour": "16:00"
           }
         ],
-        "seatsAvailable": 24,
-        "seatsAll": 24,
-        "customFields": []
+        "meetingPoints_return": [],
+        "seatsAvailable": 10,
+        "seatsAll": 18,
+        "reservationUrl": "https://campsflow.pl/embed/camps4you/register?session=e3807f0f-6f92-49e2-853f-7ded3fd2980d",
+        "customFields": [
+          {
+            "key": "znizka_wczesna",
+            "label": "Zniżka za wczesną rezerwację",
+            "value": "5% przy rezerwacji do 1 marca 2026"
+          },
+          {
+            "key": "typ_zakwaterowania",
+            "label": "Typ zakwaterowania",
+            "value": "Bez noclegu (formuła dzienna)"
+          }
+        ]
+      }
+    ],
+    "eventCategories": [
+      {
+        "name": "Obozy wypoczynkowe",
+        "color": "#6ee7b7",
+        "visible": true
       }
     ]
   },
@@ -5283,11 +5083,7 @@
     "minAge": 12,
     "maxAge": 17,
     "eventTags": [
-      {
-        "name": "nowość",
-        "color": "#fb923c",
-        "visible": true
-      }
+      "nowość"
     ],
     "eventProfile": [
       "język",
@@ -5314,13 +5110,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-1700517258-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-1628256315-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-2438585083-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-3421808093-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-119481403-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-87-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-87-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-gym-parkour-camp---zubrzyca-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-87-f-small-60-40-75-1.webp",
     "leadVideoUrl": null,
     "videoUrls": [
       null
@@ -5381,6 +5174,7 @@
         "dateTo": "2026-07-09",
         "numberOfDays": 9,
         "priceFrom": 349000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -5433,6 +5227,7 @@
         "dateTo": "2026-07-18",
         "numberOfDays": 9,
         "priceFrom": 349000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -5474,6 +5269,7 @@
         "dateTo": "2026-08-05",
         "numberOfDays": 9,
         "priceFrom": 349000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -5526,6 +5322,7 @@
         "dateTo": "2026-08-14",
         "numberOfDays": 9,
         "priceFrom": 349000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -5563,108 +5360,59 @@
     ],
     "eventCategories": [
       {
-        "name": "Językowy",
-        "color": "#fce7f3",
-        "visible": true
-      },
-      {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Góry",
-        "color": "#d1fae5",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
   },
   {
-    "id": "b2c3d4e5-0002-4000-8000-000000000099",
-    "eventClass": "YOUTH_CAMP",
+    "id": "d9bb4e00-9ac7-4e49-8244-562426a2ac39",
+    "eventClass": "REGULAR_CAMP",
     "eventProcess": {
-      "id": "f1a2b3c4-0000-0000-0000-000000000016",
-      "name": "Obóz językowy za granicą"
+      "id": "f1a2b3c4-0000-0000-0000-000000000011",
+      "name": "Półkolonie"
     },
-    "name": "Malta English Camp 2026",
-    "minAge": 13,
-    "maxAge": 17,
-    "eventTags": [
-      {
-        "name": "nowość",
-        "color": "#fb923c",
-        "visible": true
-      },
-      {
-        "name": "zagranica",
-        "color": "#fb923c",
-        "visible": true
-      },
-      {
-        "name": "język angielski",
-        "color": "#fb923c",
-        "visible": true
-      }
-    ],
+    "name": "Letnie Aktywne Półkolonie — Kraków 2026",
+    "minAge": 5,
+    "maxAge": 13,
+    "eventTags": [],
     "eventProfile": [
       "active",
-      "morze",
-      "edukacja"
-    ],
-    "eventCategories": [
-      {
-        "name": "Językowy",
-        "visible": true,
-        "color": "#fce7f3"
-      },
-      {
-        "name": "Morze i plaża",
-        "visible": true,
-        "color": "#bae6fd"
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Edukacja",
-        "color": "#ddd6fe",
-        "visible": true
-      }
+      "sport"
     ],
     "localization": {
-      "destination": "Malta",
-      "name": "St. Julian's English School & Residence",
+      "destination": "Kraków",
+      "name": "KS Korona — Kompleks Sportowy",
       "address": {
-        "address": "Triq Balluta 5",
-        "city": "St. Julian's",
-        "code": "STJ 1029",
-        "country": "MT"
+        "address": "ul. Kalwaryjska 9-15",
+        "city": "Kraków",
+        "code": "30-504",
+        "country": "PL"
       },
       "gps": {
-        "lat": 35.9186,
-        "lng": 14.4899
+        "lat": 50.0383,
+        "lng": 19.9444
       },
-      "webpage": "https://stjuliansschool.mt",
-      "email": "camps@stjuliansschool.mt",
-      "phone": "+356 2133 4455",
-      "description": "Szkoła językowa w centrum St. Julian's, 200 m od morza. Nowoczesne sale lekcyjne, basen oraz bezpośredni dostęp do promenady nad Zatoką Spinola.",
+      "webpage": "https://korona-krakow.pl",
+      "email": "polkolonie@korona-krakow.pl",
+      "phone": "+48 12 656 10 00",
+      "description": "Kompleks sportowy KS Korona w centrum Krakowa z basenem, halą, boiskami i salami warsztatowymi. Doskonała baza dla miejskich półkolonii.",
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-1489806273-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-1736249880-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-3983752069-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-chill-sea-camp---dzwirzyno-118211453-4-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-94-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-94-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-chill-sea-camp---dzwirzyno-0-1920-515-75-1.jpeg",
-    "leadVideoUrl": "",
-    "videoUrls": [],
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-94-f-small-60-40-75-1.webp",
+    "leadVideoUrl": null,
+    "videoUrls": [
+      null
+    ],
     "description": {
-      "general": "<p>Obóz językowy na Malcie — idealne połączenie intensywnej nauki angielskiego ze słońcem Morza Śródziemnego. Uczestnicy mieszkają w rodzinach maltańskich lub w szkole, co gwarantuje pełne zanurzenie w języku.</p><p>Każdego dnia 20 lekcji angielskiego w małych grupach (max 15 osób), a popołudnia to aktywności: snorkeling, zwiedzanie Valletty, paintball i wieczorne dyskoteki na plaży.</p>",
-      "program": "<ul><li>20 lekcji angielskiego dziennie (General English lub Cambridge Exam)</li><li>Wycieczka do Valletty — stolicy Malty (UNESCO)</li><li>Snorkeling i kajaki na Morzu Śródziemnym</li><li>Paintball i escape room</li><li>Wieczorowe dyskoteki i beach party</li><li>Transfer z/na lotnisko Malta International Airport</li></ul>",
-      "priceInclude": "<ul><li>Przelot w obie strony (trasa wybrana przy rezerwacji)</li><li>Transfer lotniskowy na Malcie</li><li>Zakwaterowanie (szkoła lub rodzina maltańska)</li><li>20 lekcji j. angielskiego dziennie</li><li>Ubezpieczenie NNW + KL Europa</li><li>Opieka rezydenta przez cały pobyt</li></ul>"
+      "general": "<p>Letnie Aktywne Półkolonie to miejskie wakacje w sercu Krakowa dla dzieci, których rodzice pracują w wakacje. W kompleksie sportowym KS Korona przy ul. Kalwaryjskiej dzieci spędzają aktywny, wartościowy dzień pod opieką doświadczonych wychowawców.</p><p>Każdy dzień to porcja ruchu i nauki: pływanie na basenie, zajęcia sportowe na boiskach i hali, warsztaty robotyki oraz wycieczki po Krakowie i okolicach. Program dopasowujemy do wieku, tak by zarówno przedszkolaki, jak i starsze dzieci znalazły coś dla siebie.</p><p>Półkolonie trwają od rana do popołudnia, z dwoma posiłkami i pełną opieką. To wygodne i bezpieczne rozwiązanie dla rodzin z Krakowa, które chcą zapewnić dziecku aktywne i ciekawe wakacje bez wyjazdu z miasta.</p>",
+      "program": "<ul><li>Codzienne pływanie na basenie pod okiem ratownika</li><li>Zajęcia sportowe na boiskach i w hali</li><li>Warsztaty robotyki i programowania</li><li>Wycieczki po Krakowie i okolicach</li><li>Gry i zabawy integracyjne</li><li>Zajęcia plastyczne i kreatywne</li></ul>",
+      "priceInclude": "<ul><li>Opieka wychowawców (5 dni, od 8:00 do 16:30)</li><li>Obiad i podwieczorek każdego dnia</li><li>Wstęp na basen i obiekty sportowe</li><li>Warsztaty robotyki i materiały</li><li>Bilety wstępu na wycieczki</li><li>Ubezpieczenie NNW</li></ul>"
     },
     "documents": [
       {
@@ -5674,19 +5422,23 @@
       {
         "name": "Karta zdrowia",
         "url": "https://camps4you.pl/docs/karta-zdrowia.pdf"
+      },
+      {
+        "name": "Karta kwalifikacyjna uczestnika",
+        "url": "https://camps4you.pl/docs/karta-kwalifikacyjna.pdf"
       }
     ],
     "generalTerms": {
-      "insurance": "Ubezpieczenie NNW + KL Europa na sumę 100 000 EUR.",
-      "drugOrdering": "Leki przekazać rezydentowi w oryginalnych opakowaniach.",
-      "specialDiet": "Diety specjalne po zgłoszeniu min. 14 dni przed wylotem.",
-      "deadlinesAndDocumentsInfo": "Paszport ważny min. 6 miesięcy od daty powrotu. Zaliczka 40% w 3 dni od rezerwacji."
+      "insurance": "Każdy uczestnik objęty jest ubezpieczeniem NNW (następstwa nieszczęśliwych wypadków) na sumę 20 000 zł przez cały czas trwania turnusu, łącznie z transportem.",
+      "drugOrdering": "Leki przyjmowane na stałe należy przekazać kierownikowi wypoczynku w oryginalnych opakowaniach wraz z pisemną instrukcją dawkowania podpisaną przez rodzica lub opiekuna.",
+      "specialDiet": "Zapewniamy dietę obiad i podwieczorek. Diety specjalne (bezglutenowa, bezmleczna, wegetariańska) realizujemy po wcześniejszym zgłoszeniu na minimum 14 dni przed rozpoczęciem turnusu.",
+      "deadlinesAndDocumentsInfo": "Komplet dokumentów (karta kwalifikacyjna, zgody i oświadczenia) prosimy dostarczyć najpóźniej na 7 dni przed wyjazdem. Zaliczka 30% płatna w ciągu 3 dni od rezerwacji, pozostała kwota na 21 dni przed turnusem."
     },
     "instructions": {
-      "howToPrepare": "<p>Wymagany paszport lub dowód osobisty ważny min. 6 miesięcy. Zalecamy kartę EKUZ.</p>",
-      "whatToTake": "<ul><li>paszport lub dowód osobisty</li><li>karta EKUZ</li><li>strój kąpielowy i klapki</li><li>krem z filtrem SPF 50+</li><li>lekkie ubrania na ciepłe wieczory</li><li>podręcznik i notatnik do zajęć</li></ul>"
+      "howToPrepare": "<p>Przed wyjazdem prosimy o spakowanie bagażu zgodnie z poniższą listą oraz dostarczenie kompletu dokumentów. Zalecamy oznaczenie rzeczy imieniem i nazwiskiem dziecka. W dniu wyjazdu prosimy o przybycie na miejsce zbiórki 15 minut przed planowanym odjazdem.</p>",
+      "whatToTake": "<ul><li>dowód tożsamości lub legitymacja szkolna</li><li>strój sportowy i obuwie sportowe (2 pary)</li><li>klapki, strój kąpielowy i ręcznik</li><li>kurtka przeciwdeszczowa i ciepła bluza</li><li>nakrycie głowy i krem z filtrem UV</li><li>przybory toaletowe i ręczniki</li><li>mała kieszonkowa na drobne wydatki</li><li>strój kąpielowy, czepek i ręcznik</li><li>obuwie sportowe na zmianę</li><li>plecak na wycieczki i bidon</li></ul>"
     },
-    "reservationUrl": "https://campsflow.pl/embed/camps4you/register?event=b2c3d4e5-0002-4000-8000-000000000099",
+    "reservationUrl": "https://campsflow.pl/embed/camps4you/register?event=d9bb4e00-9ac7-4e49-8244-562426a2ac39",
     "contact": {
       "firstname": "Anna",
       "lastname": "Kowalska",
@@ -5695,171 +5447,275 @@
     },
     "customFields": [
       {
-        "key": "poziom_angielskiego",
-        "label": "Wymagany poziom języka",
-        "value": "Poziom A2 i wyżej"
+        "key": "poziom_trudnosci",
+        "label": "Poziom trudności",
+        "value": "Dla każdego"
       },
       {
-        "key": "paszport_wymagany",
-        "label": "Dokumenty",
-        "value": "Paszport lub dowód ważny 6 mies."
+        "key": "formula",
+        "label": "Formuła",
+        "value": "Półkolonia dzienna 8:00–16:30"
       }
     ],
     "turnusy": [
       {
-        "id": "b3c4d5e6-0002-4000-8000-000000000001",
-        "name": "Turnus I — lipiec 2 tyg.",
-        "dateFrom": "2026-07-06",
-        "dateTo": "2026-07-19",
-        "numberOfDays": 14,
-        "priceFrom": 679000,
-        "currency": "PLN",
+        "id": "edc368bc-ff58-452b-8927-03bdb8f37049",
+        "name": "Turnus I",
+        "dateFrom": "2026-06-22",
+        "dateTo": "2026-06-26",
+        "numberOfDays": 5,
+        "priceFrom": 109000,
         "season": "lato",
         "transport": {
-          "type": "plane",
-          "description": "Lot czarterowy Kraków–Malta i powrót (w cenie). Wylot 07:30, lądowanie MLA 10:45."
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
         },
         "meetingPoints_start": [
           {
-            "name": "Kraków Airport (KRK)",
-            "address": "ul. Kpt. M. Medweckiego 1, Kraków",
+            "name": "KS Korona — Kompleks Sportowy",
+            "address": "ul. Kalwaryjska 9-15, Kraków",
             "gps": {
-              "lat": 50.0778,
-              "lng": 19.7848
+              "lat": 50.0383,
+              "lng": 19.9444
             },
-            "description": "Odprawa z grupą 2 h przed wylotem. Zbiórka przy strefie odlotów.",
-            "date": "2026-07-06",
-            "hour": "05:30"
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
+            "date": "2026-06-22",
+            "hour": "16:00"
+          }
+        ],
+        "meetingPoints_return": [],
+        "seatsAvailable": 0,
+        "seatsAll": 16,
+        "reservationUrl": "https://campsflow.pl/embed/camps4you/register?session=edc368bc-ff58-452b-8927-03bdb8f37049",
+        "customFields": [
+          {
+            "key": "znizka_wczesna",
+            "label": "Zniżka za wczesną rezerwację",
+            "value": "5% przy rezerwacji do 1 marca 2026"
           },
           {
-            "name": "Katowice Airport (KTW)",
-            "address": "ul. Wolności 90, Pyrzowice",
+            "key": "typ_zakwaterowania",
+            "label": "Typ zakwaterowania",
+            "value": "Bez noclegu (formuła dzienna)"
+          }
+        ]
+      },
+      {
+        "id": "07bc14d4-eeca-4953-8ba0-ce5d4cb8178a",
+        "name": "Turnus II",
+        "dateFrom": "2026-06-29",
+        "dateTo": "2026-07-03",
+        "numberOfDays": 5,
+        "priceFrom": 109000,
+        "season": "lato",
+        "transport": {
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
+        },
+        "meetingPoints_start": [
+          {
+            "name": "KS Korona — Kompleks Sportowy",
+            "address": "ul. Kalwaryjska 9-15, Kraków",
             "gps": {
-              "lat": 50.4743,
-              "lng": 19.08
+              "lat": 50.0383,
+              "lng": 19.9444
             },
-            "description": "Zbiórka przy terminalu A, autobus do Krakowa o 04:00.",
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
+            "date": "2026-06-29",
+            "hour": "16:00"
+          }
+        ],
+        "meetingPoints_return": [],
+        "seatsAvailable": 12,
+        "seatsAll": 24,
+        "reservationUrl": "https://campsflow.pl/embed/camps4you/register?session=07bc14d4-eeca-4953-8ba0-ce5d4cb8178a",
+        "customFields": [
+          {
+            "key": "znizka_wczesna",
+            "label": "Zniżka za wczesną rezerwację",
+            "value": "5% przy rezerwacji do 1 marca 2026"
+          },
+          {
+            "key": "typ_zakwaterowania",
+            "label": "Typ zakwaterowania",
+            "value": "Bez noclegu (formuła dzienna)"
+          }
+        ]
+      },
+      {
+        "id": "7f824c18-b63f-4294-83ee-e2995b4afca1",
+        "name": "Turnus III",
+        "dateFrom": "2026-07-06",
+        "dateTo": "2026-07-10",
+        "numberOfDays": 5,
+        "priceFrom": 109000,
+        "season": "lato",
+        "transport": {
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
+        },
+        "meetingPoints_start": [
+          {
+            "name": "KS Korona — Kompleks Sportowy",
+            "address": "ul. Kalwaryjska 9-15, Kraków",
+            "gps": {
+              "lat": 50.0383,
+              "lng": 19.9444
+            },
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
             "date": "2026-07-06",
-            "hour": "04:00"
+            "hour": "16:00"
           }
         ],
-        "meetingPoints_return": [
-          {
-            "address": "Kraków Airport (KRK)",
-            "gps": {
-              "lat": 50.0778,
-              "lng": 19.7848
-            },
-            "description": "Przylot do Krakowa.",
-            "date": "2026-07-19",
-            "hour": "18:00"
-          }
-        ],
-        "seatsAvailable": 20,
-        "seatsAll": 28,
+        "meetingPoints_return": [],
+        "seatsAvailable": 3,
+        "seatsAll": 16,
+        "reservationUrl": "https://campsflow.pl/embed/camps4you/register?session=7f824c18-b63f-4294-83ee-e2995b4afca1",
         "customFields": [
           {
-            "key": "zajecia_angielski",
-            "label": "Kurs",
-            "value": "General English A2–C1"
+            "key": "znizka_wczesna",
+            "label": "Zniżka za wczesną rezerwację",
+            "value": "5% przy rezerwacji do 1 marca 2026"
+          },
+          {
+            "key": "typ_zakwaterowania",
+            "label": "Typ zakwaterowania",
+            "value": "Bez noclegu (formuła dzienna)"
           }
         ]
       },
       {
-        "id": "b3c4d5e6-0002-4000-8000-000000000002",
-        "name": "Turnus II — sierpień 2 tyg.",
+        "id": "39bcc6ff-1d38-4733-bfba-3110ad5ea28a",
+        "name": "Turnus IV",
+        "dateFrom": "2026-07-20",
+        "dateTo": "2026-07-24",
+        "numberOfDays": 5,
+        "priceFrom": 109000,
+        "season": "lato",
+        "transport": {
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
+        },
+        "meetingPoints_start": [
+          {
+            "name": "KS Korona — Kompleks Sportowy",
+            "address": "ul. Kalwaryjska 9-15, Kraków",
+            "gps": {
+              "lat": 50.0383,
+              "lng": 19.9444
+            },
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
+            "date": "2026-07-20",
+            "hour": "16:00"
+          }
+        ],
+        "meetingPoints_return": [],
+        "seatsAvailable": 0,
+        "seatsAll": 20,
+        "reservationUrl": "https://campsflow.pl/embed/camps4you/register?session=39bcc6ff-1d38-4733-bfba-3110ad5ea28a",
+        "customFields": [
+          {
+            "key": "znizka_wczesna",
+            "label": "Zniżka za wczesną rezerwację",
+            "value": "5% przy rezerwacji do 1 marca 2026"
+          },
+          {
+            "key": "typ_zakwaterowania",
+            "label": "Typ zakwaterowania",
+            "value": "Bez noclegu (formuła dzienna)"
+          }
+        ]
+      },
+      {
+        "id": "bee1d124-e767-40ed-8198-60214893e661",
+        "name": "Turnus V",
         "dateFrom": "2026-08-03",
-        "dateTo": "2026-08-16",
-        "numberOfDays": 14,
-        "priceFrom": 679000,
-        "currency": "PLN",
+        "dateTo": "2026-08-07",
+        "numberOfDays": 5,
+        "priceFrom": 109000,
         "season": "lato",
         "transport": {
-          "type": "plane",
-          "description": "Lot czarterowy Warszawa Chopin–Malta i powrót (w cenie)."
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
         },
         "meetingPoints_start": [
           {
-            "name": "Warszawa Chopin (WAW)",
-            "address": "ul. Żwirki i Wigury 1, Warszawa",
+            "name": "KS Korona — Kompleks Sportowy",
+            "address": "ul. Kalwaryjska 9-15, Kraków",
             "gps": {
-              "lat": 52.1657,
-              "lng": 20.9671
+              "lat": 50.0383,
+              "lng": 19.9444
             },
-            "description": "Odprawa grupowa przy stanowisku Campsflow, 2 h przed wylotem.",
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
             "date": "2026-08-03",
-            "hour": "06:00"
+            "hour": "16:00"
           }
         ],
-        "meetingPoints_return": [
-          {
-            "address": "Warszawa Chopin (WAW)",
-            "gps": {
-              "lat": 52.1657,
-              "lng": 20.9671
-            },
-            "description": "Przylot do Warszawy.",
-            "date": "2026-08-16",
-            "hour": "20:30"
-          }
-        ],
-        "seatsAvailable": 4,
-        "seatsAll": 28,
+        "meetingPoints_return": [],
+        "seatsAvailable": 14,
+        "seatsAll": 20,
+        "reservationUrl": "https://campsflow.pl/embed/camps4you/register?session=bee1d124-e767-40ed-8198-60214893e661",
         "customFields": [
           {
-            "key": "zajecia_angielski",
-            "label": "Kurs",
-            "value": "Cambridge FCE Prep"
+            "key": "znizka_wczesna",
+            "label": "Zniżka za wczesną rezerwację",
+            "value": "5% przy rezerwacji do 1 marca 2026"
+          },
+          {
+            "key": "typ_zakwaterowania",
+            "label": "Typ zakwaterowania",
+            "value": "Bez noclegu (formuła dzienna)"
           }
         ]
       },
       {
-        "id": "b3c4d5e6-0002-4000-8000-000000000003",
-        "name": "Turnus III — sierpień 3 tyg.",
+        "id": "3ac6738b-5e6a-45c7-b796-94b89ce65be4",
+        "name": "Turnus VI",
         "dateFrom": "2026-08-17",
-        "dateTo": "2026-09-06",
-        "numberOfDays": 21,
-        "priceFrom": 969000,
-        "currency": "PLN",
+        "dateTo": "2026-08-21",
+        "numberOfDays": 5,
+        "priceFrom": 109000,
         "season": "lato",
         "transport": {
-          "type": "plane",
-          "description": "Lot czarterowy Kraków–Malta i powrót (w cenie)."
+          "type": "own",
+          "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
         },
         "meetingPoints_start": [
           {
-            "name": "Kraków Airport (KRK)",
-            "address": "ul. Kpt. M. Medweckiego 1, Kraków",
+            "name": "KS Korona — Kompleks Sportowy",
+            "address": "ul. Kalwaryjska 9-15, Kraków",
             "gps": {
-              "lat": 50.0778,
-              "lng": 19.7848
+              "lat": 50.0383,
+              "lng": 19.9444
             },
-            "description": "Zbiórka przy stanowisku Campsflow.",
+            "description": "Przyjazd własny do ośrodka. Zakwaterowanie od godziny podanej obok.",
             "date": "2026-08-17",
-            "hour": "05:30"
+            "hour": "16:00"
           }
         ],
-        "meetingPoints_return": [
-          {
-            "address": "Kraków Airport (KRK)",
-            "gps": {
-              "lat": 50.0778,
-              "lng": 19.7848
-            },
-            "description": "Przylot do Krakowa.",
-            "date": "2026-09-06",
-            "hour": "19:00"
-          }
-        ],
-        "seatsAvailable": 28,
-        "seatsAll": 28,
+        "meetingPoints_return": [],
+        "seatsAvailable": 10,
+        "seatsAll": 18,
+        "reservationUrl": "https://campsflow.pl/embed/camps4you/register?session=3ac6738b-5e6a-45c7-b796-94b89ce65be4",
         "customFields": [
           {
-            "key": "zajecia_angielski",
-            "label": "Kurs",
-            "value": "General English lub Cambridge IELTS"
+            "key": "znizka_wczesna",
+            "label": "Zniżka za wczesną rezerwację",
+            "value": "5% przy rezerwacji do 1 marca 2026"
+          },
+          {
+            "key": "typ_zakwaterowania",
+            "label": "Typ zakwaterowania",
+            "value": "Bez noclegu (formuła dzienna)"
           }
         ]
+      }
+    ],
+    "eventCategories": [
+      {
+        "name": "Obozy wypoczynkowe",
+        "color": "#6ee7b7",
+        "visible": true
       }
     ]
   },
@@ -5899,12 +5755,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-family-summer-camp---bukowina-tatrzanska-3486056774-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-family-summer-camp---bukowina-tatrzanska-2103815375-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-family-summer-camp---bukowina-tatrzanska-3259123041-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-family-summer-camp---bukowina-tatrzanska-2704692748-4-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-96-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-96-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-family-summer-camp---bukowina-tatrzanska-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-96-f-small-60-40-75-1.webp",
     "leadVideoUrl": null,
     "videoUrls": [
       null
@@ -5965,6 +5819,7 @@
         "dateTo": "2026-07-18",
         "numberOfDays": 9,
         "priceFrom": 299000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -6017,6 +5872,7 @@
         "dateTo": "2026-08-14",
         "numberOfDays": 9,
         "priceFrom": 299000,
+        "season": "lato",
         "transport": {
           "type": "own",
           "description": "Dojazd własny do ośrodka. Parking dostępny na miejscu."
@@ -6058,6 +5914,7 @@
         "dateTo": "2026-08-23",
         "numberOfDays": 9,
         "priceFrom": 299000,
+        "season": "lato",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -6106,18 +5963,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Rodzinny",
-        "color": "#fef3c7",
+        "name": "Obozy rodzinne",
+        "color": "#fda4af",
         "visible": true
       }
     ]
@@ -6157,13 +6004,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-1700517258-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-1628256315-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-2438585083-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-3421808093-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-gym-parkour-camp---zubrzyca-119481403-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-3-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-3-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-gym-parkour-camp---zubrzyca-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-3-f-small-60-40-75-1.webp",
     "leadVideoUrl": null,
     "videoUrls": [
       null
@@ -6224,6 +6068,7 @@
         "dateTo": "2027-02-08",
         "numberOfDays": 8,
         "priceFrom": 279000,
+        "season": "zima",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -6281,6 +6126,7 @@
         "dateTo": "2027-02-15",
         "numberOfDays": 8,
         "priceFrom": 279000,
+        "season": "zima",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -6338,6 +6184,7 @@
         "dateTo": "2027-02-22",
         "numberOfDays": 8,
         "priceFrom": 279000,
+        "season": "zima",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -6391,13 +6238,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Zimowy",
-        "color": "#ede9fe",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
+        "name": "Obozy wypoczynkowe",
+        "color": "#6ee7b7",
         "visible": true
       }
     ]
@@ -6413,11 +6255,7 @@
     "minAge": 12,
     "maxAge": 17,
     "eventTags": [
-      {
-        "name": "hit sezonu",
-        "color": "#fb923c",
-        "visible": true
-      }
+      "hit sezonu"
     ],
     "eventProfile": [
       "zimowy",
@@ -6444,13 +6282,10 @@
       "imageUrls": []
     },
     "multimediaUrls": [
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-3467671309-1-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-3178207830-2-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-1749621942-3-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-2956562937-4-0-0-75-1.webp",
-      "https://camps4you.pl/tempOpen/images/offer-b-ow-moc-aktywnosci---ochotnica-2283060309-5-0-0-75-1.webp"
+      "https://camps4you.pl/tempOpen/images/offer-list-7-f-small-60-40-75-1.webp",
+      "https://camps4you.pl/tempOpen/images/offer-list-7-f-small-60-40-75-2.webp"
     ],
-    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-leadi-moc-aktywnosci---ochotnica-0-1920-515-75-1.jpeg",
+    "leadImageUrl": "https://camps4you.pl/tempOpen/images/offer-list-7-f-small-60-40-75-1.webp",
     "leadVideoUrl": "https://www.youtube.com/watch?v=ca4kkja-FyE",
     "videoUrls": [
       "https://www.youtube.com/watch?v=ca4kkja-FyE"
@@ -6511,6 +6346,7 @@
         "dateTo": "2027-02-01",
         "numberOfDays": 8,
         "priceFrom": 329000,
+        "season": "zima",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków / Katowice (dojazd w cenie)."
@@ -6579,6 +6415,7 @@
         "dateTo": "2027-02-08",
         "numberOfDays": 8,
         "priceFrom": 329000,
+        "season": "zima",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -6636,6 +6473,7 @@
         "dateTo": "2027-02-15",
         "numberOfDays": 8,
         "priceFrom": 329000,
+        "season": "zima",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków / Katowice (dojazd w cenie)."
@@ -6704,6 +6542,7 @@
         "dateTo": "2027-02-22",
         "numberOfDays": 8,
         "priceFrom": 329000,
+        "season": "zima",
         "transport": {
           "type": "bus",
           "description": "Autokar klimatyzowany z Kraków (dojazd w cenie)."
@@ -6757,18 +6596,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Zimowy",
-        "color": "#ede9fe",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
+        "name": "Obozy młodzieżowe",
+        "color": "#a78bfa",
         "visible": true
       }
     ]

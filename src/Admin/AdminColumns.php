@@ -14,9 +14,23 @@ use Campsflow\Taxonomy\DestinationTaxonomy;
  */
 final class AdminColumns {
 
+	/** @var array<string,string> */
+	private const CLASS_LABELS = array(
+		'YOUTH_CAMP'    => 'Obóz młodzieżowy',
+		'KIDS_CAMP'     => 'Obóz dla dzieci',
+		'FAMILY_CAMP'   => 'Obóz rodzinny',
+		'REGULAR_CAMP'  => 'Obóz wypoczynkowy',
+		'LANGUAGE_CAMP' => 'Obóz językowy',
+		'SPORTS_CAMP'   => 'Obóz sportowy',
+		'SCHOOL_TRIP'   => 'Wycieczka szkolna',
+		'DAY_CAMP'      => 'Półkolonie',
+	);
+
 	public function register(): void {
 		add_filter( 'manage_' . EventPostType::SLUG . '_posts_columns', array( $this, 'addEventColumn' ) );
 		add_action( 'manage_' . EventPostType::SLUG . '_posts_custom_column', array( $this, 'renderEventColumn' ), 10, 2 );
+		add_action( 'restrict_manage_posts', array( $this, 'renderEventClassFilter' ) );
+		add_action( 'pre_get_posts', array( $this, 'applyEventClassFilter' ) );
 
 		add_filter( 'manage_' . SessionPostType::SLUG . '_posts_columns', array( $this, 'addSessionColumn' ) );
 		add_action( 'manage_' . SessionPostType::SLUG . '_posts_custom_column', array( $this, 'renderSessionColumn' ), 10, 2 );
@@ -27,7 +41,6 @@ final class AdminColumns {
 	 * @return array<string, string>
 	 */
 	public function addEventColumn( array $columns ): array {
-		// Remove auto-generated taxonomy column; insert custom one right after 'title'.
 		unset( $columns[ 'taxonomy-' . DestinationTaxonomy::SLUG ] );
 
 		$result = array();
@@ -35,6 +48,7 @@ final class AdminColumns {
 			$result[ $key ] = $label;
 			if ( $key === 'title' ) {
 				$result['cf_destination_path'] = __( 'Kierunek', 'campsflow' );
+				$result['cf_event_class']      = __( 'Typ obozu', 'campsflow' );
 			}
 		}
 		$result['cf_open'] = '<span class="dashicons dashicons-external" title="' . esc_attr__( 'Otwórz w CampsFlow', 'campsflow' ) . '"></span>';
@@ -44,6 +58,14 @@ final class AdminColumns {
 	public function renderEventColumn( string $column, int $postId ): void {
 		if ( $column === 'cf_destination_path' ) {
 			$this->renderDestinationPath( $postId );
+			return;
+		}
+
+		if ( $column === 'cf_event_class' ) {
+			$code = (string) get_post_meta( $postId, 'cf_event_class', true );
+			echo $code !== ''
+				? esc_html( self::CLASS_LABELS[ $code ] ?? $code )
+				: '<span style="color:#d1d5db">—</span>';
 			return;
 		}
 
@@ -152,6 +174,46 @@ final class AdminColumns {
 		$rawCurrency = get_post_meta( $postId, 'cf_currency', true );
 		$currency    = $rawCurrency !== '' && $rawCurrency !== false ? (string) $rawCurrency : 'PLN';
 		echo esc_html( CurrencyFormatter::format( $grosze, $currency ) );
+	}
+
+	public function renderEventClassFilter( string $postType ): void {
+		if ( $postType !== EventPostType::SLUG ) {
+			return;
+		}
+
+		$current = isset( $_GET['cf_event_class'] ) ? sanitize_key( (string) $_GET['cf_event_class'] ) : '';
+
+		echo '<select name="cf_event_class">';
+		echo '<option value="">' . esc_html__( 'Wszystkie typy', 'campsflow' ) . '</option>';
+		foreach ( self::CLASS_LABELS as $code => $label ) {
+			$selected = selected( $current, $code, false );
+			echo '<option value="' . esc_attr( $code ) . '"' . $selected . '>' . esc_html( $label ) . '</option>';
+		}
+		echo '</select>';
+	}
+
+	public function applyEventClassFilter( \WP_Query $query ): void {
+		if ( ! is_admin() || ! $query->is_main_query() ) {
+			return;
+		}
+
+		$postType = $query->get( 'post_type' );
+		if ( $postType !== EventPostType::SLUG ) {
+			return;
+		}
+
+		$code = isset( $_GET['cf_event_class'] ) ? sanitize_key( (string) $_GET['cf_event_class'] ) : '';
+		if ( $code === '' ) {
+			return;
+		}
+
+		$meta = (array) ( $query->get( 'meta_query' ) ?: array() );
+		$meta[] = array(
+			'key'     => 'cf_event_class',
+			'value'   => $code,
+			'compare' => '=',
+		);
+		$query->set( 'meta_query', $meta );
 	}
 
 	private function renderDestinationPath( int $postId ): void {

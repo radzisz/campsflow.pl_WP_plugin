@@ -187,12 +187,12 @@ final class EventBreadcrumbWidget extends Widget_Base {
 			? $seasons[0]->name
 			: '';
 
-		$process = (string) get_post_meta( $postId, 'cf_event_process_name', true );
-		if ( $process === '' ) {
-			$process = self::resolveClassLabel( (string) get_post_meta( $postId, 'cf_event_class', true ) );
-		}
+		$cats     = wp_get_post_terms( $postId, 'cf_event_category' );
+		$category = ( is_array( $cats ) && ! empty( $cats ) && $cats[0] instanceof \WP_Term )
+			? $cats[0]->name
+			: '';
 
-		$items = array_values( array_filter( array( $season, $process ) ) );
+		$items = array_values( array_filter( array( $season, $category ) ) );
 		$this->echoItems( $items, $separator );
 	}
 
@@ -222,19 +222,6 @@ final class EventBreadcrumbWidget extends Widget_Base {
 			}
 		}
 		echo '</nav>';
-	}
-
-	private static function resolveClassLabel( string $code ): string {
-		$map = array(
-			'YOUTH_CAMP'    => 'Obóz młodzieżowy',
-			'KIDS_CAMP'     => 'Obóz dla dzieci',
-			'FAMILY_CAMP'   => 'Obóz rodzinny',
-			'LANGUAGE_CAMP' => 'Obóz językowy',
-			'SPORTS_CAMP'   => 'Obóz sportowy',
-			'SCHOOL_TRIP'   => 'Wycieczka szkolna',
-			'DAY_CAMP'      => 'Półkolonie',
-		);
-		return $map[ $code ] ?? '';
 	}
 
 	private static function resolveCountryName( string $code ): string {
