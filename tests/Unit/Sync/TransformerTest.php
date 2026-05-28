@@ -16,6 +16,7 @@ class TransformerTest extends TestCase
         parent::setUp();
         Monkey\setUp();
         Monkey\Functions\when('wp_json_encode')->alias('json_encode');
+        Monkey\Functions\when('sanitize_text_field')->returnArg();
     }
 
     protected function tearDown(): void

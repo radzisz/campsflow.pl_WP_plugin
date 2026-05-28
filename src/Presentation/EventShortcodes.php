@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Campsflow\Presentation;
 
+use Campsflow\CurrencyFormatter;
 use Campsflow\PostType\SessionPostType;
 use Campsflow\Sync\AvailabilityBucket;
+use Campsflow\Taxonomy\TransportTypeTaxonomy;
 use WP_Query;
 
 /**
@@ -85,6 +87,7 @@ final class EventShortcodes {
 			array(
 				'title'               => __( 'Dostępne terminy', 'campsflow' ),
 				'button_label'        => __( 'Zapisz się', 'campsflow' ),
+				'show_name'           => '1',
 				'show_meeting_points' => '0',
 				'show_custom_fields'  => '0',
 			),
@@ -94,6 +97,7 @@ final class EventShortcodes {
 		$postId            = (int) get_the_ID();
 		$buttonLabel       = sanitize_text_field( $atts['button_label'] );
 		$title             = sanitize_text_field( $atts['title'] );
+		$showName          = $atts['show_name'] === '1';
 		$showMeetingPoints = $atts['show_meeting_points'] === '1';
 		$showCustomFields  = $atts['show_custom_fields'] === '1';
 		if ( ! $postId ) {
@@ -125,7 +129,7 @@ final class EventShortcodes {
 		echo '<ul class="cf-sessions-box__list">';
 		while ( $sessions->have_posts() ) {
 			$sessions->the_post();
-			$this->echoSessionItem( (int) get_the_ID(), $buttonLabel, $showMeetingPoints, $showCustomFields );
+			$this->echoSessionItem( (int) get_the_ID(), $buttonLabel, $showName, $showMeetingPoints, $showCustomFields );
 		}
 		wp_reset_postdata();
 		echo '</ul></div>';
@@ -409,23 +413,25 @@ final class EventShortcodes {
 
 	// ── Session helpers ───────────────────────────────────────────────────────
 
-	private function echoSessionItem( int $sId, string $buttonLabel, bool $showMeetingPoints, bool $showCustomFields = false ): void {
-		$dateFrom   = (string) get_post_meta( $sId, 'cf_date_from', true );
-		$dateTo     = (string) get_post_meta( $sId, 'cf_date_to', true );
-		$price      = (int) get_post_meta( $sId, 'cf_price_from', true );
-		$days       = (int) get_post_meta( $sId, 'cf_number_of_days', true );
-		$name       = (string) get_post_meta( $sId, 'cf_turnus_name', true );
-		$reservUrl  = RegistrationFormShortcode::registrationUrl( $sId );
-		$transport  = json_decode( (string) get_post_meta( $sId, 'cf_transport', true ), true );
-		$bucket     = AvailabilityBucket::tryFrom( (string) get_post_meta( $sId, 'cf_availability', true ) )
+	private function echoSessionItem( int $sId, string $buttonLabel, bool $showName, bool $showMeetingPoints, bool $showCustomFields = false ): void {
+		$dateFrom    = (string) get_post_meta( $sId, 'cf_date_from', true );
+		$dateTo      = (string) get_post_meta( $sId, 'cf_date_to', true );
+		$price       = (int) get_post_meta( $sId, 'cf_price_from', true );
+		$days        = (int) get_post_meta( $sId, 'cf_number_of_days', true );
+		$name        = $showName ? (string) get_post_meta( $sId, 'cf_turnus_name', true ) : '';
+		$reservUrl   = RegistrationFormShortcode::registrationUrl( $sId );
+		$transport   = json_decode( (string) get_post_meta( $sId, 'cf_transport', true ), true );
+		$bucket      = AvailabilityBucket::tryFrom( (string) get_post_meta( $sId, 'cf_availability', true ) )
 						?? AvailabilityBucket::Available;
-		$isFull     = $bucket === AvailabilityBucket::Full;
-		$f          = $dateFrom ? date_create( $dateFrom ) : null;
-		$t          = $dateTo ? date_create( $dateTo ) : null;
-		$dateLabel  = $f ? ( $f->format( 'j M' ) . ( $t ? '–' . $t->format( 'j M Y' ) : '' ) ) : '';
-		$priceLabel = $price ? 'od ' . number_format( $price / 100, 0, ',', ' ' ) . ' zł' : '';
-		$tDesc      = is_array( $transport ) ? (string) ( $transport['description'] ?? '' ) : '';
-		$tType      = is_array( $transport ) ? (string) ( $transport['type'] ?? 'own' ) : 'own';
+		$isFull      = $bucket === AvailabilityBucket::Full;
+		$f           = $dateFrom ? date_create( $dateFrom ) : null;
+		$t           = $dateTo ? date_create( $dateTo ) : null;
+		$dateLabel   = $f ? ( $f->format( 'j M' ) . ( $t ? '–' . $t->format( 'j M Y' ) : '' ) ) : '';
+		$rawCurrency = get_post_meta( $sId, 'cf_currency', true );
+		$currency    = $rawCurrency !== '' && $rawCurrency !== false ? (string) $rawCurrency : 'PLN';
+		$priceLabel  = $price ? 'od ' . CurrencyFormatter::format( $price, $currency ) : '';
+		$tDesc       = is_array( $transport ) ? (string) ( $transport['description'] ?? '' ) : '';
+		$tType       = is_array( $transport ) ? (string) ( $transport['type'] ?? 'own' ) : 'own';
 
 		echo '<li class="cf-sessions-box__item' . ( $isFull ? ' cf-sessions-box__item--full' : '' ) . '">';
 		if ( $name ) {
@@ -437,7 +443,8 @@ final class EventShortcodes {
 		}
 		echo '</div>';
 		if ( $tType !== 'own' && $tDesc ) {
-			echo '<div class="cf-sessions-box__transport"><span class="dashicons dashicons-car"></span> ' . esc_html( $tDesc ) . '</div>';
+			$icon = TransportTypeTaxonomy::TYPE_ICONS[ $tType ] ?? '🚌';
+			echo '<div class="cf-sessions-box__transport">' . $icon . ' ' . esc_html( $tDesc ) . '</div>';
 		}
 		if ( $showMeetingPoints ) {
 			$this->echoMeetingPoints( $sId );

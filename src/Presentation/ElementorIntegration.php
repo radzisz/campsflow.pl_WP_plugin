@@ -16,6 +16,7 @@ final class ElementorIntegration {
 
 	public function registerWidget( \Elementor\Widgets_Manager $manager ): void {
 		$manager->register( new EventSessionsWidget() );
+		$manager->register( new EventBreadcrumbWidget() );
 		$manager->register( new EventFieldWidget() );
 		$manager->register( new EventContactWidget() );
 		$manager->register( new EventDocumentsWidget() );
@@ -32,9 +33,16 @@ final class ElementorIntegration {
 
 	public function registerCategory( \Elementor\Elements_Manager $manager ): void {
 		$manager->add_category(
-			'campsflow',
+			'campsflow_search',
 			array(
-				'title' => __( 'CampsFlow', 'campsflow' ),
+				'title' => __( 'CampsFlow — Wyszukiwanie', 'campsflow' ),
+				'icon'  => 'fa fa-search',
+			)
+		);
+		$manager->add_category(
+			'campsflow_event',
+			array(
+				'title' => __( 'CampsFlow — Wydarzenie', 'campsflow' ),
 				'icon'  => 'fa fa-flag',
 			)
 		);

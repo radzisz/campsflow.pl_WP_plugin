@@ -29,6 +29,9 @@ final class WpBakeryIntegration {
 		$this->mapEventLeadVideo();
 		$this->mapEventMap();
 		$this->mapEventField();
+		$this->mapEventContact();
+		$this->mapEventDocuments();
+		$this->mapEventBreadcrumb();
 	}
 
 	private function mapSearchFilter(): void {
@@ -183,6 +186,84 @@ final class WpBakeryIntegration {
 						),
 						'std'        => '3',
 					),
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Wyniki na stronę', 'campsflow' ),
+						'param_name'  => 'per_page',
+						'value'       => '12',
+						'description' => __( '0 = pokaż wszystkie', 'campsflow' ),
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => __( 'Elementy karty', 'campsflow' ),
+						'param_name' => 'show_title',
+						'value'      => array( __( 'Pokaż tytuł', 'campsflow' ) => 'yes' ),
+						'std'        => 'yes',
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => '',
+						'param_name' => 'show_date',
+						'value'      => array( __( 'Pokaż termin', 'campsflow' ) => 'yes' ),
+						'std'        => 'yes',
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => '',
+						'param_name' => 'show_location',
+						'value'      => array( __( 'Pokaż lokalizację', 'campsflow' ) => 'yes' ),
+						'std'        => 'yes',
+					),
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Format lokalizacji', 'campsflow' ),
+						'param_name' => 'location_mode',
+						'value'      => array(
+							__( 'Kraj / Destynacja', 'campsflow' )         => 'country_dest',
+							__( 'Kraj / Destynacja / Miasto', 'campsflow' ) => 'country_dest_city',
+						),
+						'std'        => 'country_dest_city',
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => '',
+						'param_name' => 'show_profile_tags',
+						'value'      => array( __( 'Pokaż tagi profilu', 'campsflow' ) => 'yes' ),
+						'std'        => 'yes',
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => '',
+						'param_name' => 'show_event_tags',
+						'value'      => array( __( 'Pokaż tagi marketingowe', 'campsflow' ) => 'yes' ),
+						'std'        => 'yes',
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => '',
+						'param_name' => 'show_age_tags',
+						'value'      => array( __( 'Pokaż grupy wiekowe', 'campsflow' ) => 'yes' ),
+						'std'        => 'yes',
+					),
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Tekst przycisku', 'campsflow' ),
+						'param_name'  => 'button_text',
+						'value'       => '',
+						'description' => __( 'Puste = domyślny tekst z ustawień', 'campsflow' ),
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Sufiks ceny', 'campsflow' ),
+						'param_name' => 'price_suffix',
+						'value'      => '/os.',
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Tekst gdy brak ceny', 'campsflow' ),
+						'param_name' => 'price_empty',
+						'value'      => __( 'na zapytanie', 'campsflow' ),
+					),
 				),
 			)
 		);
@@ -268,6 +349,17 @@ final class WpBakeryIntegration {
 				'params'      => array(
 					array(
 						'type'       => 'dropdown',
+						'heading'    => __( 'Taksonomia', 'campsflow' ),
+						'param_name' => 'taxonomy',
+						'value'      => array(
+							__( 'Profil wydarzenia', 'campsflow' ) => 'cf_event_category',
+							__( 'Tagi marketingowe', 'campsflow' ) => 'cf_event_tag',
+							__( 'Grupy wiekowe', 'campsflow' )     => 'cf_age_group',
+						),
+						'std'        => 'cf_event_category',
+					),
+					array(
+						'type'       => 'dropdown',
 						'heading'    => __( 'Sortowanie', 'campsflow' ),
 						'param_name' => 'sort',
 						'value'      => array(
@@ -289,6 +381,18 @@ final class WpBakeryIntegration {
 						'heading'    => __( 'Odstęp między tagami (px)', 'campsflow' ),
 						'param_name' => 'gap',
 						'value'      => '6',
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => __( 'Nagłówek', 'campsflow' ),
+						'param_name' => 'show_label',
+						'value'      => array( __( 'Pokaż nagłówek', 'campsflow' ) => 'yes' ),
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Tekst nagłówka', 'campsflow' ),
+						'param_name' => 'label_text',
+						'value'      => __( 'Tagi', 'campsflow' ),
 					),
 				),
 			)
@@ -485,6 +589,13 @@ final class WpBakeryIntegration {
 						'value'       => '3000',
 						'description' => __( 'Czas między slajdami w ms', 'campsflow' ),
 					),
+					array(
+						'type'        => 'textfield',
+						'heading'     => __( 'Czas animacji (ms)', 'campsflow' ),
+						'param_name'  => 'animation_speed',
+						'value'       => '400',
+						'description' => __( 'Czas przejścia slajdu w ms', 'campsflow' ),
+					),
 				),
 			)
 		);
@@ -546,6 +657,121 @@ final class WpBakeryIntegration {
 						'param_name' => 'zoom',
 						'value'      => '14',
 					),
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Typ mapy (Google)', 'campsflow' ),
+						'param_name' => 'map_type',
+						'value'      => array(
+							__( 'Mapa drogowa', 'campsflow' ) => 'roadmap',
+							__( 'Satelita', 'campsflow' )  => 'satellite',
+							__( 'Hybrydowa', 'campsflow' ) => 'hybrid',
+							__( 'Teren', 'campsflow' )     => 'terrain',
+						),
+						'std'        => 'roadmap',
+						'dependency' => array(
+							'element' => 'provider',
+							'value'   => array( 'google' ),
+						),
+					),
+				),
+			)
+		);
+	}
+
+	private function mapEventContact(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Kontakt', 'campsflow' ),
+				'base'        => 'campsflow_event_contact',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-businessperson',
+				'description' => __( 'Dane kontaktowe (imię, e-mail, telefon) aktualnego wydarzenia', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'checkbox',
+						'heading'    => __( 'Nagłówek', 'campsflow' ),
+						'param_name' => 'show_label',
+						'value'      => array( __( 'Pokaż nagłówek', 'campsflow' ) => 'yes' ),
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Tekst nagłówka', 'campsflow' ),
+						'param_name' => 'label',
+						'value'      => __( 'Kontakt', 'campsflow' ),
+					),
+				),
+			)
+		);
+	}
+
+	private function mapEventDocuments(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Dokumenty', 'campsflow' ),
+				'base'        => 'campsflow_event_documents',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-media-document',
+				'description' => __( 'Lista plików do pobrania przypisanych do aktualnego wydarzenia', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'checkbox',
+						'heading'    => __( 'Nagłówek', 'campsflow' ),
+						'param_name' => 'show_label',
+						'value'      => array( __( 'Pokaż nagłówek', 'campsflow' ) => 'yes' ),
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Tekst nagłówka', 'campsflow' ),
+						'param_name' => 'label',
+						'value'      => __( 'Dokumenty', 'campsflow' ),
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => __( 'Linki', 'campsflow' ),
+						'param_name' => 'open_new_tab',
+						'value'      => array( __( 'Otwieraj w nowej karcie', 'campsflow' ) => 'yes' ),
+						'std'        => 'yes',
+					),
+				),
+			)
+		);
+	}
+
+	private function mapEventBreadcrumb(): void {
+		vc_map(
+			array(
+				'name'        => __( 'CampsFlow — Breadcrumb', 'campsflow' ),
+				'base'        => 'campsflow_event_breadcrumb',
+				'category'    => 'CampsFlow',
+				'icon'        => 'dashicons-navigation',
+				'description' => __( 'Ścieżka nawigacji: lokalizacja lub sezon/rodzaj obozu', 'campsflow' ),
+				'params'      => array(
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Tryb', 'campsflow' ),
+						'param_name' => 'mode',
+						'value'      => array(
+							__( 'Lokalizacja (kraj › region › miasto)', 'campsflow' ) => 'localization',
+							__( 'Sezon › Rodzaj obozu', 'campsflow' )                => 'season_class',
+						),
+						'std'        => 'localization',
+					),
+					array(
+						'type'       => 'dropdown',
+						'heading'    => __( 'Liczba poziomów (lokalizacja)', 'campsflow' ),
+						'param_name' => 'depth',
+						'value'      => array(
+							__( '2 — Kraj › Region', 'campsflow' )          => '2',
+							__( '3 — Kraj › Region › Miasto', 'campsflow' ) => '3',
+						),
+						'std'        => '2',
+					),
+					array(
+						'type'       => 'textfield',
+						'heading'    => __( 'Separator', 'campsflow' ),
+						'param_name' => 'separator',
+						'value'      => '›',
+					),
 				),
 			)
 		);
@@ -575,6 +801,13 @@ final class WpBakeryIntegration {
 					array(
 						'type'       => 'checkbox',
 						'heading'    => __( 'Opcje', 'campsflow' ),
+						'param_name' => 'show_name',
+						'value'      => array( __( 'Pokaż nazwę turnusu', 'campsflow' ) => '1' ),
+						'std'        => '1',
+					),
+					array(
+						'type'       => 'checkbox',
+						'heading'    => '',
 						'param_name' => 'show_meeting_points',
 						'value'      => array( __( 'Pokaż punkty zbiórki', 'campsflow' ) => '1' ),
 					),

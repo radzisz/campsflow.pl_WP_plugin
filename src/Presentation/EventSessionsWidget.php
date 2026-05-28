@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Campsflow\Presentation;
 
+use Campsflow\CurrencyFormatter;
 use Campsflow\PostType\SessionPostType;
 use Campsflow\Sync\AvailabilityBucket;
+use Campsflow\Taxonomy\TransportTypeTaxonomy;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
@@ -29,7 +31,7 @@ final class EventSessionsWidget extends Widget_Base {
 	}
 
 	public function get_categories(): array {
-		return array( 'campsflow' );
+		return array( 'campsflow_event' );
 	}
 
 	protected function register_controls(): void {
@@ -203,21 +205,23 @@ final class EventSessionsWidget extends Widget_Base {
 	// ── Session helpers ───────────────────────────────────────────────────────
 
 	private function echoSessionItem( int $sId, string $buttonLabel, bool $showName ): void {
-		$dateFrom   = (string) get_post_meta( $sId, 'cf_date_from', true );
-		$dateTo     = (string) get_post_meta( $sId, 'cf_date_to', true );
-		$price      = (int) get_post_meta( $sId, 'cf_price_from', true );
-		$days       = (int) get_post_meta( $sId, 'cf_number_of_days', true );
-		$reservUrl  = RegistrationFormShortcode::registrationUrl( $sId );
-		$transport  = json_decode( (string) get_post_meta( $sId, 'cf_transport', true ), true );
-		$bucket     = AvailabilityBucket::tryFrom( (string) get_post_meta( $sId, 'cf_availability', true ) )
+		$dateFrom    = (string) get_post_meta( $sId, 'cf_date_from', true );
+		$dateTo      = (string) get_post_meta( $sId, 'cf_date_to', true );
+		$price       = (int) get_post_meta( $sId, 'cf_price_from', true );
+		$days        = (int) get_post_meta( $sId, 'cf_number_of_days', true );
+		$reservUrl   = RegistrationFormShortcode::registrationUrl( $sId );
+		$transport   = json_decode( (string) get_post_meta( $sId, 'cf_transport', true ), true );
+		$bucket      = AvailabilityBucket::tryFrom( (string) get_post_meta( $sId, 'cf_availability', true ) )
 						?? AvailabilityBucket::Available;
-		$isFull     = $bucket === AvailabilityBucket::Full;
-		$tsFrom     = $dateFrom ? strtotime( $dateFrom ) : 0;
-		$tsTo       = $dateTo ? strtotime( $dateTo ) : 0;
-		$dateLabel  = $tsFrom ? ( date_i18n( 'j F', $tsFrom ) . ( $tsTo ? '–' . date_i18n( 'j F Y', $tsTo ) : '' ) ) : '';
-		$priceLabel = $price ? 'od ' . number_format( $price / 100, 0, ',', ' ' ) . ' zł' : '';
-		$tType      = is_array( $transport ) ? (string) ( $transport['type'] ?? 'own' ) : 'own';
-		$turnusName = $showName ? (string) get_post_meta( $sId, 'cf_turnus_name', true ) : '';
+		$isFull      = $bucket === AvailabilityBucket::Full;
+		$tsFrom      = $dateFrom ? strtotime( $dateFrom ) : 0;
+		$tsTo        = $dateTo ? strtotime( $dateTo ) : 0;
+		$dateLabel   = $tsFrom ? ( date_i18n( 'j F', $tsFrom ) . ( $tsTo ? '–' . date_i18n( 'j F Y', $tsTo ) : '' ) ) : '';
+		$rawCurrency = get_post_meta( $sId, 'cf_currency', true );
+		$currency    = $rawCurrency !== '' && $rawCurrency !== false ? (string) $rawCurrency : 'PLN';
+		$priceLabel  = $price ? 'od ' . CurrencyFormatter::format( $price, $currency ) : '';
+		$tType       = is_array( $transport ) ? (string) ( $transport['type'] ?? 'own' ) : 'own';
+		$turnusName  = $showName ? (string) get_post_meta( $sId, 'cf_turnus_name', true ) : '';
 
 		echo '<li class="cf-sessions-box__item' . ( $isFull ? ' cf-sessions-box__item--full' : '' ) . '">';
 		if ( $turnusName ) {
@@ -233,7 +237,8 @@ final class EventSessionsWidget extends Widget_Base {
 		if ( $tType !== 'own' ) {
 			$departureCity = $this->getDepartureCity( $sId );
 			if ( $departureCity ) {
-				echo '<div class="cf-sessions-box__transport">🚌 ' . esc_html( $departureCity ) . '</div>';
+				$icon = TransportTypeTaxonomy::TYPE_ICONS[ $tType ] ?? '🚌';
+				echo '<div class="cf-sessions-box__transport">' . $icon . ' ' . esc_html( $departureCity ) . '</div>';
 			}
 		}
 		echo '<div class="cf-sessions-box__meta">';

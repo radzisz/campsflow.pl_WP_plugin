@@ -20,6 +20,7 @@ parameters:
         - src/Presentation/EventGalleryWidget.php
         - src/Presentation/EventTagsWidget.php
         - src/Presentation/EventAgeGroupWidget.php
+        - src/Presentation/EventBreadcrumbWidget.php
         - src/Presentation/EventSessionsWidget.php
         - src/Presentation/SearchFilterWidget.php
         - src/Presentation/SearchFilterFieldWidget.php
@@ -45,3 +46,5 @@ parameters:
         - '#Property WP_Screen::\$post_type .* on left side of \?\? is not nullable#'
         - '#Property WP_Term::\$name .* in isset\(\) is not nullable#'
         - '#Property WP_Term::\$slug .* in isset\(\) is not nullable#'
+        # Elementor\Plugin accessed in runtime-gated hook — class unavailable during static analysis
+        - '#Access to static property \$instance on an unknown class Elementor\\Plugin#'

@@ -96,6 +96,9 @@ add_action(
 		( new Taxonomy\SeasonTaxonomy() )->register();
 		( new Presentation\ListingShortcode() )->register();
 		( new Presentation\EventShortcodes() )->register();
+		( new Presentation\EventBreadcrumbShortcode() )->register();
+		( new Presentation\EventContactShortcode() )->register();
+		( new Presentation\EventDocumentsShortcode() )->register();
 		( new Presentation\SearchFilterShortcode() )->register();
 		( new Presentation\SearchFilterFieldShortcode() )->register();
 		( new Presentation\SearchSortShortcode() )->register();

@@ -9,6 +9,26 @@ final class TransportTypeTaxonomy {
 
 	public const SLUG = 'cf_transport_type';
 
+	/** @var array<string, string> Maps API transport.type codes to Polish display labels. */
+	public const TYPE_LABELS = array(
+		'own'     => 'Własny dojazd',
+		'bus'     => 'Autokar',
+		'minibus' => 'Minibus',
+		'train'   => 'Pociąg',
+		'plane'   => 'Samolot',
+		'ferry'   => 'Prom',
+	);
+
+	/** @var array<string, string> Emoji icons per transport type code. */
+	public const TYPE_ICONS = array(
+		'own'     => '🚗',
+		'bus'     => '🚌',
+		'minibus' => '🚐',
+		'train'   => '🚂',
+		'plane'   => '✈️',
+		'ferry'   => '⛴️',
+	);
+
 	public function register(): void {
 		add_action( 'init', array( $this, 'registerTaxonomy' ) );
 	}
