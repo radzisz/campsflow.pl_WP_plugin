@@ -101,12 +101,12 @@ final class AdminColumns {
 	 * @return array<string, string>
 	 */
 	public function addSessionColumn( array $columns ): array {
-		$columns['cf_sess_date_from']  = __( 'Początek', 'campsflow' );
-		$columns['cf_sess_date_to']    = __( 'Koniec', 'campsflow' );
-		$columns['cf_sess_transport']  = __( 'Transport', 'campsflow' );
-		$columns['cf_sess_start']      = __( 'Zbiórka', 'campsflow' );
-		$columns['cf_sess_price']      = __( 'Cena', 'campsflow' );
-		$columns['cf_open']            = '<span class="dashicons dashicons-external" title="' . esc_attr__( 'Otwórz w CampsFlow', 'campsflow' ) . '"></span>';
+		$columns['cf_sess_date_from'] = __( 'Początek', 'campsflow' );
+		$columns['cf_sess_date_to']   = __( 'Koniec', 'campsflow' );
+		$columns['cf_sess_transport'] = __( 'Transport', 'campsflow' );
+		$columns['cf_sess_start']     = __( 'Zbiórka', 'campsflow' );
+		$columns['cf_sess_price']     = __( 'Cena', 'campsflow' );
+		$columns['cf_open']           = '<span class="dashicons dashicons-external" title="' . esc_attr__( 'Otwórz w CampsFlow', 'campsflow' ) . '"></span>';
 		return $columns;
 	}
 
@@ -231,8 +231,9 @@ final class AdminColumns {
 			return;
 		}
 
-		$meta   = (array) ( $query->get( 'meta_query' ) ?: array() );
-		$meta[] = array(
+		$existing = $query->get( 'meta_query' );
+		$meta     = is_array( $existing ) ? $existing : array();
+		$meta[]   = array(
 			'key'     => 'cf_event_class',
 			'value'   => $code,
 			'compare' => '=',

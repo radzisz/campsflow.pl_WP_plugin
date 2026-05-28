@@ -382,10 +382,20 @@
 
 .cf-sessions-box__name  { font-weight: 700; font-size: 1rem; margin-bottom: .2rem; }
 .cf-sessions-box__dates { font-weight: 600; font-size: .95rem; }
-.cf-sessions-box__meta  { display: flex; align-items: center; gap: .5rem; }
 .cf-sessions-box__price { color: var(--cf-muted); font-size: .9rem; }
 
-.cf-sessions-box .cf-btn { align-self: flex-start; margin-left: 0; }
+.cf-sessions-box__action-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    margin-top: .25rem;
+}
+
+.cf-sessions-box__action-row .cf-btn,
+.cf-sessions-box__action-row .cf-btn--disabled { margin-left: 0; flex-shrink: 0; }
+
+.cf-sessions-box__avail { margin-top: .2rem; }
 
 /* ── Session name ──────────────────────────────────────────────── */
 .cf-session__name { font-weight: 700; font-size: .8rem; color: var(--cf-accent); display: block; margin-bottom: 2px; }

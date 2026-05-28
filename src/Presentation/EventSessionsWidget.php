@@ -241,18 +241,18 @@ final class EventSessionsWidget extends Widget_Base {
 				echo '<div class="cf-sessions-box__transport">' . $icon . ' ' . esc_html( $departureCity ) . '</div>';
 			}
 		}
-		echo '<div class="cf-sessions-box__meta">';
+		echo '<div class="cf-sessions-box__action-row">';
 		if ( $priceLabel ) {
 			echo '<span class="cf-sessions-box__price">' . esc_html( $priceLabel ) . '</span>';
 		}
-		if ( $bucket !== AvailabilityBucket::Available && $bucket->label() ) {
-			echo '<span class="cf-badge cf-badge--' . esc_attr( $bucket->value ) . '">' . esc_html( $bucket->label() ) . '</span>';
-		}
-		echo '</div>';
 		if ( $isFull ) {
 			echo '<span class="cf-btn cf-btn--disabled">' . esc_html__( 'Brak miejsc', 'campsflow' ) . '</span>';
 		} elseif ( $reservUrl ) {
 			echo '<a class="cf-btn" href="' . esc_url( $reservUrl ) . '">' . esc_html( $buttonLabel ) . '</a>';
+		}
+		echo '</div>';
+		if ( $bucket !== AvailabilityBucket::Available && $bucket->label() ) {
+			echo '<div class="cf-sessions-box__avail"><span class="cf-badge cf-badge--' . esc_attr( $bucket->value ) . '">' . esc_html( $bucket->label() ) . '</span></div>';
 		}
 		echo '</li>';
 	}
