@@ -101,15 +101,19 @@ final class AdminColumns {
 	 * @return array<string, string>
 	 */
 	public function addSessionColumn( array $columns ): array {
-		$columns['cf_sess_transport'] = __( 'Transport', 'campsflow' );
-		$columns['cf_sess_start']     = __( 'Zbiórka', 'campsflow' );
-		$columns['cf_sess_price']     = __( 'Cena', 'campsflow' );
-		$columns['cf_open']           = '<span class="dashicons dashicons-external" title="' . esc_attr__( 'Otwórz w CampsFlow', 'campsflow' ) . '"></span>';
+		$columns['cf_sess_date_from']  = __( 'Początek', 'campsflow' );
+		$columns['cf_sess_date_to']    = __( 'Koniec', 'campsflow' );
+		$columns['cf_sess_transport']  = __( 'Transport', 'campsflow' );
+		$columns['cf_sess_start']      = __( 'Zbiórka', 'campsflow' );
+		$columns['cf_sess_price']      = __( 'Cena', 'campsflow' );
+		$columns['cf_open']            = '<span class="dashicons dashicons-external" title="' . esc_attr__( 'Otwórz w CampsFlow', 'campsflow' ) . '"></span>';
 		return $columns;
 	}
 
 	public function renderSessionColumn( string $column, int $postId ): void {
 		match ( $column ) {
+			'cf_sess_date_from' => $this->renderSessionDate( $postId, 'cf_date_from' ),
+			'cf_sess_date_to'   => $this->renderSessionDate( $postId, 'cf_date_to' ),
 			'cf_sess_transport' => $this->renderSessionTransport( $postId ),
 			'cf_sess_start'     => $this->renderSessionStart( $postId ),
 			'cf_sess_price'     => $this->renderSessionPrice( $postId ),
@@ -139,6 +143,15 @@ final class AdminColumns {
 			: Config::adminUrl() . '/' . $tenantSlug;
 
 		$this->renderLink( $url, $cfSessionId );
+	}
+
+	private function renderSessionDate( int $postId, string $metaKey ): void {
+		$raw = (string) get_post_meta( $postId, $metaKey, true );
+		if ( $raw === '' ) {
+			echo '<span style="color:#d1d5db">—</span>';
+			return;
+		}
+		echo esc_html( date_i18n( 'd.m.Y', strtotime( $raw ) ) );
 	}
 
 	private function renderSessionTransport( int $postId ): void {
