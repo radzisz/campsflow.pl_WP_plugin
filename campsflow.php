@@ -57,6 +57,7 @@ register_activation_hook(
 		flush_rewrite_rules();
 		Sync\SyncScheduler::activate();
 		Presentation\RegistrationFormShortcode::createPageIfMissing();
+		Presentation\SearchPage::createPageIfMissing();
 	}
 );
 

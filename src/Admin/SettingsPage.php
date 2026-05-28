@@ -6,6 +6,7 @@ namespace Campsflow\Admin;
 use Campsflow\Config;
 use Campsflow\PostType\EventPostType;
 use Campsflow\Presentation\RegistrationFormShortcode;
+use Campsflow\Presentation\SearchPage;
 use Campsflow\Sync\SyncLog;
 use Campsflow\Sync\SyncScheduler;
 
@@ -20,6 +21,29 @@ final class SettingsPage {
 		add_action( 'admin_init', array( $this, 'registerSettings' ) );
 		add_action( 'update_option_campsflow_sync_interval', array( $this, 'onIntervalChange' ), 10, 0 );
 		add_action( 'admin_post_cf_create_registration_page', array( $this, 'handleCreateRegistrationPage' ) );
+		add_action( 'admin_post_cf_create_search_page', array( $this, 'handleCreateSearchPage' ) );
+	}
+
+	public function handleCreateSearchPage(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Brak uprawnień.', 'campsflow' ) );
+		}
+
+		check_admin_referer( 'cf_create_search_page' );
+		SearchPage::restoreOrCreatePage();
+
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'post_type'       => EventPostType::SLUG,
+					'page'            => 'cf-settings',
+					'tab'             => self::TAB_SETTINGS,
+					'cf_srch_created' => '1',
+				),
+				admin_url( 'edit.php' )
+			)
+		);
+		exit;
 	}
 
 	public function handleCreateRegistrationPage(): void {
@@ -33,10 +57,10 @@ final class SettingsPage {
 		wp_safe_redirect(
 			add_query_arg(
 				array(
-					'post_type'       => EventPostType::SLUG,
-					'page'            => 'cf-settings',
-					'tab'             => self::TAB_SETTINGS,
-					'cf_reg_created'  => '1',
+					'post_type'      => EventPostType::SLUG,
+					'page'           => 'cf-settings',
+					'tab'            => self::TAB_SETTINGS,
+					'cf_reg_created' => '1',
 				),
 				admin_url( 'edit.php' )
 			)
@@ -348,6 +372,43 @@ final class SettingsPage {
 		echo '</form>';
 
 		$this->renderRegistrationPageSection();
+		$this->renderSearchPageSection();
+	}
+
+	private function renderSearchPageSection(): void {
+		echo '<hr class="cf-divider">';
+		echo '<h3>' . esc_html__( 'Strona wyszukiwarki', 'campsflow' ) . '</h3>';
+
+		if ( isset( $_GET['cf_srch_created'] ) ) {
+			echo '<div class="notice notice-success inline"><p>✓ ' . esc_html__( 'Strona wyszukiwarki została utworzona.', 'campsflow' ) . '</p></div>';
+		}
+
+		$pageId = SearchPage::findPage();
+
+		if ( $pageId > 0 ) {
+			$post   = get_post( $pageId );
+			$status = $post instanceof \WP_Post ? $post->post_status : 'unknown';
+
+			if ( $status === 'trash' ) {
+				echo '<p class="cf-form__desc cf-form__desc--warn">⚠ ' . esc_html__( 'Strona wyszukiwarki jest w koszu.', 'campsflow' ) . '</p>';
+			} else {
+				$url = (string) get_permalink( $pageId );
+				echo '<p class="cf-form__desc cf-form__desc--set">✓ ';
+				echo esc_html__( 'Strona wyszukiwarki:', 'campsflow' ) . ' ';
+				echo '<a href="' . esc_url( $url ) . '" target="_blank">' . esc_html( $url ) . '</a>';
+				echo '</p>';
+				echo '<p class="cf-form__desc">' . esc_html__( 'Używana przez widget Breadcrumb jako link "Główna" i cel filtrów. Możesz ją przenieść lub zmienić slug — plugin znajdzie ją po wewnętrznym znaczniku.', 'campsflow' ) . '</p>';
+			}
+		} else {
+			echo '<p class="cf-form__desc cf-form__desc--warn">⚠ ' . esc_html__( 'Nie znaleziono strony wyszukiwarki. Kliknij przycisk poniżej, żeby ją utworzyć.', 'campsflow' ) . '</p>';
+		}
+
+		echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" style="margin-top:12px">';
+		wp_nonce_field( 'cf_create_search_page' );
+		echo '<input type="hidden" name="action" value="cf_create_search_page">';
+		$label = ( $pageId > 0 ) ? __( 'Przywróć / Utwórz ponownie', 'campsflow' ) : __( 'Utwórz stronę wyszukiwarki', 'campsflow' );
+		echo '<button type="submit" class="button button-secondary">' . esc_html( $label ) . '</button>';
+		echo '</form>';
 	}
 
 	private function renderRegistrationPageSection(): void {
