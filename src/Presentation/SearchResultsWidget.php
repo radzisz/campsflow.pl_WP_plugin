@@ -85,9 +85,17 @@ final class SearchResultsWidget extends Widget_Base {
 
 	private function registerCardTagControls(): void {
 		$this->add_control(
+			'heading_profile_tags',
+			array(
+				'label'     => __( 'Profil obozu', 'campsflow' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+		$this->add_control(
 			'show_profile_tags',
 			array(
-				'label'     => __( 'Pokaż profil obozu', 'campsflow' ),
+				'label'     => __( 'Pokaż', 'campsflow' ),
 				'type'      => Controls_Manager::SWITCHER,
 				'default'   => 'yes',
 				'label_on'  => __( 'Tak', 'campsflow' ),
@@ -97,16 +105,25 @@ final class SearchResultsWidget extends Widget_Base {
 		$this->add_control(
 			'profile_tags_label',
 			array(
-				'label'     => __( 'Nagłówek (profil)', 'campsflow' ),
+				'label'     => __( 'Nagłówek sekcji', 'campsflow' ),
 				'type'      => Controls_Manager::TEXT,
 				'default'   => '',
 				'condition' => array( 'show_profile_tags' => 'yes' ),
 			)
 		);
+
+		$this->add_control(
+			'heading_event_tags',
+			array(
+				'label'     => __( 'Tagi promocyjne', 'campsflow' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
 		$this->add_control(
 			'show_event_tags',
 			array(
-				'label'     => __( 'Pokaż tagi (eventTags)', 'campsflow' ),
+				'label'     => __( 'Pokaż', 'campsflow' ),
 				'type'      => Controls_Manager::SWITCHER,
 				'default'   => 'yes',
 				'label_on'  => __( 'Tak', 'campsflow' ),
@@ -116,16 +133,25 @@ final class SearchResultsWidget extends Widget_Base {
 		$this->add_control(
 			'event_tags_label',
 			array(
-				'label'     => __( 'Nagłówek (tagi)', 'campsflow' ),
+				'label'     => __( 'Nagłówek sekcji', 'campsflow' ),
 				'type'      => Controls_Manager::TEXT,
 				'default'   => '',
 				'condition' => array( 'show_event_tags' => 'yes' ),
 			)
 		);
+
+		$this->add_control(
+			'heading_age_tags',
+			array(
+				'label'     => __( 'Grupa wiekowa', 'campsflow' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
 		$this->add_control(
 			'show_age_tags',
 			array(
-				'label'     => __( 'Pokaż grupę wiekową', 'campsflow' ),
+				'label'     => __( 'Pokaż', 'campsflow' ),
 				'type'      => Controls_Manager::SWITCHER,
 				'default'   => 'yes',
 				'label_on'  => __( 'Tak', 'campsflow' ),
@@ -135,7 +161,7 @@ final class SearchResultsWidget extends Widget_Base {
 		$this->add_control(
 			'age_tags_label',
 			array(
-				'label'     => __( 'Nagłówek (wiek)', 'campsflow' ),
+				'label'     => __( 'Nagłówek sekcji', 'campsflow' ),
 				'type'      => Controls_Manager::TEXT,
 				'default'   => '',
 				'condition' => array( 'show_age_tags' => 'yes' ),
@@ -248,9 +274,17 @@ final class SearchResultsWidget extends Widget_Base {
 
 	private function registerCardInfoControls(): void {
 		$this->add_control(
+			'heading_date',
+			array(
+				'label'     => __( 'Data', 'campsflow' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+		$this->add_control(
 			'show_date',
 			array(
-				'label'     => __( 'Pokaż datę', 'campsflow' ),
+				'label'     => __( 'Pokaż', 'campsflow' ),
 				'type'      => Controls_Manager::SWITCHER,
 				'default'   => 'yes',
 				'label_on'  => __( 'Tak', 'campsflow' ),
@@ -260,16 +294,25 @@ final class SearchResultsWidget extends Widget_Base {
 		$this->add_control(
 			'date_label',
 			array(
-				'label'     => __( 'Nagłówek (data)', 'campsflow' ),
+				'label'     => __( 'Nagłówek sekcji', 'campsflow' ),
 				'type'      => Controls_Manager::TEXT,
 				'default'   => '',
 				'condition' => array( 'show_date' => 'yes' ),
 			)
 		);
+
+		$this->add_control(
+			'heading_location',
+			array(
+				'label'     => __( 'Lokalizacja', 'campsflow' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
 		$this->add_control(
 			'show_location',
 			array(
-				'label'     => __( 'Pokaż lokalizację', 'campsflow' ),
+				'label'     => __( 'Pokaż', 'campsflow' ),
 				'type'      => Controls_Manager::SWITCHER,
 				'default'   => 'yes',
 				'label_on'  => __( 'Tak', 'campsflow' ),
@@ -279,7 +322,7 @@ final class SearchResultsWidget extends Widget_Base {
 		$this->add_control(
 			'location_label',
 			array(
-				'label'     => __( 'Nagłówek (lokalizacja)', 'campsflow' ),
+				'label'     => __( 'Nagłówek sekcji', 'campsflow' ),
 				'type'      => Controls_Manager::TEXT,
 				'default'   => '',
 				'condition' => array( 'show_location' => 'yes' ),
@@ -288,7 +331,7 @@ final class SearchResultsWidget extends Widget_Base {
 		$this->add_control(
 			'location_mode',
 			array(
-				'label'     => __( 'Format lokalizacji', 'campsflow' ),
+				'label'     => __( 'Format', 'campsflow' ),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'country_dest',
 				'options'   => array(
