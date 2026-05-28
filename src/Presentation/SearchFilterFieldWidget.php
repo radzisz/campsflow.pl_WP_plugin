@@ -24,14 +24,13 @@ final class SearchFilterFieldWidget extends Widget_Base {
 	}
 
 	public function get_categories(): array {
-		return array( 'campsflow' );
+		return array( 'campsflow_search' );
 	}
 
 	protected function register_controls(): void {
 		$this->registerContentSection();
 		$this->registerStyleLayoutSection();
 		$this->registerStyleLabelSection();
-		$this->registerStyleInputSection();
 		$this->registerStyleMultiSection();
 	}
 
@@ -114,8 +113,12 @@ final class SearchFilterFieldWidget extends Widget_Base {
 					'column' => __( 'Pionowy (nagłówek nad polem)', 'campsflow' ),
 					'row'    => __( 'Poziomy (nagłówek obok pola)', 'campsflow' ),
 				),
-				'selectors' => array(
-					'{{WRAPPER}} .cf-filter-wrap' => 'display:flex; flex-direction:{{VALUE}}; align-items:center;',
+				'selectors_dictionary' => array(
+					'column' => 'flex-direction:column; align-items:flex-start;',
+					'row'    => 'flex-direction:row; align-items:center;',
+				),
+				'selectors'            => array(
+					'{{WRAPPER}} .cf-filter-wrap' => '{{VALUE}}',
 				),
 			)
 		);
@@ -135,7 +138,6 @@ final class SearchFilterFieldWidget extends Widget_Base {
 				'selectors' => array(
 					'{{WRAPPER}} .cf-filter-wrap' => 'gap: {{SIZE}}px;',
 				),
-				'condition' => array( 'layout' => 'row' ),
 			)
 		);
 		$this->end_controls_section();
@@ -218,113 +220,6 @@ final class SearchFilterFieldWidget extends Widget_Base {
 		$this->end_controls_section();
 	}
 
-	private function registerStyleInputSection(): void {
-		$this->start_controls_section(
-			'section_style_input',
-			array(
-				'label' => __( 'Pole wyboru', 'campsflow' ),
-				'tab'   => Controls_Manager::TAB_STYLE,
-			)
-		);
-
-		$this->add_control(
-			'input_width',
-			array(
-				'label'      => __( 'Szerokość', 'campsflow' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%' ),
-				'range'      => array(
-					'%'  => array(
-						'min' => 10,
-						'max' => 100,
-					),
-					'px' => array(
-						'min' => 50,
-						'max' => 600,
-					),
-				),
-				'default'    => array(
-					'unit' => '%',
-					'size' => 100,
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} .cf-filter' => 'width: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'input_bg',
-			array(
-				'label'     => __( 'Tło', 'campsflow' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .cf-filter' => 'background-color: {{VALUE}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'input_color',
-			array(
-				'label'     => __( 'Kolor tekstu', 'campsflow' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .cf-filter' => 'color: {{VALUE}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'input_border_color',
-			array(
-				'label'     => __( 'Kolor obramowania', 'campsflow' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .cf-filter' => 'border-color: {{VALUE}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'input_border_radius',
-			array(
-				'label'      => __( 'Zaokrąglenie', 'campsflow' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%' ),
-				'range'      => array(
-					'px' => array(
-						'min' => 0,
-						'max' => 50,
-					),
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} .cf-filter' => 'border-radius: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'input_font_size',
-			array(
-				'label'      => __( 'Rozmiar czcionki', 'campsflow' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em', 'rem' ),
-				'range'      => array(
-					'px' => array(
-						'min' => 10,
-						'max' => 28,
-					),
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} .cf-filter' => 'font-size: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->end_controls_section();
-	}
-
 	private function registerStyleMultiSection(): void {
 		$this->start_controls_section(
 			'section_style_multi',
@@ -334,12 +229,27 @@ final class SearchFilterFieldWidget extends Widget_Base {
 			)
 		);
 		$this->add_control(
+			'multi_width',
+			array(
+				'label'      => __( 'Szerokość', 'campsflow' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', '%' ),
+				'range'      => array(
+					'%'  => array( 'min' => 10, 'max' => 100 ),
+					'px' => array( 'min' => 50, 'max' => 600 ),
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-multi, {{WRAPPER}} .cf-daterange' => 'width: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+		$this->add_control(
 			'multi_bg',
 			array(
 				'label'     => __( 'Tło przycisku', 'campsflow' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .cf-multi__toggle' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}} .cf-multi__toggle, {{WRAPPER}} .cf-daterange__toggle' => 'background-color: {{VALUE}}',
 				),
 			)
 		);
@@ -349,7 +259,7 @@ final class SearchFilterFieldWidget extends Widget_Base {
 				'label'     => __( 'Kolor tekstu', 'campsflow' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .cf-multi__toggle' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .cf-multi__toggle, {{WRAPPER}} .cf-daterange__toggle' => 'color: {{VALUE}}',
 				),
 			)
 		);
@@ -366,7 +276,7 @@ final class SearchFilterFieldWidget extends Widget_Base {
 					),
 				),
 				'selectors'  => array(
-					'{{WRAPPER}} .cf-multi__toggle' => 'border-radius: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .cf-multi__toggle, {{WRAPPER}} .cf-daterange__toggle' => 'border-radius: {{SIZE}}{{UNIT}}',
 				),
 			)
 		);
@@ -374,14 +284,14 @@ final class SearchFilterFieldWidget extends Widget_Base {
 			Group_Control_Border::get_type(),
 			array(
 				'name'     => 'multi_border',
-				'selector' => '{{WRAPPER}} .cf-multi__toggle',
+				'selector' => '{{WRAPPER}} .cf-multi__toggle, {{WRAPPER}} .cf-daterange__toggle',
 			)
 		);
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			array(
 				'name'     => 'multi_typography',
-				'selector' => '{{WRAPPER}} .cf-multi__toggle',
+				'selector' => '{{WRAPPER}} .cf-multi__toggle, {{WRAPPER}} .cf-daterange__toggle',
 			)
 		);
 		$this->add_control(

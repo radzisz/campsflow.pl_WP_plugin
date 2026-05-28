@@ -42,9 +42,15 @@
     margin-bottom: 1rem;
 }
 
+.cf-filter-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
 .cf-filter-label {
     display: block;
-    margin-bottom: 4px;
     font-size: .85rem;
     font-weight: 600;
 }
