@@ -340,8 +340,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz przygodowy",
+        "color": "#f97316",
         "visible": true
       }
     ]
@@ -687,8 +687,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz nad morzem",
+        "color": "#38bdf8",
         "visible": true
       }
     ]
@@ -1034,8 +1034,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz sportowy",
+        "color": "#22c55e",
         "visible": true
       }
     ]
@@ -1328,8 +1328,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz sportowy",
+        "color": "#22c55e",
         "visible": true
       }
     ]
@@ -1675,7 +1675,7 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
+        "name": "Obóz aktywny",
         "color": "#a78bfa",
         "visible": true
       }
@@ -2074,7 +2074,7 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy wypoczynkowe",
+        "name": "Obóz wypoczynkowy",
         "color": "#6ee7b7",
         "visible": true
       }
@@ -2419,8 +2419,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz sportowy",
+        "color": "#22c55e",
         "visible": true
       }
     ]
@@ -2766,8 +2766,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz naukowy",
+        "color": "#facc15",
         "visible": true
       }
     ]
@@ -3110,8 +3110,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz wypoczynkowy",
+        "color": "#6ee7b7",
         "visible": true
       }
     ]
@@ -3404,8 +3404,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz językowy",
+        "color": "#60a5fa",
         "visible": true
       }
     ]
@@ -3793,8 +3793,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz wodny",
+        "color": "#38bdf8",
         "visible": true
       }
     ]
@@ -4085,8 +4085,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz rowerowy",
+        "color": "#4ade80",
         "visible": true
       }
     ]
@@ -4430,8 +4430,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz górski",
+        "color": "#94a3b8",
         "visible": true
       }
     ]
@@ -4796,8 +4796,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz sportowy",
+        "color": "#22c55e",
         "visible": true
       }
     ]
@@ -5066,8 +5066,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy wypoczynkowe",
-        "color": "#6ee7b7",
+        "name": "Obóz wodny",
+        "color": "#38bdf8",
         "visible": true
       }
     ]
@@ -5360,8 +5360,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz językowy",
+        "color": "#60a5fa",
         "visible": true
       }
     ]
@@ -5713,8 +5713,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy wypoczynkowe",
-        "color": "#6ee7b7",
+        "name": "Półkolonie",
+        "color": "#fcd34d",
         "visible": true
       }
     ]
@@ -5963,7 +5963,7 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy rodzinne",
+        "name": "Obóz rodzinny",
         "color": "#fda4af",
         "visible": true
       }
@@ -6238,8 +6238,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy wypoczynkowe",
-        "color": "#6ee7b7",
+        "name": "Kolonia zimowa",
+        "color": "#bae6fd",
         "visible": true
       }
     ]
@@ -6596,8 +6596,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Obozy młodzieżowe",
-        "color": "#a78bfa",
+        "name": "Obóz zimowy",
+        "color": "#bae6fd",
         "visible": true
       }
     ]

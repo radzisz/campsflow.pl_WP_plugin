@@ -42,13 +42,15 @@ final class AdminColumns {
 	 */
 	public function addEventColumn( array $columns ): array {
 		unset( $columns[ 'taxonomy-' . DestinationTaxonomy::SLUG ] );
+		unset( $columns['taxonomy-cf_event_category'] );
 
 		$result = array();
 		foreach ( $columns as $key => $label ) {
 			$result[ $key ] = $label;
 			if ( $key === 'title' ) {
-				$result['cf_destination_path'] = __( 'Kierunek', 'campsflow' );
-				$result['cf_event_class']      = __( 'Typ obozu', 'campsflow' );
+				$result['cf_destination_path']  = __( 'Kierunek', 'campsflow' );
+				$result['cf_event_category_col'] = __( 'Kategoria', 'campsflow' );
+				$result['cf_event_class']        = __( 'Klasa obozu', 'campsflow' );
 			}
 		}
 		$result['cf_open'] = '<span class="dashicons dashicons-external" title="' . esc_attr__( 'Otwórz w CampsFlow', 'campsflow' ) . '"></span>';
@@ -58,6 +60,15 @@ final class AdminColumns {
 	public function renderEventColumn( string $column, int $postId ): void {
 		if ( $column === 'cf_destination_path' ) {
 			$this->renderDestinationPath( $postId );
+			return;
+		}
+
+		if ( $column === 'cf_event_category_col' ) {
+			$terms = get_the_terms( $postId, 'cf_event_category' );
+			$name  = ( is_array( $terms ) && ! empty( $terms ) && $terms[0] instanceof \WP_Term )
+				? $terms[0]->name
+				: '';
+			echo $name !== '' ? esc_html( $name ) : '<span style="color:#d1d5db">—</span>';
 			return;
 		}
 

@@ -342,18 +342,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Przygoda",
-        "color": "#fef08a",
-        "visible": true
-      },
-      {
-        "name": "Góry",
-        "color": "#d1fae5",
+        "name": "Obóz przygodowy",
+        "color": "#f97316",
         "visible": true
       }
     ]
@@ -700,18 +690,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
+        "name": "Obóz nad morzem",
+        "color": "#38bdf8",
         "visible": true
       }
     ]
@@ -1059,18 +1039,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Surf",
-        "color": "#bae6fd",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
+        "name": "Obóz sportowy",
+        "color": "#22c55e",
         "visible": true
       }
     ]
@@ -1365,18 +1335,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Kite",
-        "color": "#c7d2fe",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
+        "name": "Obóz sportowy",
+        "color": "#22c55e",
         "visible": true
       }
     ]
@@ -1735,18 +1695,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Przygoda",
-        "color": "#fef08a",
-        "visible": true
-      },
-      {
-        "name": "Góry",
-        "color": "#d1fae5",
+        "name": "Obóz aktywny",
+        "color": "#a78bfa",
         "visible": true
       }
     ]
@@ -2144,13 +2094,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
+        "name": "Obóz wypoczynkowy",
+        "color": "#6ee7b7",
         "visible": true
       }
     ]
@@ -2514,18 +2459,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
-        "visible": true
-      },
-      {
-        "name": "Przygoda",
-        "color": "#fef08a",
+        "name": "Obóz sportowy",
+        "color": "#22c55e",
         "visible": true
       }
     ]
@@ -2873,18 +2808,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Nauka",
-        "color": "#e9d5ff",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Tech & Nauka",
-        "color": "#e0e7ff",
+        "name": "Obóz naukowy",
+        "color": "#facc15",
         "visible": true
       }
     ]
@@ -3224,13 +3149,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
+        "name": "Obóz wypoczynkowy",
+        "color": "#6ee7b7",
         "visible": true
       }
     ]
@@ -3525,18 +3445,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Językowy",
-        "color": "#fce7f3",
-        "visible": true
-      },
-      {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
+        "name": "Obóz językowy",
+        "color": "#60a5fa",
         "visible": true
       }
     ]
@@ -3921,18 +3831,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
-        "visible": true
-      },
-      {
-        "name": "Sporty wodne",
-        "color": "#cffafe",
+        "name": "Obóz wodny",
+        "color": "#38bdf8",
         "visible": true
       }
     ]
@@ -4244,18 +4144,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Góry",
-        "color": "#d1fae5",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
+        "name": "Obóz rowerowy",
+        "color": "#4ade80",
         "visible": true
       }
     ]
@@ -4597,18 +4487,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Góry",
-        "color": "#d1fae5",
-        "visible": true
-      },
-      {
-        "name": "Przygoda",
-        "color": "#fef08a",
+        "name": "Obóz górski",
+        "color": "#94a3b8",
         "visible": true
       }
     ]
@@ -4971,13 +4851,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
+        "name": "Obóz sportowy",
+        "color": "#22c55e",
         "visible": true
       }
     ]
@@ -5011,18 +4886,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Morze i plaża",
-        "visible": true,
-        "color": "#bae6fd"
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Przygoda",
-        "color": "#fef08a",
+        "name": "Obóz zagraniczny",
+        "color": "#e879f9",
         "visible": true
       }
     ],
@@ -5563,18 +5428,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Językowy",
-        "color": "#fce7f3",
-        "visible": true
-      },
-      {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Góry",
-        "color": "#d1fae5",
+        "name": "Obóz językowy",
+        "color": "#60a5fa",
         "visible": true
       }
     ]
@@ -5613,23 +5468,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Językowy",
-        "visible": true,
-        "color": "#fce7f3"
-      },
-      {
-        "name": "Morze i plaża",
-        "visible": true,
-        "color": "#bae6fd"
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Edukacja",
-        "color": "#ddd6fe",
+        "name": "Obóz językowy za granicą",
+        "color": "#818cf8",
         "visible": true
       }
     ],
@@ -6106,18 +5946,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Relaks",
-        "color": "#bfdbfe",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
-        "visible": true
-      },
-      {
-        "name": "Rodzinny",
-        "color": "#fef3c7",
+        "name": "Obóz rodzinny",
+        "color": "#fda4af",
         "visible": true
       }
     ]
@@ -6391,13 +6221,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Zimowy",
-        "color": "#ede9fe",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
+        "name": "Kolonia zimowa",
+        "color": "#bae6fd",
         "visible": true
       }
     ]
@@ -6757,18 +6582,8 @@
     ],
     "eventCategories": [
       {
-        "name": "Zimowy",
-        "color": "#ede9fe",
-        "visible": true
-      },
-      {
-        "name": "Sport",
-        "color": "#fed7aa",
-        "visible": true
-      },
-      {
-        "name": "Aktywny",
-        "color": "#bbf7d0",
+        "name": "Obóz zimowy",
+        "color": "#bae6fd",
         "visible": true
       }
     ]
