@@ -25,7 +25,7 @@ final class EventFieldWidget extends Widget_Base {
 	}
 
 	public function get_categories(): array {
-		return array( 'campsflow' );
+		return array( 'campsflow_event' );
 	}
 
 	public function get_keywords(): array {
@@ -77,7 +77,7 @@ final class EventFieldWidget extends Widget_Base {
 					'cf_terms_diet'         => __( 'Warunki: dieta specjalna', 'campsflow' ),
 					'cf_terms_deadlines'    => __( 'Warunki: terminy i dokumenty', 'campsflow' ),
 					'cf_event_class'        => __( 'Klasa wydarzenia', 'campsflow' ),
-					'cf_event_process'      => __( 'Proces imprezy', 'campsflow' ),
+					'cf_event_process'      => __( 'Proces wydarzenia', 'campsflow' ),
 					'custom'                => __( 'Pole własne', 'campsflow' ),
 				),
 			)

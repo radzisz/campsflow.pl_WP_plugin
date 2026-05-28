@@ -47,6 +47,7 @@ trait FilterRenderMethods {
 				. '</label>';
 		}
 
+		$this->renderMultiDropdownFooter();
 		echo '</div>';
 		echo '</div>';
 	}
@@ -137,6 +138,7 @@ trait FilterRenderMethods {
 			echo '</div>';
 		}
 
+		$this->renderMultiDropdownFooter();
 		echo '</div>';
 		echo '</div>';
 	}
@@ -235,6 +237,7 @@ trait FilterRenderMethods {
 			. '<input type="checkbox" value="18" data-label="18+"' . $checked . '>18+'
 			. '</label>';
 
+		$this->renderMultiDropdownFooter();
 		echo '</div>';
 		echo '</div>';
 	}
@@ -245,6 +248,69 @@ trait FilterRenderMethods {
 		}
 		/* translators: %d: child age in years */
 		return sprintf( _n( '%d rok', '%d lat', $yr, 'campsflow' ), $yr );
+	}
+
+	private function renderTransportFilterSelect( string $emptyLabel, bool $showIcons ): void {
+		$terms    = get_terms(
+			array(
+				'taxonomy'   => \Campsflow\Taxonomy\TransportTypeTaxonomy::SLUG,
+				'hide_empty' => true,
+			)
+		);
+		$selected = self::parseMultiParam( 'transport' );
+
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			return;
+		}
+
+		$buildLabel = function ( string $name, string $slug ) use ( $showIcons ): string {
+			if ( $showIcons ) {
+				$icon = \Campsflow\Taxonomy\TransportTypeTaxonomy::TYPE_ICONS[ $slug ] ?? '';
+				return $icon !== '' ? $icon . ' ' . $name : $name;
+			}
+			return $name;
+		};
+
+		if ( empty( $selected ) ) {
+			$labelText = esc_html( $emptyLabel );
+		} elseif ( count( $selected ) === 1 ) {
+			$found = null;
+			foreach ( $terms as $t ) {
+				if ( ( $t instanceof \WP_Term ) && $t->slug === $selected[0] ) {
+					$found = $t;
+					break;
+				}
+			}
+			$labelText = $found instanceof \WP_Term
+				? esc_html( $buildLabel( $found->name, $found->slug ) )
+				: esc_html( $selected[0] );
+		} else {
+			$labelText = esc_html( (string) count( $selected ) );
+		}
+
+		echo '<div class="cf-multi" data-name="transport" data-empty-label="' . esc_attr( $emptyLabel ) . '">';
+		echo '<button type="button" class="cf-multi__toggle" aria-haspopup="listbox" aria-expanded="false">';
+		echo '<span class="cf-multi__label">' . $labelText . '</span>';
+		if ( count( $selected ) > 1 ) {
+			echo '<span class="cf-multi__count">' . esc_html( (string) count( $selected ) ) . '</span>';
+		}
+		echo '<span class="cf-multi__arrow" aria-hidden="true">&#9662;</span>';
+		echo '</button>';
+		echo '<div class="cf-multi__dropdown" role="listbox" aria-multiselectable="true">';
+
+		foreach ( $terms as $term ) {
+			assert( is_object( $term ) && isset( $term->slug, $term->name ) );
+			$displayName = $buildLabel( $term->name, $term->slug );
+			$checked     = in_array( $term->slug, $selected, true ) ? ' checked' : '';
+			echo '<label class="cf-multi__option">'
+				. '<input type="checkbox" value="' . esc_attr( $term->slug ) . '" data-label="' . esc_attr( $displayName ) . '"' . $checked . '>'
+				. esc_html( $displayName )
+				. '</label>';
+		}
+
+		$this->renderMultiDropdownFooter();
+		echo '</div>';
+		echo '</div>';
 	}
 
 	private function renderSeasonFilterSelect( string $emptyLabel ): void {
@@ -293,6 +359,13 @@ trait FilterRenderMethods {
 
 		echo '<input type="hidden" class="cf-filter" name="dateFrom" value="' . esc_attr( $from ) . '">';
 		echo '<input type="hidden" class="cf-filter" name="dateTo" value="' . esc_attr( $to ) . '">';
+		echo '</div>';
+	}
+
+	private function renderMultiDropdownFooter(): void {
+		echo '<div class="cf-multi__footer">';
+		echo '<button type="button" class="cf-multi__footer-clear" aria-label="' . esc_attr__( 'Wyczyść', 'campsflow' ) . '" title="' . esc_attr__( 'Wyczyść', 'campsflow' ) . '">&#10005;</button>';
+		echo '<button type="button" class="cf-multi__footer-confirm" aria-label="' . esc_attr__( 'Gotowe', 'campsflow' ) . '" title="' . esc_attr__( 'Gotowe', 'campsflow' ) . '">&#10003;</button>';
 		echo '</div>';
 	}
 

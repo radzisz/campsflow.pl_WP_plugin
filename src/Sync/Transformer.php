@@ -47,6 +47,7 @@ final class Transformer {
 			dateTo:               (string) ( $apiTurnus['dateTo'] ?? '' ),
 			numberOfDays:         (int) ( $apiTurnus['numberOfDays'] ?? 0 ),
 			priceGrosze:          (int) ( $apiTurnus['priceFrom'] ?? 0 ),
+			currency:             sanitize_text_field( (string) ( $apiTurnus['currency'] ?? 'PLN' ) ),
 			transport:            $transport,
 			meetingPointsStart:   $meetingStart,
 			meetingPointsReturn:  $meetingReturn,

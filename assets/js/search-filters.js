@@ -143,11 +143,18 @@
 		var emptyLabel = widget.getAttribute( 'data-empty-label' ) || '';
 		var checked    = Array.from( widget.querySelectorAll( '.cf-multi__dropdown input[type="checkbox"]:checked' ) );
 		var labelEl    = widget.querySelector( '.cf-multi__label' );
-		var countEl    = widget.querySelector( '.cf-multi__count' );
 		var toggleEl   = widget.querySelector( '.cf-multi__toggle' );
 
-		if ( ! labelEl || ! countEl || ! toggleEl ) {
+		if ( ! labelEl || ! toggleEl ) {
 			return;
+		}
+
+		var countEl = widget.querySelector( '.cf-multi__count' );
+		if ( ! countEl ) {
+			countEl = document.createElement( 'span' );
+			countEl.className = 'cf-multi__count';
+			countEl.style.display = 'none';
+			labelEl.insertAdjacentElement( 'afterend', countEl );
 		}
 
 		if ( checked.length === 0 ) {
@@ -155,7 +162,7 @@
 			countEl.textContent = '';
 			countEl.style.display = 'none';
 		} else if ( checked.length === 1 ) {
-			labelEl.textContent = checked[0].getAttribute( 'data-label' ) || checked[0].value;
+			labelEl.textContent = checked[ 0 ].getAttribute( 'data-label' ) || checked[ 0 ].value;
 			countEl.textContent = '';
 			countEl.style.display = 'none';
 		} else {
@@ -167,13 +174,50 @@
 		toggleEl.setAttribute( 'aria-expanded', widget.classList.contains( 'is-open' ) ? 'true' : 'false' );
 	}
 
+	function positionDropdownFixed( dropdown, toggle ) {
+		var rect = toggle.getBoundingClientRect();
+		dropdown.style.position = 'fixed';
+		dropdown.style.top      = ( rect.bottom + 4 ) + 'px';
+		dropdown.style.left     = rect.left + 'px';
+		dropdown.style.minWidth = rect.width + 'px';
+		dropdown.style.maxWidth = ( window.innerWidth - rect.left - 8 ) + 'px';
+		dropdown.style.zIndex   = '99999';
+	}
+
+	function resetDropdownPosition( dropdown ) {
+		dropdown.style.position = '';
+		dropdown.style.top      = '';
+		dropdown.style.left     = '';
+		dropdown.style.minWidth = '';
+		dropdown.style.maxWidth = '';
+		dropdown.style.zIndex   = '';
+	}
+
+	function closeAllDropdowns( except ) {
+		document.querySelectorAll( '.cf-multi.is-open, .cf-daterange.is-open' ).forEach( function ( el ) {
+			if ( el === except ) {
+				return;
+			}
+			el.classList.remove( 'is-open' );
+			var t = el.querySelector( '.cf-multi__toggle, .cf-daterange__toggle' );
+			if ( t ) {
+				t.setAttribute( 'aria-expanded', 'false' );
+			}
+			var d = el.querySelector( '.cf-multi__dropdown' );
+			if ( d ) {
+				resetDropdownPosition( d );
+			}
+		} );
+	}
+
 	function initMultiSelect( widget ) {
 		if ( widget.dataset.cfInit ) {
 			return;
 		}
 		widget.dataset.cfInit = '1';
 
-		var toggle = widget.querySelector( '.cf-multi__toggle' );
+		var toggle   = widget.querySelector( '.cf-multi__toggle' );
+		var dropdown = widget.querySelector( '.cf-multi__dropdown' );
 		if ( ! toggle ) {
 			return;
 		}
@@ -182,15 +226,66 @@
 
 		toggle.addEventListener( 'click', function ( e ) {
 			e.stopPropagation();
+			closeAllDropdowns( widget );
 			var isOpen = widget.classList.toggle( 'is-open' );
 			toggle.setAttribute( 'aria-expanded', isOpen ? 'true' : 'false' );
+			if ( dropdown ) {
+				if ( isOpen ) {
+					positionDropdownFixed( dropdown, toggle );
+				} else {
+					resetDropdownPosition( dropdown );
+				}
+			}
+		} );
+
+		/* Parent → children cascade for tree-style destinations */
+		widget.querySelectorAll( '.cf-multi__option--parent input[type="checkbox"]' ).forEach( function ( parentCb ) {
+			parentCb.addEventListener( 'change', function () {
+				var group = parentCb.closest( '.cf-multi__group' );
+				if ( group ) {
+					group.querySelectorAll( '.cf-multi__option--child input[type="checkbox"]' ).forEach( function ( childCb ) {
+						childCb.checked = parentCb.checked;
+					} );
+				}
+				updateMultiToggle( widget );
+			} );
 		} );
 
 		widget.querySelectorAll( '.cf-multi__dropdown input[type="checkbox"]' ).forEach( function ( cb ) {
+			if ( cb.closest( '.cf-multi__option--parent' ) ) {
+				return;
+			}
 			cb.addEventListener( 'change', function () {
 				updateMultiToggle( widget );
 			} );
 		} );
+
+		/* Footer: clear and confirm */
+		var clearBtn   = widget.querySelector( '.cf-multi__footer-clear' );
+		var confirmBtn = widget.querySelector( '.cf-multi__footer-confirm' );
+
+		if ( clearBtn ) {
+			clearBtn.addEventListener( 'click', function ( e ) {
+				e.stopPropagation();
+				var cbs = widget.querySelectorAll( '.cf-multi__dropdown input[type="checkbox"]' );
+				cbs.forEach( function ( cb ) { cb.checked = false; } );
+				updateMultiToggle( widget );
+				if ( cbs.length > 0 ) {
+					cbs[ 0 ].dispatchEvent( new Event( 'change', { bubbles: true } ) );
+				}
+			} );
+		}
+
+		if ( confirmBtn ) {
+			confirmBtn.addEventListener( 'click', function ( e ) {
+				e.stopPropagation();
+				widget.classList.remove( 'is-open' );
+				toggle.setAttribute( 'aria-expanded', 'false' );
+				if ( dropdown ) {
+					resetDropdownPosition( dropdown );
+				}
+			} );
+		}
 	}
 
 	document.addEventListener( 'click', function ( e ) {
@@ -198,21 +293,29 @@
 			document.querySelectorAll( '.cf-multi.is-open' ).forEach( function ( w ) {
 				w.classList.remove( 'is-open' );
 				var t = w.querySelector( '.cf-multi__toggle' );
-				if ( t ) {
-					t.setAttribute( 'aria-expanded', 'false' );
-				}
+				if ( t ) { t.setAttribute( 'aria-expanded', 'false' ); }
+				var d = w.querySelector( '.cf-multi__dropdown' );
+				if ( d ) { resetDropdownPosition( d ); }
 			} );
 		}
 		if ( ! e.target.closest( '.cf-daterange' ) ) {
 			document.querySelectorAll( '.cf-daterange.is-open' ).forEach( function ( w ) {
 				w.classList.remove( 'is-open' );
 				var t = w.querySelector( '.cf-daterange__toggle' );
-				if ( t ) {
-					t.setAttribute( 'aria-expanded', 'false' );
-				}
+				if ( t ) { t.setAttribute( 'aria-expanded', 'false' ); }
 			} );
 		}
 	} );
+
+	window.addEventListener( 'scroll', function () {
+		document.querySelectorAll( '.cf-multi.is-open' ).forEach( function ( w ) {
+			w.classList.remove( 'is-open' );
+			var t = w.querySelector( '.cf-multi__toggle' );
+			if ( t ) { t.setAttribute( 'aria-expanded', 'false' ); }
+			var d = w.querySelector( '.cf-multi__dropdown' );
+			if ( d ) { resetDropdownPosition( d ); }
+		} );
+	}, { passive: true } );
 
 	/* ── Date range picker (.cf-daterange) ─────────────────────────
 	   Two-month calendar with range selection. Writes to two hidden
@@ -372,6 +475,7 @@
 		}
 		toggle.addEventListener( 'click', function ( e ) {
 			e.stopPropagation();
+			closeAllDropdowns( el );
 			var isOpen = el.classList.toggle( 'is-open' );
 			toggle.setAttribute( 'aria-expanded', isOpen ? 'true' : 'false' );
 			if ( isOpen ) { drRenderCalendars( el, state ); }
@@ -457,7 +561,7 @@
 
 	/* ── Results widget ────────────────────────────────────────────
 	   Listens for CF_EVENT and popstate → reads URL params →
-	   fetches endpoint → replaces own innerHTML.
+	   fetches endpoint → replaces own innerHTML + updates pagination.
 	   Fully independent of the filter widget.
 	   ──────────────────────────────────────────────────────────── */
 	function initResultsContainer( container ) {
@@ -466,8 +570,60 @@
 			return;
 		}
 
-		var skeletonCount = container.querySelectorAll( '.cf-card' ).length || 3;
-		var controller    = null;
+		var perPage        = parseInt( container.getAttribute( 'data-per-page' ) || '12', 10 ) || 12;
+		var skeletonCount  = container.querySelectorAll( '.cf-card' ).length || perPage;
+		var controller     = null;
+		var nextSibling    = container.nextElementSibling;
+		var paginationWrap = ( nextSibling && nextSibling.classList.contains( 'cf-pagination-wrap' ) ) ? nextSibling : null;
+
+		function buildPaginationHtml( totalPages, currentPage ) {
+			if ( totalPages <= 1 ) {
+				return '';
+			}
+			var show = [];
+			for ( var i = 1; i <= totalPages; i++ ) {
+				if ( i === 1 || i === totalPages || Math.abs( i - currentPage ) <= 2 ) {
+					show.push( i );
+				}
+			}
+			var html = '<nav class="cf-pagination" aria-label="Strony wyników">';
+			var prev = 0;
+			for ( var j = 0; j < show.length; j++ ) {
+				var pg = show[ j ];
+				if ( prev > 0 && pg - prev > 1 ) {
+					html += '<span class="cf-pagination__gap" aria-hidden="true">…</span>';
+				}
+				var cls  = pg === currentPage ? 'cf-pagination__btn is-active' : 'cf-pagination__btn';
+				var aria = pg === currentPage ? ' aria-current="page"' : '';
+				html += '<button class="' + cls + '" data-page="' + pg + '"' + aria + '>' + pg + '</button>';
+				prev = pg;
+			}
+			html += '</nav>';
+			return html;
+		}
+
+		function attachPaginationHandlers() {
+			if ( ! paginationWrap ) {
+				return;
+			}
+			paginationWrap.querySelectorAll( '.cf-pagination__btn[data-page]' ).forEach( function ( btn ) {
+				btn.addEventListener( 'click', function () {
+					var pg     = parseInt( btn.getAttribute( 'data-page' ) || '1', 10 );
+					var params = currentParams();
+					if ( pg > 1 ) {
+						params.set( 'page', String( pg ) );
+					} else {
+						params.delete( 'page' );
+					}
+					var qs     = params.toString();
+					var newUrl = window.location.pathname + ( qs ? '?' + qs : '' );
+					history.pushState( {}, '', newUrl );
+					window.dispatchEvent( new Event( CF_EVENT ) );
+				} );
+			} );
+		}
+
+		attachPaginationHandlers();
 
 		function fetchResults() {
 			var params = currentParams();
@@ -480,6 +636,9 @@
 			controller = new AbortController();
 
 			container.innerHTML = skeleton( skeletonCount );
+			if ( paginationWrap ) {
+				paginationWrap.innerHTML = '';
+			}
 
 			window.fetch( url, { signal: controller.signal } )
 				.then( function ( response ) {
@@ -492,6 +651,10 @@
 					if ( typeof data.html === 'string' ) {
 						container.innerHTML = data.html;
 						skeletonCount = container.querySelectorAll( '.cf-card' ).length || skeletonCount;
+					}
+					if ( paginationWrap && data.total_pages ) {
+						paginationWrap.innerHTML = buildPaginationHtml( data.total_pages, data.current_page || 1 );
+						attachPaginationHandlers();
 					}
 				} )
 				.catch( function ( err ) {

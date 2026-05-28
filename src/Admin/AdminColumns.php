@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Campsflow\Admin;
 
 use Campsflow\Config;
+use Campsflow\CurrencyFormatter;
 use Campsflow\PostType\EventPostType;
 use Campsflow\PostType\SessionPostType;
 use Campsflow\Taxonomy\DestinationTaxonomy;
@@ -148,8 +149,9 @@ final class AdminColumns {
 			return;
 		}
 
-		$pln = number_format( $grosze / 100, 0, ',', ' ' );
-		echo esc_html( $pln . ' zł' );
+		$rawCurrency = get_post_meta( $postId, 'cf_currency', true );
+		$currency    = $rawCurrency !== '' && $rawCurrency !== false ? (string) $rawCurrency : 'PLN';
+		echo esc_html( CurrencyFormatter::format( $grosze, $currency ) );
 	}
 
 	private function renderDestinationPath( int $postId ): void {

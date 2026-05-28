@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Campsflow\Presentation;
 
+use Campsflow\CurrencyFormatter;
 use Campsflow\PostType\EventPostType;
 use Campsflow\Sync\AvailabilityBucket;
 
@@ -132,7 +133,9 @@ final class WpBakeryDynamicContent {
 			return '';
 		}
 
-		return number_format( min( $prices ) / 100, 0, ',', ' ' ) . ' zł';
+		$rawCurrency = get_post_meta( $postId, 'cf_currency', true );
+		$currency    = $rawCurrency !== '' && $rawCurrency !== false ? (string) $rawCurrency : 'PLN';
+		return CurrencyFormatter::format( (int) min( $prices ), $currency );
 	}
 
 	private function resolveFirstDate( int $postId ): string {

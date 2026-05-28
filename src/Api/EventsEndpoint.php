@@ -36,6 +36,10 @@ final class EventsEndpoint {
 	}
 
 	public function handle( WP_REST_Request $request ): WP_REST_Response {
+		$rawPage    = $request->get_param( 'page' );
+		$page       = max( 1, absint( $rawPage !== null ? $rawPage : 1 ) );
+		$rawPerPage = $request->get_param( 'perPage' );
+		$perPage    = min( 100, max( 1, absint( $rawPerPage !== null ? $rawPerPage : 12 ) ) );
 		$categories = self::parseSlugs( (string) $request->get_param( 'category' ) );
 		$ages       = self::parseSlugs( (string) $request->get_param( 'age' ) );
 		$childAges  = self::parseAges( sanitize_text_field( (string) $request->get_param( 'childAge' ) ) );
@@ -49,18 +53,38 @@ final class EventsEndpoint {
 		$lm         = sanitize_text_field( (string) $request->get_param( 'locationMode' ) );
 		$config     = array(
 			'location_mode'      => $lm === 'country_dest_city' ? 'country_dest_city' : 'country_dest',
+			'show_title'         => $request->get_param( 'showTitle' ) !== '0',
 			'show_profile_tags'  => $request->get_param( 'showProfileTags' ) !== '0',
 			'profile_tags_label' => sanitize_text_field( (string) $request->get_param( 'profileTagsLabel' ) ),
+			'profile_tags_style' => sanitize_text_field( (string) $request->get_param( 'profileTagsStyle' ) ),
 			'show_event_tags'    => $request->get_param( 'showEventTags' ) !== '0',
 			'event_tags_label'   => sanitize_text_field( (string) $request->get_param( 'eventTagsLabel' ) ),
 			'show_age_tags'      => $request->get_param( 'showAgeTags' ) !== '0',
 			'age_tags_label'     => sanitize_text_field( (string) $request->get_param( 'ageTagsLabel' ) ),
+			'age_tags_style'     => sanitize_text_field( (string) $request->get_param( 'ageTagsStyle' ) ),
 			'show_date'          => $request->get_param( 'showDate' ) !== '0',
 			'date_label'         => sanitize_text_field( (string) $request->get_param( 'dateLabel' ) ),
 			'show_location'      => $request->get_param( 'showLocation' ) !== '0',
 			'location_label'     => sanitize_text_field( (string) $request->get_param( 'locationLabel' ) ),
 			'button_text'        => sanitize_text_field( (string) $request->get_param( 'buttonText' ) ),
+			'price_suffix'       => sanitize_text_field( (string) $request->get_param( 'priceSuffix' ) ),
+			'price_empty'        => sanitize_text_field( (string) $request->get_param( 'priceEmpty' ) ),
 		);
+		$validPl    = array( 'below', 'on_image_top_left', 'on_image_top_right', 'on_image_bottom_left', 'on_image_bottom_right' );
+		$defaults   = array(
+			'title'        => 5,
+			'profile_tags' => 10,
+			'event_tags'   => 20,
+			'age_tags'     => 30,
+			'date'         => 40,
+			'location'     => 50,
+			'button'       => 60,
+		);
+		foreach ( array_keys( $defaults ) as $key ) {
+			$pl                            = sanitize_text_field( (string) $request->get_param( $key . '_placement' ) );
+			$config[ $key . '_placement' ] = in_array( $pl, $validPl, true ) ? $pl : 'below';
+			$config[ $key . '_order' ]     = max( 1, absint( $request->get_param( $key . '_order' ) ) );
+		}
 
 		$taxQuery = array( 'relation' => 'AND' );
 		if ( ! empty( $categories ) ) {
@@ -155,7 +179,8 @@ final class EventsEndpoint {
 		$args      = array(
 			'post_type'      => EventPostType::SLUG,
 			'post_status'    => 'publish',
-			'posts_per_page' => 50,
+			'posts_per_page' => $perPage,
+			'offset'         => ( $page - 1 ) * $perPage,
 			'orderby'        => $orderArgs['orderby'],
 			'order'          => $orderArgs['order'],
 			'fields'         => 'ids',
@@ -171,12 +196,22 @@ final class EventsEndpoint {
 			$args['meta_query'] = $metaQuery;
 		}
 
-		$query    = new WP_Query( $args );
-		$postIds  = array_map( static fn( $p ) => (int) ( $p instanceof \WP_Post ? $p->ID : $p ), (array) $query->posts );
-		$renderer = new EventCardRenderer( $config );
-		$html     = $postIds ? $renderer->renderGrid( $postIds ) : $renderer->renderEmpty();
+		$query      = new WP_Query( $args );
+		$postIds    = array_map( static fn( $p ) => (int) ( $p instanceof \WP_Post ? $p->ID : $p ), (array) $query->posts );
+		$totalCount = $query->found_posts;
+		$totalPages = $perPage > 0 ? (int) ceil( $totalCount / $perPage ) : 1;
+		$renderer   = new EventCardRenderer( $config );
+		$html       = $postIds ? $renderer->renderGrid( $postIds ) : $renderer->renderEmpty();
 
-		return new WP_REST_Response( array( 'html' => $html ), 200 );
+		return new WP_REST_Response(
+			array(
+				'html'         => $html,
+				'total_pages'  => max( 1, $totalPages ),
+				'current_page' => $page,
+				'total_count'  => $totalCount,
+			),
+			200
+		);
 	}
 
 	/**

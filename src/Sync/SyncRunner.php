@@ -178,6 +178,15 @@ final class SyncRunner {
 			)
 		);
 		update_post_meta( $postId, 'cf_event_min_price', $prices ? min( $prices ) : 0 );
+
+		$currencies = array_values(
+			array_unique(
+				array_filter(
+					array_map( fn( mixed $t ) => is_array( $t ) ? sanitize_text_field( (string) ( $t['currency'] ?? '' ) ) : '', $turnusy )
+				)
+			)
+		);
+		update_post_meta( $postId, 'cf_currency', $currencies ? $currencies[0] : 'PLN' );
 	}
 
 	/**
@@ -319,20 +328,37 @@ final class SyncRunner {
 	 */
 	private function setTransportTypeTerms( int $postId, array $event ): void {
 		$turnusy = is_array( $event['turnusy'] ?? null ) ? $event['turnusy'] : array();
-		$types   = array();
+		$codes   = array();
 
 		foreach ( $turnusy as $turnus ) {
 			if ( ! is_array( $turnus ) ) {
 				continue;
 			}
 			$transport = $turnus['transport'] ?? null;
-			$type      = is_array( $transport ) ? (string) ( $transport['type'] ?? '' ) : '';
-			if ( $type !== '' && ! in_array( $type, $types, true ) ) {
-				$types[] = $type;
+			$code      = is_array( $transport ) ? (string) ( $transport['type'] ?? '' ) : '';
+			if ( $code !== '' && ! in_array( $code, $codes, true ) ) {
+				$codes[] = $code;
 			}
 		}
 
-		wp_set_object_terms( $postId, $types, TransportTypeTaxonomy::SLUG );
+		$termIds = array();
+		foreach ( $codes as $code ) {
+			$label    = TransportTypeTaxonomy::TYPE_LABELS[ $code ] ?? $code;
+			$existing = get_term_by( 'slug', $code, TransportTypeTaxonomy::SLUG );
+			if ( $existing instanceof \WP_Term ) {
+				if ( $existing->name !== $label ) {
+					wp_update_term( $existing->term_id, TransportTypeTaxonomy::SLUG, array( 'name' => $label ) );
+				}
+				$termIds[] = $existing->term_id;
+			} else {
+				$result = wp_insert_term( $label, TransportTypeTaxonomy::SLUG, array( 'slug' => $code ) );
+				if ( ! is_wp_error( $result ) ) {
+					$termIds[] = (int) $result['term_id'];
+				}
+			}
+		}
+
+		wp_set_object_terms( $postId, $termIds, TransportTypeTaxonomy::SLUG );
 	}
 
 	/**
@@ -389,6 +415,7 @@ final class SyncRunner {
 		update_post_meta( $postId, 'cf_date_to', $t->dateTo );
 		update_post_meta( $postId, 'cf_number_of_days', $t->numberOfDays );
 		update_post_meta( $postId, 'cf_price_from', $t->priceGrosze );
+		update_post_meta( $postId, 'cf_currency', $t->currency );
 		update_post_meta( $postId, 'cf_transport', $t->transport );
 		update_post_meta( $postId, 'cf_meeting_points_start', $t->meetingPointsStart );
 		update_post_meta( $postId, 'cf_meeting_points_return', $t->meetingPointsReturn );

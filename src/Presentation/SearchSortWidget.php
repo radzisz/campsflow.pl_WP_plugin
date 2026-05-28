@@ -5,6 +5,7 @@ namespace Campsflow\Presentation;
 
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Border;
+use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
 
 final class SearchSortWidget extends Widget_Base {
@@ -41,7 +42,7 @@ final class SearchSortWidget extends Widget_Base {
 	}
 
 	public function get_categories(): array {
-		return array( 'campsflow' );
+		return array( 'campsflow_search' );
 	}
 
 	protected function register_controls(): void {
@@ -89,18 +90,19 @@ final class SearchSortWidget extends Widget_Base {
 			)
 		);
 
-		$this->add_control(
-			'cf_sort_divider',
-			array(
-				'type' => Controls_Manager::DIVIDER,
-			)
-		);
-
 		foreach ( self::SORT_GROUPS as $key => $group ) {
+			$this->add_control(
+				'heading_' . $key,
+				array(
+					'label'     => $group['default_label'],
+					'type'      => Controls_Manager::HEADING,
+					'separator' => 'before',
+				)
+			);
 			$this->add_control(
 				'show_' . $key,
 				array(
-					'label'     => $group['default_label'],
+					'label'     => __( 'Pokaż', 'campsflow' ),
 					'type'      => Controls_Manager::SWITCHER,
 					'default'   => 'yes',
 					'label_on'  => __( 'Tak', 'campsflow' ),
@@ -177,7 +179,6 @@ final class SearchSortWidget extends Widget_Base {
 				'tab'   => Controls_Manager::TAB_STYLE,
 			)
 		);
-
 		$this->add_control(
 			'label_color',
 			array(
@@ -188,25 +189,13 @@ final class SearchSortWidget extends Widget_Base {
 				),
 			)
 		);
-
-		$this->add_control(
-			'label_font_size',
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
 			array(
-				'label'      => __( 'Rozmiar czcionki', 'campsflow' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em', 'rem' ),
-				'range'      => array(
-					'px' => array(
-						'min' => 10,
-						'max' => 48,
-					),
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} .cf-filter-label' => 'font-size: {{SIZE}}{{UNIT}};',
-				),
+				'name'     => 'label_typography',
+				'selector' => '{{WRAPPER}} .cf-filter-label',
 			)
 		);
-
 		$this->end_controls_section();
 	}
 
@@ -218,7 +207,16 @@ final class SearchSortWidget extends Widget_Base {
 				'tab'   => Controls_Manager::TAB_STYLE,
 			)
 		);
-
+		$this->add_control(
+			'btn_bg',
+			array(
+				'label'     => __( 'Tło', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-sort-btn' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
 		$this->add_control(
 			'btn_color',
 			array(
@@ -229,47 +227,63 @@ final class SearchSortWidget extends Widget_Base {
 				),
 			)
 		);
-
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'btn_typography',
+				'selector' => '{{WRAPPER}} .cf-sort-btn',
+			)
+		);
+		$this->add_control(
+			'btn_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie rogów', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-sort-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'btn_border',
+				'selector' => '{{WRAPPER}} .cf-sort-btn',
+			)
+		);
+		$this->add_control(
+			'btn_active_bg',
+			array(
+				'label'     => __( 'Tło aktywnego', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-sort-btn.is-active' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
 		$this->add_control(
 			'btn_active_color',
 			array(
-				'label'     => __( 'Kolor aktywnego', 'campsflow' ),
+				'label'     => __( 'Kolor tekstu aktywnego', 'campsflow' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
 					'{{WRAPPER}} .cf-sort-btn.is-active' => 'color: {{VALUE}};',
 				),
 			)
 		);
-
-		$this->add_control(
-			'btn_font_size',
-			array(
-				'label'      => __( 'Rozmiar czcionki', 'campsflow' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em', 'rem' ),
-				'range'      => array(
-					'px' => array(
-						'min' => 10,
-						'max' => 28,
-					),
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} .cf-sort-btn' => 'font-size: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
 		$this->add_control(
 			'sep_color',
 			array(
 				'label'     => __( 'Kolor separatora', 'campsflow' ),
 				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
 				'selectors' => array(
 					'{{WRAPPER}} .cf-sort-bar__sep' => 'color: {{VALUE}};',
 				),
 			)
 		);
-
 		$this->end_controls_section();
 	}
 
@@ -307,28 +321,6 @@ final class SearchSortWidget extends Widget_Base {
 			array(
 				'name'     => 'bar_border',
 				'selector' => '{{WRAPPER}} .cf-sort-bar',
-			)
-		);
-		$this->add_control(
-			'btn_accent_bg',
-			array(
-				'label'     => __( 'Tło aktywnego przycisku', 'campsflow' ),
-				'type'      => Controls_Manager::COLOR,
-				'separator' => 'before',
-				'selectors' => array(
-					'{{WRAPPER}} .cf-sort-btn.is-active' => 'background-color: {{VALUE}}',
-				),
-			)
-		);
-		$this->add_control(
-			'btn_border_radius',
-			array(
-				'label'      => __( 'Zaokrąglenie przycisków', 'campsflow' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} .cf-sort-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
-				),
 			)
 		);
 		$this->end_controls_section();

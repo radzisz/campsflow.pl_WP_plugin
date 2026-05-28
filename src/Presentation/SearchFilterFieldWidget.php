@@ -32,6 +32,7 @@ final class SearchFilterFieldWidget extends Widget_Base {
 		$this->registerStyleLayoutSection();
 		$this->registerStyleLabelSection();
 		$this->registerStyleMultiSection();
+		$this->registerStyleDropdownFooterSection();
 	}
 
 	private function registerContentSection(): void {
@@ -91,6 +92,17 @@ final class SearchFilterFieldWidget extends Widget_Base {
 				),
 			)
 		);
+		$this->add_control(
+			'show_transport_icons',
+			array(
+				'label'     => __( 'Pokaż ikonki', 'campsflow' ),
+				'type'      => Controls_Manager::SWITCHER,
+				'default'   => 'yes',
+				'label_on'  => __( 'Tak', 'campsflow' ),
+				'label_off' => __( 'Nie', 'campsflow' ),
+				'condition' => array( 'field_type' => 'transport' ),
+			)
+		);
 
 		$this->end_controls_section();
 	}
@@ -106,10 +118,10 @@ final class SearchFilterFieldWidget extends Widget_Base {
 		$this->add_control(
 			'layout',
 			array(
-				'label'     => __( 'Kierunek', 'campsflow' ),
-				'type'      => Controls_Manager::SELECT,
-				'default'   => 'column',
-				'options'   => array(
+				'label'                => __( 'Kierunek', 'campsflow' ),
+				'type'                 => Controls_Manager::SELECT,
+				'default'              => 'column',
+				'options'              => array(
 					'column' => __( 'Pionowy (nagłówek nad polem)', 'campsflow' ),
 					'row'    => __( 'Poziomy (nagłówek obok pola)', 'campsflow' ),
 				),
@@ -235,8 +247,14 @@ final class SearchFilterFieldWidget extends Widget_Base {
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array( 'px', '%' ),
 				'range'      => array(
-					'%'  => array( 'min' => 10, 'max' => 100 ),
-					'px' => array( 'min' => 50, 'max' => 600 ),
+					'%'  => array(
+						'min' => 10,
+						'max' => 100,
+					),
+					'px' => array(
+						'min' => 50,
+						'max' => 600,
+					),
 				),
 				'selectors'  => array(
 					'{{WRAPPER}} .cf-multi, {{WRAPPER}} .cf-daterange' => 'width: {{SIZE}}{{UNIT}};',
@@ -306,6 +324,122 @@ final class SearchFilterFieldWidget extends Widget_Base {
 				),
 			)
 		);
+		$this->add_control(
+			'multi_hover_bg',
+			array(
+				'label'     => __( 'Tło przycisku (hover)', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__toggle:hover, {{WRAPPER}} .cf-daterange__toggle:hover' => 'background-color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'multi_hover_color',
+			array(
+				'label'     => __( 'Kolor tekstu (hover)', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__toggle:hover, {{WRAPPER}} .cf-daterange__toggle:hover' => 'color: {{VALUE}}',
+				),
+			)
+		);
+		$this->end_controls_section();
+	}
+
+	private function registerStyleDropdownFooterSection(): void {
+		$this->start_controls_section(
+			'section_style_dropdown_footer',
+			array(
+				'label' => __( 'Stopka dropdownu', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_control(
+			'footer_icon_size',
+			array(
+				'label'      => __( 'Rozmiar ikon', 'campsflow' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', 'rem' ),
+				'range'      => array(
+					'px'  => array(
+						'min' => 8,
+						'max' => 24,
+					),
+					'rem' => array(
+						'min'  => .5,
+						'max'  => 2,
+						'step' => .05,
+					),
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-multi__footer-clear, {{WRAPPER}} .cf-multi__footer-confirm' => 'font-size: {{SIZE}}{{UNIT}}; width: calc({{SIZE}}{{UNIT}} * 2.2); height: calc({{SIZE}}{{UNIT}} * 2.2);',
+				),
+			)
+		);
+		$this->add_control(
+			'footer_clear_color',
+			array(
+				'label'     => __( 'Wyczyść — kolor', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__footer-clear' => 'color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'footer_clear_hover_color',
+			array(
+				'label'     => __( 'Wyczyść — kolor (hover)', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__footer-clear:hover' => 'color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'footer_clear_hover_bg',
+			array(
+				'label'     => __( 'Wyczyść — tło (hover)', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__footer-clear:hover' => 'background-color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'footer_confirm_color',
+			array(
+				'label'     => __( 'Gotowe — kolor', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__footer-confirm' => 'color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'footer_confirm_hover_bg',
+			array(
+				'label'     => __( 'Gotowe — tło (hover)', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__footer-confirm:hover' => 'background-color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'footer_confirm_hover_color',
+			array(
+				'label'     => __( 'Gotowe — kolor tekstu (hover)', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__footer-confirm:hover' => 'color: {{VALUE}}',
+				),
+			)
+		);
 		$this->end_controls_section();
 	}
 
@@ -343,8 +477,9 @@ final class SearchFilterFieldWidget extends Widget_Base {
 				break;
 
 			case 'transport':
-				$label = $placeholder !== '' ? $placeholder : __( 'Transport', 'campsflow' );
-				$this->renderTaxFilterSelect( 'cf_transport_type', 'transport', $label );
+				$label     = $placeholder !== '' ? $placeholder : __( 'Transport', 'campsflow' );
+				$showIcons = ( $s['show_transport_icons'] ?? 'yes' ) === 'yes';
+				$this->renderTransportFilterSelect( $label, $showIcons );
 				break;
 
 			case 'season':

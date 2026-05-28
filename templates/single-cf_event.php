@@ -1,6 +1,6 @@
 <?php
 /**
- * Template: Szczegóły imprezy (single cf_event)
+ * Template: Szczegóły wydarzenia (single cf_event)
  * URL: /obozy/{slug}/
  * Theme override: copy to theme root as single-cf_event.php
  */

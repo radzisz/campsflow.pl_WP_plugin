@@ -95,7 +95,7 @@ final class RegistrationFormShortcode {
 		if ( $cached !== null ) {
 			return $cached;
 		}
-		$pages = get_posts(
+		$pages  = get_posts(
 			array(
 				'post_type'      => 'page',
 				'post_status'    => array( 'publish', 'draft' ),

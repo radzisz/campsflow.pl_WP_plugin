@@ -24,7 +24,7 @@ final class EventDocumentsWidget extends Widget_Base {
 	}
 
 	public function get_categories(): array {
-		return array( 'campsflow' );
+		return array( 'campsflow_event' );
 	}
 
 	protected function register_controls(): void {

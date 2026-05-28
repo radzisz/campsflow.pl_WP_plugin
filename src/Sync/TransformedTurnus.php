@@ -12,6 +12,7 @@ final class TransformedTurnus {
 		public string $dateTo,
 		public int $numberOfDays,
 		public int $priceGrosze,
+		public string $currency,
 		public string $transport,       // JSON
 		public string $meetingPointsStart, // JSON
 		public string $meetingPointsReturn, // JSON
