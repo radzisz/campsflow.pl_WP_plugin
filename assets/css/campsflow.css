@@ -263,7 +263,8 @@
 
 .cf-btn:hover { background: var(--cf-accent-hover); color: #fff; }
 
-.cf-btn--disabled {
+.cf-btn--disabled,
+.cf-btn--full {
     background: var(--cf-border);
     color: var(--cf-muted);
     border-radius: 6px;
@@ -393,7 +394,8 @@
 }
 
 .cf-sessions-box__action-row .cf-btn,
-.cf-sessions-box__action-row .cf-btn--disabled { margin-left: 0; flex-shrink: 0; }
+.cf-sessions-box__action-row .cf-btn--disabled,
+.cf-sessions-box__action-row .cf-btn--full { margin-left: 0; flex-shrink: 0; }
 
 .cf-sessions-box__avail { margin-top: .2rem; }
 

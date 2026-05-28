@@ -44,8 +44,8 @@ final class EventBreadcrumbShortcode {
 	}
 
 	private function renderLocalization( int $postId, string $separator, string $depth, bool $showHome, string $homeLabel ): void {
-		$raw = (string) get_post_meta( $postId, 'cf_localization', true );
-		$loc = json_decode( $raw, true );
+		$raw = get_post_meta( $postId, 'cf_localization', true );
+		$loc = is_array( $raw ) ? $raw : json_decode( (string) $raw, true );
 
 		if ( ! is_array( $loc ) ) {
 			return;

@@ -245,8 +245,11 @@ final class EventSessionsWidget extends Widget_Base {
 		if ( $priceLabel ) {
 			echo '<span class="cf-sessions-box__price">' . esc_html( $priceLabel ) . '</span>';
 		}
-		if ( $isFull ) {
-			echo '<span class="cf-btn cf-btn--disabled">' . esc_html__( 'Brak miejsc', 'campsflow' ) . '</span>';
+		if ( $isFull && $reservUrl ) {
+			$waitlistUrl = add_query_arg( 'waitlist', '1', $reservUrl );
+			echo '<a class="cf-btn cf-btn--full" href="' . esc_url( $waitlistUrl ) . '">' . esc_html__( 'Lista rezerwowa', 'campsflow' ) . '</a>';
+		} elseif ( $isFull ) {
+			echo '<span class="cf-btn cf-btn--full">' . esc_html__( 'Lista rezerwowa', 'campsflow' ) . '</span>';
 		} elseif ( $reservUrl ) {
 			echo '<a class="cf-btn" href="' . esc_url( $reservUrl ) . '">' . esc_html( $buttonLabel ) . '</a>';
 		}
