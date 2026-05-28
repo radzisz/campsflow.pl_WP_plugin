@@ -67,12 +67,51 @@ final class RegistrationFormShortcode {
 			return;
 		}
 
+		self::insertPage();
+	}
+
+	public static function restoreOrCreatePage(): void {
+		$trashed = get_posts(
+			array(
+				'post_type'      => 'page',
+				'post_status'    => 'trash',
+				'posts_per_page' => 1,
+				'meta_key'       => '_campsflow_registration_page',
+				'meta_value'     => '1',
+				'fields'         => 'ids',
+			)
+		);
+
+		if ( ! empty( $trashed ) ) {
+			wp_untrash_post( (int) $trashed[0] );
+			return;
+		}
+
+		self::insertPage();
+	}
+
+	public static function findPage(): int {
+		$pages = get_posts(
+			array(
+				'post_type'      => 'page',
+				'post_status'    => array( 'publish', 'draft', 'trash' ),
+				'posts_per_page' => 1,
+				'meta_key'       => '_campsflow_registration_page',
+				'meta_value'     => '1',
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+			)
+		);
+		return ! empty( $pages ) ? (int) $pages[0] : 0;
+	}
+
+	private static function insertPage(): void {
 		$postId = wp_insert_post(
 			array(
 				'post_type'    => 'page',
 				'post_status'  => 'publish',
 				'post_title'   => __( 'Rejestracja', 'campsflow' ),
-				'post_name'    => 'rejestracja',
+				'post_name'    => 'cf-registration',
 				'post_content' => '[campsflow_registration_form]',
 			)
 		);
@@ -106,7 +145,7 @@ final class RegistrationFormShortcode {
 				'no_found_rows'  => true,
 			)
 		);
-		$cached = ! empty( $pages ) ? (string) get_permalink( $pages[0] ) : home_url( '/rejestracja/' );
+		$cached = ! empty( $pages ) ? (string) get_permalink( $pages[0] ) : home_url( '/cf-registration/' );
 		return $cached;
 	}
 
