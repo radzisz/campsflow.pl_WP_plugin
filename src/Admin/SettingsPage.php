@@ -12,9 +12,10 @@ use Campsflow\Sync\SyncScheduler;
 
 final class SettingsPage {
 
-	private const TAB_SYNC     = 'sync';
-	private const TAB_SETTINGS = 'settings';
-	private const TAB_HISTORY  = 'history';
+	private const TAB_SYNC    = 'sync';
+	private const TAB_PARAMS  = 'params';
+	private const TAB_CONFIG  = 'config';
+	private const TAB_HISTORY = 'history';
 
 	public function register(): void {
 		add_action( 'admin_menu', array( $this, 'addMenuPage' ) );
@@ -37,7 +38,7 @@ final class SettingsPage {
 				array(
 					'post_type'       => EventPostType::SLUG,
 					'page'            => 'cf-settings',
-					'tab'             => self::TAB_SETTINGS,
+					'tab'             => self::TAB_CONFIG,
 					'cf_srch_created' => '1',
 				),
 				admin_url( 'edit.php' )
@@ -59,7 +60,7 @@ final class SettingsPage {
 				array(
 					'post_type'      => EventPostType::SLUG,
 					'page'           => 'cf-settings',
-					'tab'            => self::TAB_SETTINGS,
+					'tab'            => self::TAB_CONFIG,
 					'cf_reg_created' => '1',
 				),
 				admin_url( 'edit.php' )
@@ -98,9 +99,8 @@ final class SettingsPage {
 		}
 
 		foreach ( array(
-			'campsflow_few_left_pct'        => '25',
-			'campsflow_almost_full_pct'     => '10',
-			'campsflow_google_maps_api_key' => '',
+			'campsflow_few_left_pct'    => '25',
+			'campsflow_almost_full_pct' => '10',
 		) as $key => $default ) {
 			register_setting(
 				'campsflow_settings',
@@ -111,6 +111,15 @@ final class SettingsPage {
 				)
 			);
 		}
+
+		register_setting(
+			'campsflow_config',
+			'campsflow_google_maps_api_key',
+			array(
+				'sanitize_callback' => $san,
+				'default'           => '',
+			)
+		);
 
 		register_setting(
 			'campsflow_settings',
@@ -145,7 +154,7 @@ final class SettingsPage {
 			return;
 		}
 
-		$activeTab = in_array( $_GET['tab'] ?? '', array( self::TAB_SYNC, self::TAB_SETTINGS, self::TAB_HISTORY ), true )
+		$activeTab = in_array( $_GET['tab'] ?? '', array( self::TAB_SYNC, self::TAB_PARAMS, self::TAB_CONFIG, self::TAB_HISTORY ), true )
 			? $_GET['tab']
 			: self::TAB_SYNC;
 
@@ -157,10 +166,12 @@ final class SettingsPage {
 
 		if ( $activeTab === self::TAB_SYNC ) {
 			$this->renderSyncTab();
+		} elseif ( $activeTab === self::TAB_PARAMS ) {
+			$this->renderParamsTab();
+		} elseif ( $activeTab === self::TAB_CONFIG ) {
+			$this->renderConfigTab();
 		} elseif ( $activeTab === self::TAB_HISTORY ) {
 			$this->renderHistoryTab();
-		} else {
-			$this->renderSettingsTab();
 		}
 
 		echo '</div>';
@@ -170,9 +181,10 @@ final class SettingsPage {
 	private function renderTabs( string $activeTab ): void {
 		$base = admin_url( 'edit.php?post_type=' . EventPostType::SLUG . '&page=cf-settings' );
 		$tabs = array(
-			self::TAB_SYNC     => __( 'Synchronizacja', 'campsflow' ),
-			self::TAB_SETTINGS => __( 'Ustawienia', 'campsflow' ),
-			self::TAB_HISTORY  => __( 'Historia', 'campsflow' ),
+			self::TAB_SYNC    => __( 'Synchronizacja', 'campsflow' ),
+			self::TAB_PARAMS  => __( 'Parametry', 'campsflow' ),
+			self::TAB_CONFIG  => __( 'Konfiguracja', 'campsflow' ),
+			self::TAB_HISTORY => __( 'Historia', 'campsflow' ),
 		);
 
 		echo '<nav class="nav-tab-wrapper cf-tabs">';
@@ -293,9 +305,12 @@ final class SettingsPage {
 		$this->renderUrlInfo();
 	}
 
-	private function renderSettingsTab(): void {
+	private function renderParamsTab(): void {
 		$fewLeft    = (string) get_option( 'campsflow_few_left_pct', '25' );
 		$almostFull = (string) get_option( 'campsflow_almost_full_pct', '10' );
+		$childMax   = (string) get_option( 'campsflow_age_child_max', '12' );
+		$youthMax   = (string) get_option( 'campsflow_age_youth_max', '17' );
+		$showName   = (bool) get_option( 'campsflow_session_show_name', '1' );
 
 		echo '<form method="post" action="options.php" class="cf-form">';
 		settings_fields( 'campsflow_settings' );
@@ -326,9 +341,6 @@ final class SettingsPage {
 		echo '<h3>' . esc_html__( 'Grupy wiekowe — progi wiekowe', 'campsflow' ) . '</h3>';
 		echo '<p class="cf-form__desc">' . esc_html__( 'Określ progi wiekowe dla grup Dzieci / Młodzież / Dorośli.', 'campsflow' ) . '</p>';
 
-		$childMax = (string) get_option( 'campsflow_age_child_max', '12' );
-		$youthMax = (string) get_option( 'campsflow_age_youth_max', '17' );
-
 		echo '<div class="cf-form__group">';
 		echo '<label class="cf-form__label" for="campsflow_age_child_max">' . esc_html__( 'Dzieci: do X lat', 'campsflow' ) . '</label>';
 		echo '<div class="cf-form__inline">';
@@ -347,8 +359,6 @@ final class SettingsPage {
 
 		echo '<h3>' . esc_html__( 'Turnusy', 'campsflow' ) . '</h3>';
 
-		$showName = (bool) get_option( 'campsflow_session_show_name', '1' );
-
 		echo '<div class="cf-form__group">';
 		echo '<label class="cf-form__checkbox">';
 		echo '<input type="checkbox" name="campsflow_session_show_name" value="1"' . checked( $showName, true, false ) . '>';
@@ -357,10 +367,18 @@ final class SettingsPage {
 		echo '<p class="cf-form__desc">' . esc_html__( 'Odznacz, jeśli turnusy nie mają nazw własnych i chcesz wyświetlać tylko daty.', 'campsflow' ) . '</p>';
 		echo '</div>';
 
+		submit_button( __( 'Zapisz', 'campsflow' ), 'primary cf-form__submit' );
+		echo '</form>';
+	}
+
+	private function renderConfigTab(): void {
+		$mapsKey = (string) get_option( 'campsflow_google_maps_api_key', '' );
+
+		echo '<form method="post" action="options.php" class="cf-form">';
+		settings_fields( 'campsflow_config' );
+
 		echo '<h3>' . esc_html__( 'Google Maps', 'campsflow' ) . '</h3>';
 		echo '<p class="cf-form__desc">' . esc_html__( 'Klucz API wymagany tylko gdy wybierasz Google Maps w widgecie Mapa.', 'campsflow' ) . '</p>';
-
-		$mapsKey = (string) get_option( 'campsflow_google_maps_api_key', '' );
 
 		echo '<div class="cf-form__group">';
 		echo '<label class="cf-form__label" for="campsflow_google_maps_api_key">' . esc_html__( 'Klucz API Google Maps', 'campsflow' ) . '</label>';
@@ -451,9 +469,14 @@ final class SettingsPage {
 		$tenantSlug    = (string) get_option( 'campsflow_tenant_slug', '' );
 		$apiUrl        = Config::apiUrl();
 		$adminUrl      = Config::adminUrl();
+		$appUrl        = Config::appUrl();
 		$apiOverride   = Config::isOverridden( 'CAMPSFLOW_API_URL' );
 		$adminOverride = Config::isOverridden( 'CAMPSFLOW_ADMIN_URL' );
+		$appOverride   = Config::isOverridden( 'CAMPSFLOW_APP_URL' );
 		$eventsUrl     = $tenantSlug ? Config::eventsEndpoint( $tenantSlug ) : $apiUrl . '/api/v1/public/{tenant_slug}/events';
+		$registrUrl    = $tenantSlug
+			? Config::embedRegistrationUrl( $tenantSlug, '{session_id}' )
+			: $appUrl . '/embed/{tenant_slug}/register?session={session_id}';
 
 		echo '<hr class="cf-divider">';
 		echo '<h3>' . esc_html__( 'Adresy URL synchronizacji', 'campsflow' ) . '</h3>';
@@ -461,6 +484,7 @@ final class SettingsPage {
 		$this->urlRow( 'API', $apiUrl, $apiOverride, 'CAMPSFLOW_API_URL' );
 		$this->urlRow( 'Events endpoint', $eventsUrl, $apiOverride, 'CAMPSFLOW_API_URL' );
 		$this->urlRow( 'Panel Campsflow', $adminUrl, $adminOverride, 'CAMPSFLOW_ADMIN_URL' );
+		$this->urlRow( 'Rejestracja (iframe)', $registrUrl, $appOverride, 'CAMPSFLOW_APP_URL' );
 		echo '</table>';
 
 		echo '<details class="cf-url-override">';

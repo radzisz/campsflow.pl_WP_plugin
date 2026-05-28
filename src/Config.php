@@ -16,9 +16,9 @@ namespace Campsflow;
  */
 final class Config {
 
-	private const DEFAULT_API_URL   = 'https://api.ukryteskarby.pl';
-	private const DEFAULT_ADMIN_URL = 'https://admin.ukryteskarby.pl';
-	private const DEFAULT_APP_URL   = 'https://ukryteskarby.pl';
+	private const DEFAULT_API_URL   = 'https://api.campsflow.pl';
+	private const DEFAULT_ADMIN_URL = 'https://admin.campsflow.pl';
+	private const DEFAULT_APP_URL   = 'https://booking.campsflow.pl';
 
 	public static function apiUrl(): string {
 		return self::resolve( 'CAMPSFLOW_API_URL', self::DEFAULT_API_URL );
