@@ -83,7 +83,7 @@ final class RegistrationFormShortcode {
 	}
 
 	public static function registrationUrl( int $sessionPostId ): string {
-		$cfSessionId = (string) get_post_meta( $sessionPostId, 'cf_session_id', true );
+		$cfSessionId = (string) get_post_meta( $sessionPostId, 'cf_turnus_id', true );
 		if ( $cfSessionId === '' ) {
 			return '';
 		}

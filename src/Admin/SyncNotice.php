@@ -92,9 +92,9 @@ final class SyncNotice {
         .post-type-cf_event .row-actions .edit,
         .post-type-cf_event .row-actions .inline,
         .post-type-cf_event .row-actions .trash,
-        .post-type-cf_session .row-actions .edit,
-        .post-type-cf_session .row-actions .inline,
-        .post-type-cf_session .row-actions .trash { display: none !important; }
+        .post-type-cf_turnus .row-actions .edit,
+        .post-type-cf_turnus .row-actions .inline,
+        .post-type-cf_turnus .row-actions .trash { display: none !important; }
 
         /* Taxonomy: hide add-new form and edit/delete row actions */
         .taxonomy-cf_event_category #col-left,

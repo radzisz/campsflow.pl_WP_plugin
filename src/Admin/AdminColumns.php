@@ -48,7 +48,7 @@ final class AdminColumns {
 		foreach ( $columns as $key => $label ) {
 			$result[ $key ] = $label;
 			if ( $key === 'title' ) {
-				$result['cf_destination_path']  = __( 'Kierunek', 'campsflow' );
+				$result['cf_destination_path']   = __( 'Kierunek', 'campsflow' );
 				$result['cf_event_category_col'] = __( 'Kategoria', 'campsflow' );
 				$result['cf_event_class']        = __( 'Klasa obozu', 'campsflow' );
 			}
@@ -120,7 +120,7 @@ final class AdminColumns {
 			return;
 		}
 
-		$cfSessionId = (string) get_post_meta( $postId, 'cf_session_id', true );
+		$cfSessionId = (string) get_post_meta( $postId, 'cf_turnus_id', true );
 		$tenantSlug  = (string) get_option( 'campsflow_tenant_slug', '' );
 
 		if ( ! $cfSessionId || ! $tenantSlug ) {
@@ -218,7 +218,7 @@ final class AdminColumns {
 			return;
 		}
 
-		$meta = (array) ( $query->get( 'meta_query' ) ?: array() );
+		$meta   = (array) ( $query->get( 'meta_query' ) ?: array() );
 		$meta[] = array(
 			'key'     => 'cf_event_class',
 			'value'   => $code,

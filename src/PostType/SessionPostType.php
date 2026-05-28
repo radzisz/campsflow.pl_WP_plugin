@@ -5,7 +5,7 @@ namespace Campsflow\PostType;
 
 final class SessionPostType {
 
-	public const SLUG = 'cf_session';
+	public const SLUG = 'cf_turnus';
 
 	public function register(): void {
 		add_action( 'init', array( $this, 'registerPostType' ) );

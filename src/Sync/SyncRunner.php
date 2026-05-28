@@ -50,7 +50,7 @@ final class SyncRunner {
 		}
 
 		$this->inactivateMissing( EventPostType::SLUG, 'cf_event_id', $seenEventIds, $stats, true );
-		$this->inactivateMissing( SessionPostType::SLUG, 'cf_session_id', $seenSessionIds, $stats, false );
+		$this->inactivateMissing( SessionPostType::SLUG, 'cf_turnus_id', $seenSessionIds, $stats, false );
 
 		return $stats;
 	}
@@ -384,7 +384,7 @@ final class SyncRunner {
 	// ── Session ──────────────────────────────────────────────────────────────
 
 	private function upsertSession( TransformedTurnus $t, int $eventPostId, SyncStats $stats ): void {
-		$existing      = $this->findByMeta( SessionPostType::SLUG, 'cf_session_id', $t->turnusId );
+		$existing      = $this->findByMeta( SessionPostType::SLUG, 'cf_turnus_id', $t->turnusId );
 		$dateObj       = $t->dateFrom !== '' ? date_create( $t->dateFrom ) : false;
 		$dateFormatted = $dateObj !== false ? $dateObj->format( 'd.m.Y' ) : null;
 		$title         = $t->name !== '' ? $t->name : ( $t->dateFrom ? ( $dateFormatted ?? $t->dateFrom ) : $t->turnusId );
@@ -408,7 +408,7 @@ final class SyncRunner {
 
 		$eventCfId = (string) get_post_meta( $eventPostId, 'cf_event_id', true );
 
-		update_post_meta( $postId, 'cf_session_id', $t->turnusId );
+		update_post_meta( $postId, 'cf_turnus_id', $t->turnusId );
 		update_post_meta( $postId, 'cf_event_id', $eventCfId );
 		update_post_meta( $postId, 'cf_turnus_name', $t->name );
 		update_post_meta( $postId, 'cf_date_from', $t->dateFrom );

@@ -5,6 +5,7 @@ namespace Campsflow\Presentation;
 
 use Campsflow\CurrencyFormatter;
 use Campsflow\PostType\EventPostType;
+use Campsflow\PostType\SessionPostType;
 use Campsflow\Sync\AvailabilityBucket;
 
 /**
@@ -114,7 +115,7 @@ final class WpBakeryDynamicContent {
 	private function resolveMinPrice( int $postId ): string {
 		$sessions = get_posts(
 			array(
-				'post_type'   => 'cf_session',
+				'post_type'   => SessionPostType::SLUG,
 				'post_status' => 'publish',
 				'post_parent' => $postId,
 				'numberposts' => -1,
@@ -141,7 +142,7 @@ final class WpBakeryDynamicContent {
 	private function resolveFirstDate( int $postId ): string {
 		$sessions = get_posts(
 			array(
-				'post_type'   => 'cf_session',
+				'post_type'   => SessionPostType::SLUG,
 				'post_status' => 'publish',
 				'post_parent' => $postId,
 				'numberposts' => 1,
@@ -164,7 +165,7 @@ final class WpBakeryDynamicContent {
 	private function resolveAvailabilityLabel( int $postId ): string {
 		$sessions = get_posts(
 			array(
-				'post_type'   => 'cf_session',
+				'post_type'   => SessionPostType::SLUG,
 				'post_status' => 'publish',
 				'post_parent' => $postId,
 				'numberposts' => -1,

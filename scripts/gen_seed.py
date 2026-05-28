@@ -164,6 +164,16 @@ def session_custom(price_note=None, room="Pokoje 4-osobowe z łazienką"):
         cf.append({"key":"doplata","label":"Dopłata","value":price_note})
     return cf
 
+def season_from_date(dfrom):
+    m = int(dfrom[5:7])
+    if m in (12, 1, 2):
+        return "zima"
+    if m in (3, 4, 5):
+        return "wiosna"
+    if m in (6, 7, 8):
+        return "lato"
+    return "jesień"
+
 def make_session(idx, name, dfrom, dto, days, price, transport_type, loc,
                  bus_cities=None, ret_city="Kraków", price_note=None, room="Pokoje 4-osobowe z łazienką",
                  return_offset_hour="19:30"):
@@ -176,6 +186,7 @@ def make_session(idx, name, dfrom, dto, days, price, transport_type, loc,
         "dateTo": dto,
         "numberOfDays": days,
         "priceFrom": price,
+        "season": season_from_date(dfrom),
     }
     if transport_type == "bus":
         cities = bus_cities or ["Kraków"]
