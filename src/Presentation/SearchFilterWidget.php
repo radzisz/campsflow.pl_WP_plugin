@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Campsflow\Presentation;
 
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Border;
+use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
 
 final class SearchFilterWidget extends Widget_Base {
@@ -27,6 +29,8 @@ final class SearchFilterWidget extends Widget_Base {
 
 	protected function register_controls(): void {
 		$this->registerStyleLayoutSection();
+		$this->registerStyleFiltersSection();
+		$this->registerStyleResetSection();
 		$this->start_controls_section(
 			'section_filters',
 			array(
@@ -113,6 +117,130 @@ final class SearchFilterWidget extends Widget_Base {
 				'selectors' => array(
 					'{{WRAPPER}} .cf-filters' => 'gap: {{SIZE}}px;',
 				),
+			)
+		);
+		$this->end_controls_section();
+	}
+
+	private function registerStyleFiltersSection(): void {
+		$this->start_controls_section(
+			'section_style_filters',
+			array(
+				'label' => __( 'Pola filtru', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_control(
+			'filter_bg',
+			array(
+				'label'     => __( 'Tło pola', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__toggle' => 'background-color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'filter_color',
+			array(
+				'label'     => __( 'Kolor tekstu', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__toggle' => 'color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'filter_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie rogów', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-multi__toggle' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'filter_border',
+				'selector' => '{{WRAPPER}} .cf-multi__toggle',
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'filter_typography',
+				'selector' => '{{WRAPPER}} .cf-multi__toggle',
+			)
+		);
+		$this->add_control(
+			'filter_accent',
+			array(
+				'label'     => __( 'Kolor akcentu (zaznaczone)', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__count' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}} .cf-multi__option input:checked' => 'accent-color: {{VALUE}}',
+				),
+			)
+		);
+		$this->end_controls_section();
+	}
+
+	private function registerStyleResetSection(): void {
+		$this->start_controls_section(
+			'section_style_reset',
+			array(
+				'label' => __( 'Przycisk reset', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_control(
+			'reset_bg',
+			array(
+				'label'     => __( 'Tło', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-reset' => 'background-color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'reset_color',
+			array(
+				'label'     => __( 'Kolor tekstu', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-reset' => 'color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'reset_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie rogów', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-reset' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'reset_border',
+				'selector' => '{{WRAPPER}} .cf-reset',
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'reset_typography',
+				'selector' => '{{WRAPPER}} .cf-reset',
 			)
 		);
 		$this->end_controls_section();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Campsflow\Presentation;
 
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Border;
 use Elementor\Widget_Base;
 
 final class SearchSortWidget extends Widget_Base {
@@ -48,6 +49,7 @@ final class SearchSortWidget extends Widget_Base {
 		$this->registerStyleLayoutSection();
 		$this->registerStyleLabelSection();
 		$this->registerStyleButtonSection();
+		$this->registerStyleBarSection();
 	}
 
 	private function registerContentSection(): void {
@@ -268,6 +270,67 @@ final class SearchSortWidget extends Widget_Base {
 			)
 		);
 
+		$this->end_controls_section();
+	}
+
+	private function registerStyleBarSection(): void {
+		$this->start_controls_section(
+			'section_style_bar',
+			array(
+				'label' => __( 'Pasek sortowania', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_control(
+			'bar_bg',
+			array(
+				'label'     => __( 'Tło paska', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-sort-bar' => 'background-color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'bar_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie rogów', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-sort-bar' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'bar_border',
+				'selector' => '{{WRAPPER}} .cf-sort-bar',
+			)
+		);
+		$this->add_control(
+			'btn_accent_bg',
+			array(
+				'label'     => __( 'Tło aktywnego przycisku', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-sort-btn.is-active' => 'background-color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'btn_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie przycisków', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-sort-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
 		$this->end_controls_section();
 	}
 

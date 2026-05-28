@@ -5,6 +5,8 @@ namespace Campsflow\Presentation;
 
 use Campsflow\Widget\FieldValueRenderer;
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Border;
+use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
 
@@ -32,6 +34,7 @@ final class EventFieldWidget extends Widget_Base {
 
 	protected function register_controls(): void {
 		$this->registerContentSection();
+		$this->registerStyleBoxSection();
 		$this->registerStyleLabelSection();
 		$this->registerStyleValueSection();
 	}
@@ -134,6 +137,63 @@ final class EventFieldWidget extends Widget_Base {
 			)
 		);
 
+		$this->end_controls_section();
+	}
+
+	private function registerStyleBoxSection(): void {
+		$this->start_controls_section(
+			'section_style_box',
+			array(
+				'label' => __( 'Kontener', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_control(
+			'box_bg',
+			array(
+				'label'     => __( 'Tło', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-field' => 'background: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'box_padding',
+			array(
+				'label'      => __( 'Padding', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-field' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
+		$this->add_control(
+			'box_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie rogów', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-field' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'box_border',
+				'selector' => '{{WRAPPER}} .cf-field',
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			array(
+				'name'     => 'box_shadow',
+				'selector' => '{{WRAPPER}} .cf-field',
+			)
+		);
 		$this->end_controls_section();
 	}
 

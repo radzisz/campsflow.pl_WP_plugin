@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Campsflow\Presentation;
 
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Border;
+use Elementor\Group_Control_Box_Shadow;
 use Elementor\Widget_Base;
 
 final class EventLeadVideoWidget extends Widget_Base {
@@ -88,6 +90,20 @@ final class EventLeadVideoWidget extends Widget_Base {
 				'selectors'  => array(
 					'{{WRAPPER}} .cf-video-wrap' => 'border-radius: {{SIZE}}{{UNIT}}; overflow: hidden',
 				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'video_border',
+				'selector' => '{{WRAPPER}} .cf-video-wrap',
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			array(
+				'name'     => 'video_shadow',
+				'selector' => '{{WRAPPER}} .cf-video-wrap',
 			)
 		);
 		$this->end_controls_section();

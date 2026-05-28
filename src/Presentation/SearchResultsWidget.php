@@ -5,6 +5,9 @@ namespace Campsflow\Presentation;
 
 use Campsflow\PostType\EventPostType;
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Border;
+use Elementor\Group_Control_Box_Shadow;
+use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
 use WP_Query;
 
@@ -55,6 +58,7 @@ final class SearchResultsWidget extends Widget_Base {
 		);
 		$this->end_controls_section();
 		$this->registerCardSection();
+		$this->registerStyleCardSection();
 	}
 
 	private function registerCardSection(): void {
@@ -137,6 +141,109 @@ final class SearchResultsWidget extends Widget_Base {
 				'condition' => array( 'show_age_tags' => 'yes' ),
 			)
 		);
+	}
+
+	private function registerStyleCardSection(): void {
+		$this->start_controls_section(
+			'section_style_card',
+			array(
+				'label' => __( 'Karta wynikowa — styl', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_control(
+			'card_bg',
+			array(
+				'label'     => __( 'Tło karty', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-card' => 'background: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'card_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie rogów', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-card' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow: hidden',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'card_border',
+				'selector' => '{{WRAPPER}} .cf-card',
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			array(
+				'name'     => 'card_shadow',
+				'selector' => '{{WRAPPER}} .cf-card',
+			)
+		);
+		$this->add_control(
+			'card_title_color',
+			array(
+				'label'     => __( 'Kolor tytułu', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-card__title a' => 'color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'card_title_typography',
+				'selector' => '{{WRAPPER}} .cf-card__title a',
+			)
+		);
+		$this->add_control(
+			'card_accent',
+			array(
+				'label'     => __( 'Kolor akcentu (przycisk)', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-btn' => 'background: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'card_btn_color',
+			array(
+				'label'     => __( 'Kolor tekstu przycisku', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-btn' => 'color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'card_btn_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie przycisku', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'card_btn_typography',
+				'selector' => '{{WRAPPER}} .cf-btn',
+			)
+		);
+		$this->end_controls_section();
 	}
 
 	private function registerCardInfoControls(): void {

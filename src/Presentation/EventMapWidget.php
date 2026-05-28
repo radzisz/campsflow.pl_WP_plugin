@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Campsflow\Presentation;
 
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Border;
+use Elementor\Group_Control_Box_Shadow;
 use Elementor\Widget_Base;
 
 final class EventMapWidget extends Widget_Base {
@@ -96,6 +98,43 @@ final class EventMapWidget extends Widget_Base {
 			)
 		);
 
+		$this->end_controls_section();
+		$this->registerStyleSection();
+	}
+
+	private function registerStyleSection(): void {
+		$this->start_controls_section(
+			'section_style_map',
+			array(
+				'label' => __( 'Wygląd', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_control(
+			'map_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie rogów', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-event-map' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow: hidden',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'map_border',
+				'selector' => '{{WRAPPER}} .cf-event-map',
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			array(
+				'name'     => 'map_shadow',
+				'selector' => '{{WRAPPER}} .cf-event-map',
+			)
+		);
 		$this->end_controls_section();
 	}
 

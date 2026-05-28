@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Campsflow\Presentation;
 
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Border;
+use Elementor\Group_Control_Box_Shadow;
 use Elementor\Widget_Base;
 
 final class EventLeadImageWidget extends Widget_Base {
@@ -121,6 +123,20 @@ final class EventLeadImageWidget extends Widget_Base {
 				'selectors'  => array(
 					'{{WRAPPER}} .cf-lead-image' => 'border-radius: {{SIZE}}{{UNIT}}',
 				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'img_border',
+				'selector' => '{{WRAPPER}} .cf-lead-image',
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			array(
+				'name'     => 'img_shadow',
+				'selector' => '{{WRAPPER}} .cf-lead-image',
 			)
 		);
 		$this->end_controls_section();

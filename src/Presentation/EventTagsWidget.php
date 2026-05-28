@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Campsflow\Presentation;
 
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
 
@@ -157,6 +158,38 @@ final class EventTagsWidget extends Widget_Base {
 				'selectors' => array(
 					'{{WRAPPER}} .cf-tag' => 'background: {{VALUE}}',
 				),
+			)
+		);
+		$this->add_control(
+			'pill_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie rogów', 'campsflow' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', '%' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 50,
+					),
+					'%'  => array(
+						'min' => 0,
+						'max' => 50,
+					),
+				),
+				'default'    => array(
+					'unit' => 'px',
+					'size' => 20,
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-tag' => 'border-radius: {{SIZE}}{{UNIT}}',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'pill_border',
+				'selector' => '{{WRAPPER}} .cf-tag',
 			)
 		);
 		$this->end_controls_section();

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Campsflow\Presentation;
 
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Border;
+use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
 
 final class SearchFilterFieldWidget extends Widget_Base {
@@ -30,6 +32,7 @@ final class SearchFilterFieldWidget extends Widget_Base {
 		$this->registerStyleLayoutSection();
 		$this->registerStyleLabelSection();
 		$this->registerStyleInputSection();
+		$this->registerStyleMultiSection();
 	}
 
 	private function registerContentSection(): void {
@@ -319,6 +322,80 @@ final class SearchFilterFieldWidget extends Widget_Base {
 			)
 		);
 
+		$this->end_controls_section();
+	}
+
+	private function registerStyleMultiSection(): void {
+		$this->start_controls_section(
+			'section_style_multi',
+			array(
+				'label' => __( 'Multi-select (lista rozwijana)', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_control(
+			'multi_bg',
+			array(
+				'label'     => __( 'Tło przycisku', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__toggle' => 'background-color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'multi_color',
+			array(
+				'label'     => __( 'Kolor tekstu', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__toggle' => 'color: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'multi_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie rogów', 'campsflow' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', '%' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 50,
+					),
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-multi__toggle' => 'border-radius: {{SIZE}}{{UNIT}}',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'multi_border',
+				'selector' => '{{WRAPPER}} .cf-multi__toggle',
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'multi_typography',
+				'selector' => '{{WRAPPER}} .cf-multi__toggle',
+			)
+		);
+		$this->add_control(
+			'multi_accent',
+			array(
+				'label'     => __( 'Kolor akcentu (zaznaczone opcje)', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => array(
+					'{{WRAPPER}} .cf-multi__count' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}} .cf-multi__option input:checked' => 'accent-color: {{VALUE}}',
+				),
+			)
+		);
 		$this->end_controls_section();
 	}
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Campsflow\Presentation;
 
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Border;
+use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
 
@@ -27,6 +29,7 @@ final class EventDocumentsWidget extends Widget_Base {
 
 	protected function register_controls(): void {
 		$this->registerContentSection();
+		$this->registerStyleBoxSection();
 		$this->registerStyleLabelSection();
 		$this->registerStyleLinksSection();
 	}
@@ -74,6 +77,63 @@ final class EventDocumentsWidget extends Widget_Base {
 				'label'       => __( 'Placeholder (tryb edycji)', 'campsflow' ),
 				'type'        => Controls_Manager::TEXT,
 				'description' => __( 'Widoczny tylko w edytorze gdy brak dokumentów.', 'campsflow' ),
+			)
+		);
+		$this->end_controls_section();
+	}
+
+	private function registerStyleBoxSection(): void {
+		$this->start_controls_section(
+			'section_style_box',
+			array(
+				'label' => __( 'Kontener', 'campsflow' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_control(
+			'box_bg',
+			array(
+				'label'     => __( 'Tło', 'campsflow' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .cf-docs-list' => 'background: {{VALUE}}',
+				),
+			)
+		);
+		$this->add_control(
+			'box_padding',
+			array(
+				'label'      => __( 'Padding', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-docs-list' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
+		$this->add_control(
+			'box_border_radius',
+			array(
+				'label'      => __( 'Zaokrąglenie rogów', 'campsflow' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .cf-docs-list' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'box_border',
+				'selector' => '{{WRAPPER}} .cf-docs-list',
+			)
+		);
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			array(
+				'name'     => 'box_shadow',
+				'selector' => '{{WRAPPER}} .cf-docs-list',
 			)
 		);
 		$this->end_controls_section();
