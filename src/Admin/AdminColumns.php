@@ -104,7 +104,6 @@ final class AdminColumns {
 		$columns['cf_sess_date_from'] = __( 'Początek', 'campsflow' );
 		$columns['cf_sess_date_to']   = __( 'Koniec', 'campsflow' );
 		$columns['cf_sess_transport'] = __( 'Transport', 'campsflow' );
-		$columns['cf_sess_start']     = __( 'Zbiórka', 'campsflow' );
 		$columns['cf_sess_price']     = __( 'Cena', 'campsflow' );
 		$columns['cf_open']           = '<span class="dashicons dashicons-external" title="' . esc_attr__( 'Otwórz w CampsFlow', 'campsflow' ) . '"></span>';
 		return $columns;
@@ -115,7 +114,6 @@ final class AdminColumns {
 			'cf_sess_date_from' => $this->renderSessionDate( $postId, 'cf_date_from' ),
 			'cf_sess_date_to'   => $this->renderSessionDate( $postId, 'cf_date_to' ),
 			'cf_sess_transport' => $this->renderSessionTransport( $postId ),
-			'cf_sess_start'     => $this->renderSessionStart( $postId ),
 			'cf_sess_price'     => $this->renderSessionPrice( $postId ),
 			default             => null,
 		};
@@ -154,37 +152,35 @@ final class AdminColumns {
 		echo esc_html( date_i18n( 'd.m.Y', strtotime( $raw ) ) );
 	}
 
+	/** @var array<string,string> */
+	private const TRANSPORT_LABELS = array(
+		'bus'     => 'Autokar',
+		'minibus' => 'Minibus',
+		'train'   => 'Pociąg',
+		'plane'   => 'Samolot',
+		'ferry'   => 'Prom',
+		'own'     => 'Dojazd własny',
+	);
+
 	private function renderSessionTransport( int $postId ): void {
-		$raw       = (string) get_post_meta( $postId, 'cf_transport', true );
-		$transport = json_decode( $raw, true );
-		$type      = is_array( $transport ) ? (string) ( $transport['type'] ?? '' ) : '';
+		$rawTransport = (string) get_post_meta( $postId, 'cf_transport', true );
+		$transport    = json_decode( $rawTransport, true );
+		$type         = is_array( $transport ) ? (string) ( $transport['type'] ?? '' ) : '';
 
 		if ( $type === '' ) {
 			echo '<span style="color:#d1d5db">—</span>';
 			return;
 		}
 
-		echo esc_html( $type );
-	}
+		$label = self::TRANSPORT_LABELS[ $type ] ?? ucfirst( $type );
 
-	private function renderSessionStart( int $postId ): void {
-		$raw    = (string) get_post_meta( $postId, 'cf_meeting_points_start', true );
-		$points = json_decode( $raw, true );
+		$rawPoints = (string) get_post_meta( $postId, 'cf_meeting_points_start', true );
+		$points    = json_decode( $rawPoints, true );
+		$city      = ( is_array( $points ) && ! empty( $points ) && is_array( $points[0] ) )
+			? (string) ( $points[0]['name'] ?? '' )
+			: '';
 
-		if ( ! is_array( $points ) || $points === array() ) {
-			echo '<span style="color:#d1d5db">—</span>';
-			return;
-		}
-
-		$first = $points[0];
-		$name  = is_array( $first ) ? (string) ( $first['name'] ?? '' ) : '';
-
-		if ( $name === '' ) {
-			echo '<span style="color:#d1d5db">—</span>';
-			return;
-		}
-
-		echo esc_html( $name );
+		echo esc_html( $city !== '' ? $label . ' z ' . $city : $label );
 	}
 
 	private function renderSessionPrice( int $postId ): void {
