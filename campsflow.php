@@ -72,7 +72,6 @@ add_action(
 	'plugins_loaded',
 	static function (): void {
 		if ( get_option( 'campsflow_version' ) !== CAMPSFLOW_VERSION ) {
-			Presentation\RegistrationFormShortcode::createPageIfMissing();
 			add_action(
 				'elementor/loaded',
 				static function (): void {
