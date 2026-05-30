@@ -27,7 +27,7 @@ WP Local DB (CPT posts)
      │
      ▼
 Strona ofertowa (SEO)
-     │  klik "Zapisz się"
+     │  klik "Rezerwuj"
      ▼
 [3] REJESTRACJA             ← dedykowana strona WP z iframe Campsflow
 ```
@@ -43,30 +43,58 @@ Strona ofertowa (SEO)
 - **Impreza** — produkt obozowy (opis, lokalizacja, program, grupa wiekowa)
 - **Turnus** — konkretny termin imprezy (daty, cena, liczba miejsc)
 - Relacja: jedna impreza → 1..N turnusów
-- Różny opis = osobna impreza (turnusy jednej imprezy mają ten sam opis)
 
 ### CPT w WP
 
 **`cf_event`** (impreza):
 ```
-post_title           → nazwa imprezy
-post_content         → opis
-post_status          → publish / draft (mapowane ze statusu Campsflow)
-meta: cf_event_id    → UUID z Campsflow (klucz synchronizacji)
-meta: cf_location    → lokalizacja (JSON: city, region, coords)
-taksonomia: cf_tag         → "góry", "morze", "zimowy", …
-taksonomia: cf_age_group   → "8-12 lat", "13-16 lat", …
+post_title                → nazwa imprezy
+post_content              → opis
+post_status               → publish / draft (mapowane ze statusu Campsflow)
+meta: cf_event_id         → UUID z Campsflow (klucz synchronizacji)
+meta: cf_localization     → JSON: { destination, name, address: {city,…}, lat, lng, … }
+meta: cf_contact          → JSON: { email, phone, … }
+meta: cf_documents        → JSON array
+meta: cf_general_terms    → tekst
+meta: cf_instructions     → tekst
+meta: cf_multimedia_urls  → JSON array URL-i zdjęć
+meta: cf_lead_image_url   → URL głównego zdjęcia
+meta: cf_video_urls       → JSON array URL-i wideo
+meta: cf_lead_video_url   → URL głównego wideo
+meta: cf_event_class      → typ: YOUTH_CAMP | KIDS_CAMP | FAMILY_CAMP | …
+meta: cf_custom_fields    → JSON array pól własnych
+meta: cf_date_earliest    → data najbliższego turnusu (Y-m-d)
+meta: cf_event_min_price  → cena od (grosze, int)
+meta: cf_currency         → waluta (domyślnie PLN)
+meta: cf_min_age / cf_max_age → przedział wiekowy
+taksonomia: cf_event_tag      → tagi obozu ("góry", "morze", …)
+taksonomia: cf_event_category → kategoria ("Obozy językowe", …)
+taksonomia: cf_age_group      → "8-12 lat", "13-16 lat", …
+taksonomia: cf_destination    → kraj → region (hierarchiczna)
+taksonomia: cf_season         → "lato", "zima", "wiosna", "jesień"
+taksonomia: cf_transport_type → typ transportu
 ```
 
-**`cf_session`** (turnus, child of cf_event):
+**`cf_turnus`** (turnus, child of cf_event):
 ```
-post_title              → nazwa turnusu (np. "Turnus I")
-post_parent             → ID posta cf_event
-meta: cf_session_id     → UUID z Campsflow
-meta: cf_date_from      → data rozpoczęcia (Y-m-d)
-meta: cf_date_to        → data zakończenia (Y-m-d)
-meta: cf_price          → cena w groszach (int)
-meta: cf_availability   → kubełek: available | few_left | almost_full | full
+post_title                      → nazwa turnusu
+post_parent                     → ID posta cf_event
+meta: cf_turnus_id              → UUID z Campsflow (klucz synchronizacji)
+meta: cf_event_id               → UUID imprezy nadrzędnej
+meta: cf_turnus_name            → nazwa wyświetlana
+meta: cf_date_from              → data rozpoczęcia (Y-m-d)
+meta: cf_date_to                → data zakończenia (Y-m-d)
+meta: cf_number_of_days         → liczba dni (int)
+meta: cf_price_from             → cena od (grosze, int)
+meta: cf_currency               → waluta
+meta: cf_transport              → JSON: { type, … }
+meta: cf_meeting_points_start   → JSON array punktów zbiórki
+meta: cf_meeting_points_return  → JSON array punktów powrotu
+meta: cf_seats_available        → wolne miejsca (int)
+meta: cf_seats_all              → wszystkie miejsca (int)
+meta: cf_availability           → kubełek: available | few_left | almost_full | full
+meta: cf_season                 → sezon (lato | zima | wiosna | jesień)
+meta: cf_custom_fields          → JSON array pól własnych
 ```
 
 ### Kubełki dostępności
@@ -92,134 +120,177 @@ Kubełek imprezy = najlepsza dostępność spośród jej turnusów
 
 ### Trigger
 
-WP Cron — domyślnie co 60 minut (konfigurowalne). Ręczny trigger dostępny w WP Admin.
+WP Cron — domyślnie co 60 minut (konfigurowalne). Ręczny trigger w WP Admin → Campsflow → Synchronizacja.
 
 ### Przepływ
 
 ```
-Fetcher → Transformer → WpWriter
+Fetcher → Transformer → SyncRunner
 ```
 
 - **Fetcher** — HTTP GET do Campsflow public API, obsługuje błędy i timeout
 - **Transformer** — mapuje pola API → WP meta, oblicza kubełki, przypisuje taksonomie
-- **WpWriter** — upsert po `cf_event_id` / `cf_session_id`, usuwa (trash) pozycje których nie ma w API
+- **SyncRunner** — upsert po `cf_event_id` / `cf_turnus_id`, usuwa (trash) pozycje których nie ma w API
 
-### Campsflow Public API (do implementacji po stronie Campsflow)
+### Campsflow Public API
 
 ```
 GET /api/v1/public/{tenantSlug}/events
     → [{ id, name, description, location, status, sessions: [...] }]
-
-GET /api/v1/public/{tenantSlug}/events/{id}
-    → { id, name, description, location, status,
-        sessions: [{ id, dateFrom, dateTo, price,
-                     seatsTotal, seatsReserved }] }
 ```
 
-`seatsTotal` i `seatsReserved` muszą być w odpowiedzi — plugin oblicza kubełek lokalnie.
+`seatsTotal` i `seatsReserved` w odpowiedzi — plugin oblicza kubełek lokalnie.
 
 ---
 
 ## Prezentacja
 
-### Dwa tryby listingu
+### Strony zarządzane przez plugin
 
-**`view=events`** — lista imprez z agregatem dostępności (dla dużych tenantów):
+Plugin tworzy dwie strony automatycznie przy aktywacji (marker w meta, nie slug):
+
+| Strona | Slug | Shortcode | Meta marker |
+|---|---|---|---|
+| Rejestracja | `cf-registration` | `[campsflow_registration_form]` | `_campsflow_registration_page` |
+| Wyszukiwarka | `cf-search` | `[campsflow_search_filter][campsflow_search_results]` | `_campsflow_search_page` |
+
+Obie można odtworzyć z WP Admin → Campsflow → Ustawienia.
+
+### Shortcodes
+
+| Shortcode | Opis |
+|---|---|
+| `[campsflow_listing]` | Listing imprez lub turnusów |
+| `[campsflow_search_filter]` | Formularz filtrów AJAX |
+| `[campsflow_search_filter_field]` | Pojedyncze pole filtru |
+| `[campsflow_search_sort]` | Pasek sortowania |
+| `[campsflow_search_results]` | Wyniki wyszukiwania (AJAX) |
+| `[campsflow_event_breadcrumb]` | Breadcrumb z linkami do wyszukiwarki |
+| `[campsflow_event_field field="..."]` | Dowolne pole meta imprezy |
+| `[campsflow_event_map]` | Mapa Google/Leaflet |
+| `[campsflow_event_tags]` | Tagi imprezy |
+| `[campsflow_event_age_groups]` | Grupy wiekowe |
+| `[campsflow_event_contact]` | Box kontaktowy |
+| `[campsflow_event_documents]` | Lista dokumentów |
+| `[campsflow_event_lead_image]` | Zdjęcie główne |
+| `[campsflow_event_gallery]` | Galeria zdjęć / slider |
+| `[campsflow_event_lead_video]` | Wideo główne |
+| `[campsflow_event_sessions]` | Lista turnusów z przyciskami |
+| `[campsflow_registration_form]` | Iframe formularza rejestracji |
+
+### Widgety Elementor
+
+Dwie kategorie w panelu Elementor:
+
+**CampsFlow — Wyszukiwanie** (strona listingu):
+- `SearchFilterWidget`, `SearchFilterFieldWidget`, `SearchSortWidget`, `SearchResultsWidget`
+
+**CampsFlow — Impreza** (strona pojedynczej imprezy):
+- `EventSessionsWidget`, `EventLeadImageWidget`, `EventLeadVideoWidget`, `EventGalleryWidget`
+- `EventMapWidget`, `EventFieldWidget`, `EventContactWidget`, `EventDocumentsWidget`
+- `EventTagsWidget`, `EventAgeGroupWidget`, `EventBreadcrumbWidget`
+
+### WPBakery
+
+`WpBakeryIntegration` — odpowiedniki powyższych shortcodów jako elementy WPBakery.
+`WpBakeryDynamicContent` — dynamic content sources: `cf_location_city`, `cf_price_min`, `cf_availability_label`, itp.
+
+### Rejestracja (iframe)
+
 ```
-[campsflow_listing view="events"]
-```
-Użytkownik klika imprezę → strona imprezy → lista turnusów → "Zapisz się"
-
-**`view=sessions`** — płaska lista turnusów (dla małych tenantów):
-```
-[campsflow_listing view="sessions"]
-```
-Opcjonalne grupowanie po imprezie jako nagłówek. "Zapisz się" bezpośrednio przy turnusie.
-
-### Przycisk rejestracji
-
-```
-[campsflow_register_button session_id="uuid" label="Zapisz się"]
-```
-
-Generuje zwykły link: `/rejestracja/?session=uuid` — zero JavaScript.
-
----
-
-## Rejestracja (iframe)
-
-### Dedykowana strona WP
-
-Jedna strona WP (np. `/rejestracja/`) z shortcodem:
-```
-[campsflow_registration_form]
-```
-
-Plugin tworzy tę stronę automatycznie przy aktywacji jeśli nie istnieje.
-
-### Jak działa iframe
-
-```
-URL iframe: https://campsflow.pl/embed/{tenantSlug}/register?session={uuid}
+URL iframe: https://ukryteskarby.pl/embed/{tenantSlug}/register?session={uuid}
 ```
 
 Campsflow serwuje formularz bez nagłówka i stopki (no-chrome embed layout).
-WP dostarcza nagłówek i stopkę firmy — użytkownik nie opuszcza domeny tenanta.
+Plugin nasłuchuje `postMessage { type: 'CF_RESIZE', height: N }` i dostosowuje wysokość iframe.
 
-### Auto-resize
+---
 
-Plugin nasłuchuje `postMessage { type: 'CF_RESIZE', height: N }` od iframe
-i dostosowuje jego wysokość. Obsługiwane w `assets/js/registration.js`.
+## Konfiguracja (Config.php)
+
+Priorytety (najwyższy pierwszy): PHP constant → env var → WP option → default.
+
+| Stała / opcja | Domyślnie | Opis |
+|---|---|---|
+| `CAMPSFLOW_API_URL` / `campsflow_api_url` | `https://api.ukryteskarby.pl` | URL API |
+| `CAMPSFLOW_ADMIN_URL` / `campsflow_admin_url` | `https://admin.ukryteskarby.pl` | URL panelu admin |
+| `CAMPSFLOW_APP_URL` / `campsflow_app_url` | `https://ukryteskarby.pl` | URL aplikacji (embed) |
+
+Dla wp-env nadpisuj w `.wp-env.json → env → development → config`.
 
 ---
 
 ## Struktura katalogów
 
 ```
-campsflow.php                     ← główny plik pluginu (nagłówek, bootstrap)
-composer.json
-package.json
-.wp-env.json
+campsflow.php
 src/
-├── PostType/
-│   ├── EventPostType.php         ← rejestracja CPT cf_event
-│   └── SessionPostType.php       ← rejestracja CPT cf_session
-├── Taxonomy/
-│   ├── CampTagTaxonomy.php
-│   └── AgeGroupTaxonomy.php
-├── Sync/
-│   ├── Fetcher.php               ← HTTP client (wp_remote_get)
-│   ├── Transformer.php           ← mapowanie + kubełki
-│   ├── WpWriter.php              ← upsert CPT
-│   └── SyncScheduler.php        ← WP Cron hooks
-├── Repository/
-│   ├── EventRepository.php       ← WP_Query dla imprez
-│   └── SessionRepository.php     ← WP_Query dla turnusów
-├── Presentation/
-│   ├── ListingShortcode.php
-│   ├── RegisterButtonShortcode.php
-│   └── RegistrationFormShortcode.php
 ├── Admin/
-│   ├── SettingsPage.php
-│   └── SyncStatusPage.php
-└── Api/
-    └── WebhookEndpoint.php       ← REST endpoint dla zdarzeń z Campsflow
+│   ├── AdminColumns.php        ← kolumny i filtry w listach CPT
+│   ├── ElementorLinks.php      ← linki "Edytuj w Elementor" w admin
+│   ├── FixtureImporter.php     ← import danych testowych (fixture)
+│   ├── SettingsPage.php        ← WP Admin → Campsflow → Ustawienia
+│   └── SyncNotice.php          ← pasek powiadomień o synchronizacji
+├── Api/
+│   └── EventsEndpoint.php      ← REST GET /wp-json/campsflow/v1/events
+├── PostType/
+│   ├── EventPostType.php       ← CPT cf_event
+│   ├── PostStatus.php          ← niestandardowe statusy postów
+│   └── SessionPostType.php     ← CPT cf_turnus
+├── Presentation/
+│   ├── ElementorIntegration.php← rejestracja kategorii i widgetów Elementor
+│   ├── ElementorWidget.php     ← widget listing (generyczny)
+│   ├── Event*Widget.php        ← widgety strony imprezy (11 plików)
+│   ├── Search*Widget.php       ← widgety wyszukiwarki (4 pliki)
+│   ├── Event*Shortcode.php     ← shortcodes strony imprezy
+│   ├── Search*Shortcode.php    ← shortcodes wyszukiwarki
+│   ├── FilterRenderMethods.php ← wspólny renderer filtrów
+│   ├── EventMapRenderMethods.php
+│   ├── EventCardRenderer.php   ← renderer karty imprezy
+│   ├── ListingShortcode.php
+│   ├── RegistrationFormShortcode.php
+│   ├── SearchPage.php          ← auto-create/restore strony wyszukiwarki
+│   ├── TemplateLoader.php
+│   ├── WpBakeryIntegration.php
+│   └── WpBakeryDynamicContent.php
+├── Sync/
+│   ├── AggregateStats.php
+│   ├── AvailabilityBucket.php  ← enum kubełków dostępności
+│   ├── SyncLog.php
+│   ├── SyncRunner.php          ← upsert CPT po cf_event_id / cf_turnus_id
+│   ├── SyncScheduler.php       ← WP Cron hooks
+│   ├── SyncStats.php
+│   ├── TransformedTurnus.php   ← DTO turnusu po transformacji
+│   └── Transformer.php         ← mapowanie API → WP meta + kubełki
+├── Taxonomy/
+│   ├── AgeGroupTaxonomy.php    ← cf_age_group
+│   ├── CampTagTaxonomy.php     ← cf_tag (legacy)
+│   ├── DestinationTaxonomy.php ← cf_destination (hierarchiczna)
+│   ├── EventCategoryTaxonomy.php ← cf_event_category
+│   ├── EventTagTaxonomy.php    ← cf_event_tag
+│   ├── SeasonTaxonomy.php      ← cf_season
+│   └── TransportTypeTaxonomy.php ← cf_transport_type
+├── Widget/
+│   ├── FieldConfig.php         ← konfiguracja pól dynamicznych
+│   ├── FieldSorter.php
+│   └── FieldValueRenderer.php
+├── Config.php                  ← URL-e API/app z priorytetem constant > env > option
+└── CurrencyFormatter.php       ← formatowanie cen (grosze → "1 500 zł")
 assets/
-├── css/
-│   └── campsflow.css             ← CSS custom properties, brak !important
+├── css/campsflow.css           ← CSS custom properties, brak !important
 └── js/
-    └── registration.js           ← postMessage resize listener
-templates/
-├── event-card.php
-├── session-row.php
-└── registration-iframe.php
+    ├── registration.js         ← postMessage resize listener
+    ├── search-filters.js       ← AJAX filtry + pagination
+    └── event-map.js            ← Leaflet / Google Maps
 tests/
-├── Unit/                         ← Brain\Monkey, bez WP
-│   └── Sync/
-│       └── TransformerTest.php
-└── Integration/                  ← WP_UnitTestCase, wymaga wp-env
-    └── Sync/
-        └── WpWriterTest.php
+├── fixtures/
+│   ├── api-events.json         ← mockowe dane API
+│   └── seed-events.json        ← dane seed (92 imprezy, generowane przez scripts/gen_seed.py)
+├── Integration/Sync/
+│   └── WpWriterTest.php
+└── Unit/
+    ├── Sync/TransformerTest.php
+    └── Widget/FieldSorterTest.php, FieldValueRendererTest.php
 ```
 
 ---
@@ -259,7 +330,7 @@ npm run env:logs      # logi PHP z kontenera
 
 ### Unit tests — izolowana logika PHP (Brain\Monkey)
 
-Nie wymagają działającego WP. Testują: Transformer, kubełki, mapowania, walidację.
+Nie wymagają działającego WP. Testują: Transformer, kubełki, mapowania, FieldSorter.
 
 ```bash
 npm run test:unit
@@ -271,8 +342,6 @@ npm run test:unit
 npm run env:start           # musi być uruchomiony
 npm run test:integration
 ```
-
-Testują: synchronizację z mockowanym API, zapis do CPT, WP_Query, shortcodes.
 
 ### Wszystkie testy + statyczna analiza
 
@@ -286,24 +355,10 @@ npm run test:coverage # HTML do ./coverage/
 
 ---
 
-## Konfiguracja pluginu (WP Admin → Campsflow → Ustawienia)
-
-| Pole | Domyślnie | Opis |
-|---|---|---|
-| Tenant slug | — | slug tenanta z Campsflow |
-| API base URL | `https://campsflow.pl` | baza URL API |
-| Sync interval | `60` | minuty między synchronizacjami |
-| Few left threshold | `30` | % wolnych miejsc → "Mało miejsc" |
-| Almost full threshold | `10` | % wolnych miejsc → "Na wyczerpaniu" |
-| Registration page | `/rejestracja/` | strona z shortcodem rejestracji |
-
----
-
 ## Zasady kodowania
 
 Obowiązują wszystkie reguły z globalnego `~/.claude/CLAUDE.md` oraz:
 
-- TypeScript enum — klucze w `UPPER_SNAKE_CASE`, wartości mogą być dowolne (np. `DAY_CAMP = 'day_camp'`)
 - PSR-4 autoloading, namespace `Campsflow\`
 - WordPress Coding Standards dla hooków, nonces, capabilities
 - Sanityzacja WSZYSTKICH danych wejściowych: `sanitize_text_field()`, `absint()`, itp.
@@ -312,6 +367,8 @@ Obowiązują wszystkie reguły z globalnego `~/.claude/CLAUDE.md` oraz:
 - Nonces dla wszystkich akcji admin
 - Capabilities check przed każdą akcją admin (`current_user_can()`)
 - `declare(strict_types=1)` w każdym pliku PHP
+- Elementor: `get_name()` nigdy nie zmieniaj — jest zapisany w bazie jako typ widgetu
+- Strony zarządzane przez plugin: szukaj po meta markerze, nie po slug/tytule (slug może być zmieniony przez użytkownika)
 
 <!-- BEGIN @przeprogramowani/10x-cli -->
 
